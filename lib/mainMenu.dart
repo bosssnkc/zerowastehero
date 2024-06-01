@@ -82,9 +82,14 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -135,7 +140,25 @@ class HomeScreen extends StatelessWidget {
                 )),
             const SizedBox(height: 16),
             _buildSectionHeader('กิจกรรม'),
-            _buildSectionContent('ภาพและโปสเตอร์ตัวอย่างกิจกรรม'),
+            InkWell(
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8.0,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  'กิจกรรมไงจะใครล่ะ',
+                  style: const TextStyle(fontSize: 16.0),
+                ),
+              ),
+            )
           ],
         ),
       ),
