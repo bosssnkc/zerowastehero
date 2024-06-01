@@ -45,31 +45,34 @@ class _typeOfTrashState extends State<typeOfTrash> {
                     height: 30,
                   ),
                   Expanded(
-                      child: TabBarView(children: <Widget>[
-                    Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'ขยะในประเภทต่างๆ',
-                            style: TextStyle(
-                              fontSize: 24,
-                            ),
+                    child: TabBarView(
+                      children: <Widget>[
+                        Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'ขยะในประเภทต่างๆ',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(16),
+                                child: gridWieget(),
+                              )
+                            ],
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(16),
-                            child: gridWieget(),
-                          )
-                        ],
-                      ),
+                        ),
+                        Center(
+                          child: Text('TEST'),
+                        )
+                      ],
                     ),
-                    Center(
-                      child: Text('TEST'),
-                    )
-                  ]))
+                  ),
                 ],
               ),
             )));
@@ -102,30 +105,31 @@ class gridWieget extends StatelessWidget {
 
   Widget gridItem(String jname, IconData icon, Color iconCol) {
     return Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.0),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8.0,
-              )
-            ]),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                jname,
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            Icon(
-              icon,
-              size: 60,
-              color: iconCol,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8.0,
             )
-          ],
-        ));
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text(
+              jname,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
+          Icon(
+            icon,
+            size: 60,
+            color: iconCol,
+          )
+        ],
+      ),
+    );
   }
 }
