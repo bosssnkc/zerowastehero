@@ -90,72 +90,42 @@ class gridWieget extends StatelessWidget {
       mainAxisSpacing: 16.0,
       crossAxisSpacing: 16.0,
       children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8.0,
-                )
-              ]),
-          child: const Center(
-            child: Text(
-              'ขยะทั่วไป',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8.0,
-                )
-              ]),
-          child: const Center(
-            child: Text(
-              'ขยะรีไซเคิล',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8.0,
-                )
-              ]),
-          child: const Center(
-            child: Text(
-              'ขยะอินทรีย์',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.0),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8.0,
-                )
-              ]),
-          child: const Center(
-            child: Text('ขยะอันตราย', style: TextStyle(fontSize: 24)),
-          ),
-        ),
+        InkWell(
+            onTap: () {},
+            child: gridItem('ขยะทั่วไป', Icons.recycling, Colors.blue)),
+        gridItem('ขยะรีไซเคิล', Icons.text_snippet, Colors.amber),
+        gridItem('ขยะอินทรีย์', Icons.five_g_sharp, Colors.green),
+        gridItem('ขยะอันตราย', Icons.biotech, Colors.red),
       ],
     );
+  }
+
+  Widget gridItem(String jname, IconData icon, Color iconCol) {
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8.0,
+              )
+            ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                jname,
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+            Icon(
+              icon,
+              size: 60,
+              color: iconCol,
+            )
+          ],
+        ));
   }
 }

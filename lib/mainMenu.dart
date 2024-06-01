@@ -153,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: Text(
+                child: const Text(
                   'กิจกรรมไงจะใครล่ะ',
-                  style: const TextStyle(fontSize: 16.0),
+                  style: TextStyle(fontSize: 16.0),
                 ),
               ),
             )
