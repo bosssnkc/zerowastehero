@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class OptionSetting extends StatefulWidget {
   const OptionSetting({super.key});
@@ -9,6 +10,14 @@ class OptionSetting extends StatefulWidget {
 
 class _OptionSettingState extends State<OptionSetting> {
   bool lightswitch = false;
+
+  void lightSwitchCtrl() {
+    if (lightswitch == false) {
+      return debugPrint('OFF');
+    } else {
+      return debugPrint('ON');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,7 @@ class _OptionSettingState extends State<OptionSetting> {
           const SizedBox(height: 16),
           const ListTile(
             title: Text('ตั้งค่า 1'),
-            subtitle: Text('รายละเอียดตั้งค่าไง'),
+            subtitle: Text('ListTile Widget/title Test'),
             leading: Icon(Icons.safety_check),
             trailing: Icon(Icons.fire_extinguisher),
           ),
@@ -46,7 +55,7 @@ class _OptionSettingState extends State<OptionSetting> {
           const SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
                 shape: BoxShape.rectangle,
                 border: Border.all(
                   color: Colors.white,
@@ -73,7 +82,7 @@ class _OptionSettingState extends State<OptionSetting> {
     IconData icon,
     String label,
   ) {
-    return Container(
+    return SizedBox(
       height: 5.0,
       width: 5.0,
       child: Row(

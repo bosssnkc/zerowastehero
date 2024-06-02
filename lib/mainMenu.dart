@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[100],
+      backgroundColor: Colors.green[50],
       appBar: AppBar(
         backgroundColor: Colors.green[300],
         elevation: 0,
@@ -93,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      //เมื่อต้องการให้หน้าสามารถเลื่อนขึ้นลงได้
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

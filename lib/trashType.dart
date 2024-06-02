@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class typeOfTrash extends StatefulWidget {
   const typeOfTrash({super.key});
@@ -41,41 +40,137 @@ class _typeOfTrashState extends State<typeOfTrash> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Expanded(
                     child: TabBarView(
                       children: <Widget>[
-                        Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'ขยะในประเภทต่างๆ',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: gridWieget(),
-                              )
-                            ],
-                          ),
-                        ),
-                        Center(
-                          child: Text('TEST'),
-                        )
+                        fourTypeOfTrash(),
+                        howToSortingPage(),
                       ],
                     ),
                   ),
                 ],
               ),
             )));
+  }
+}
+
+class fourTypeOfTrash extends StatelessWidget {
+  const fourTypeOfTrash({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'ขยะในประเภทต่างๆ',
+            style: TextStyle(
+              fontSize: 24,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: gridWieget(),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class howToSortingPage extends StatelessWidget {
+  const howToSortingPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+        child: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            'วิธีคัดแยกขยะ',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue,
+              onTap: () {
+                debugPrint('Clicked');
+              },
+              child: const SizedBox(
+                width: 400,
+                height: 300,
+                child: Text(
+                  'รายละเอียดภายใน',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            'วิธีการลดขยะ ด้วยหลักการ 3R',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue,
+              onTap: () {
+                debugPrint('card 2 Clicked');
+              },
+              child: const SizedBox(
+                width: 400,
+                height: 300,
+                child: Text(
+                  'รายละเอียดภายใน',
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            'หัวข้อ 3',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              splashColor: Colors.blue,
+              onTap: () {
+                debugPrint('card 3 Clicked');
+              },
+              child: const SizedBox(
+                width: 400,
+                height: 300,
+                child: Text(
+                  'รายละเอียดภายใน',
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 
@@ -95,8 +190,8 @@ class gridWieget extends StatelessWidget {
       children: [
         InkWell(
             onTap: () {},
-            child: gridItem('ขยะทั่วไป', Icons.recycling, Colors.blue)),
-        gridItem('ขยะรีไซเคิล', Icons.text_snippet, Colors.amber),
+            child: gridItem('ขยะทั่วไป', Icons.car_crash, Colors.blue)),
+        gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber),
         gridItem('ขยะอินทรีย์', Icons.five_g_sharp, Colors.green),
         gridItem('ขยะอันตราย', Icons.biotech, Colors.red),
       ],
