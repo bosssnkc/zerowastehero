@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zerowastehero/generalWaste.dart';
 
 class typeOfTrash extends StatefulWidget {
   const typeOfTrash({super.key});
@@ -8,19 +9,22 @@ class typeOfTrash extends StatefulWidget {
 }
 
 class _typeOfTrashState extends State<typeOfTrash> {
+  int numpage = 0;
+  var name = 'ขยะทั้ง 4 ประเภท';
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         initialIndex: 0,
         length: 2,
         child: Scaffold(
-            backgroundColor: Colors.green[200],
+            backgroundColor: Colors.green[100],
             appBar: AppBar(
               backgroundColor: Colors.green[300],
               elevation: 0,
-              title: const Text(
-                'ขยะ 4 ประเภท',
-                style: TextStyle(
+              title: Text(
+                name,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -33,10 +37,10 @@ class _typeOfTrashState extends State<typeOfTrash> {
                   TabBar(
                     tabs: [
                       Tab(
-                        text: "ขยะทั้ง 4 ประเภท",
+                        text: 'ขยะทั้ง 4 ประเภท',
                       ),
                       Tab(
-                        text: "วิธีคัดแยกขยะ",
+                        text: 'วิธีคัดแยกขยะ',
                       ),
                     ],
                   ),
@@ -163,7 +167,7 @@ class howToSortingPage extends StatelessWidget {
                 height: 300,
                 child: Text(
                   'รายละเอียดภายใน',
-                  textAlign: TextAlign.end,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -189,7 +193,11 @@ class gridWieget extends StatelessWidget {
       crossAxisSpacing: 16.0,
       children: [
         InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return generalWaste();
+              }));
+            },
             child: gridItem('ขยะทั่วไป', Icons.car_crash, Colors.blue)),
         gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber),
         gridItem('ขยะอินทรีย์', Icons.five_g_sharp, Colors.green),
@@ -199,16 +207,7 @@ class gridWieget extends StatelessWidget {
   }
 
   Widget gridItem(String jname, IconData icon, Color iconCol) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16.0),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 8.0,
-            )
-          ]),
+    return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
