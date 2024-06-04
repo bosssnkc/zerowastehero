@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      // Handle forgot password
+                      // ฟังก์ชันกู้คืนรหัสผ่าน
                     },
                     child: const Text(
                       'ลืมรหัสผ่าน?',
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle cancel action
+                        // ฟังก์ชันยกเลิกหรือล้างฟอร์มด้านบน
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('ยังไม่มีบัญชีผู้ใช้?'),
                 TextButton(
                   onPressed: () {
-                    // Handle registration action
+                    // ฟังก์ชัน เข้าสู่หน้าลงทะเบียน
                   },
                   child: const Text(
                     'ลงทะเบียนตอนนี้',
@@ -145,10 +145,10 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('หรือ'),
                 TextButton(
                   onPressed: () {
-                    // Handle guest login action
+                    // ฟังก์ชันการสร้างบัญชีชั่วคราว
                   },
                   child: const Text(
-                    'เข้าใช้งานด้วยบัญชีผู้เยี่ยมชาว',
+                    'เข้าใช้งานด้วยบัญชีชั่วคราว',
                     style: TextStyle(color: Colors.red),
                   ),
                 ),

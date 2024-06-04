@@ -63,7 +63,8 @@ class fourTypeOfTrash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return const SingleChildScrollView(
+        child: Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -85,7 +86,7 @@ class fourTypeOfTrash extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -163,13 +164,15 @@ class howToSortingPage extends StatelessWidget {
                 debugPrint('card 3 Clicked');
               },
               child: const SizedBox(
-                width: 400,
-                height: 300,
-                child: Text(
-                  'รายละเอียดภายใน',
-                  textAlign: TextAlign.center,
-                ),
-              ),
+                  width: 400,
+                  height: 300,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      'รายละเอียดภายใน',
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
             ),
           )
         ],

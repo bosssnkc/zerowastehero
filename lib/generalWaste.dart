@@ -58,7 +58,8 @@ class _genralWasteState extends State<generalWaste> {
   }
 
   Widget detailedGeneral() {
-    return Padding(
+    return SingleChildScrollView(
+        child: Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -134,25 +135,71 @@ class _genralWasteState extends State<generalWaste> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget listOfGeneral() {
     //TODO list
-    return const Padding(
-      padding: EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextField(
-            decoration: InputDecoration(
-              labelText: 'TEST',
-              hintText: 'test',
-              border: OutlineInputBorder(),
-            ),
+          Stack(
+            alignment: Alignment.centerRight,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'ค้นหารายการขยะ',
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                ),
+              ),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+            ],
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          const Text(
+            'รายการขยะทั่วไป',
+            style: TextStyle(fontSize: 24),
+          ),
+          // list รายการด้านล่าง
+          listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 1'),
+          listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 2'),
+          listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 3'),
+          listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 4'),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: const Icon(Icons.add),
+              ),
+            ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget listGeneralWasteItem(
+    String nameoflist,
+  ) {
+    return Card(
+      shadowColor: Colors.black,
+      elevation: 2,
+      child: ListTile(
+        title: Text(nameoflist),
+        onTap: () {},
+        splashColor: Colors.amber,
+        tileColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
       ),
     );
   }
