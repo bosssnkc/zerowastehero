@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:zerowastehero/compostableWaste.dart';
 import 'package:zerowastehero/generalWaste.dart';
+import 'package:zerowastehero/hazadousWaste.dart';
+import 'package:zerowastehero/recycleWaste.dart';
 
 class typeOfTrash extends StatefulWidget {
   const typeOfTrash({super.key});
@@ -198,13 +201,31 @@ class gridWieget extends StatelessWidget {
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return generalWaste();
+                return const generalWaste();
               }));
             },
             child: gridItem('ขยะทั่วไป', Icons.car_crash, Colors.blue)),
-        gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber),
-        gridItem('ขยะอินทรีย์', Icons.five_g_sharp, Colors.green),
-        gridItem('ขยะอันตราย', Icons.biotech, Colors.red),
+        InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const recycleWaste();
+              }));
+            },
+            child: gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber)),
+        InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const compostableWaste();
+              }));
+            },
+            child: gridItem('ขยะอินทรีย์', Icons.five_g_sharp, Colors.green)),
+        InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const hazadousWaste();
+              }));
+            },
+            child: gridItem('ขยะอันตราย', Icons.biotech, Colors.red)),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zerowastehero/SettingsMenu.dart';
+import 'package:zerowastehero/profileData.dart';
 import 'package:zerowastehero/trashType.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,9 +15,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 2; // Default to the home page (index 2)
 
   static List<Widget> get _widgetOptions => <Widget>[
-        const Text(
-          'โปรไฟล์',
-        ),
+        const profilePage(),
         const Text('กิจกรรม'),
         const HomeScreen(),
         const OptionSetting(),
