@@ -50,14 +50,16 @@ class profilePage extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            const Card(
+            Card(
               child: ListTile(
+                onTap: () {},
                 title: Text('แก้ไขข้อมูลส่วนตัว'),
                 leading: Icon(Icons.edit),
               ),
             ),
-            const Card(
+            Card(
               child: ListTile(
+                onTap: () {},
                 title: Text('แก้ไขรหัสผ่าน'),
                 leading: Icon(Icons.lock_rounded),
               ),

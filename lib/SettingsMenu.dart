@@ -27,41 +27,30 @@ class _OptionSettingState extends State<OptionSetting> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          GridView.count(
-            crossAxisCount: 4,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 16.0,
-            crossAxisSpacing: 16.0,
-            children: [
-              _settingContainer(Icons.help, 'TEST'),
-              _settingContainer(Icons.notification_add, 'TEST2'),
-              _settingContainer(Icons.book, 'TEST3'),
-              _settingContainer(Icons.set_meal, 'TEST4')
-            ],
+          const SizedBox(height: 16),
+          const Text(
+            'การตั้งค่า',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          const ListTile(
-            title: Text('ตั้งค่า 1'),
-            subtitle: Text('ListTile Widget/title Test'),
-            leading: Icon(Icons.safety_check),
-            trailing: Icon(Icons.fire_extinguisher),
+          Card(
+            child: ListTile(
+              onTap: () {},
+              title: const Text('ตั้งค่าภาษา'),
+              subtitle: const Text('ตั้งค่าภาษาใช้งาน'),
+              leading: const Icon(Icons.language),
+            ),
           ),
-          const ListTile(
-            title: Text('ตั้งค่า 2'),
-            leading: Icon(Icons.safety_check),
-            trailing: Icon(Icons.fire_extinguisher),
+          Card(
+            child: ListTile(
+              onTap: () {},
+              title: const Text('ตั้งค่า 2'),
+              subtitle: const Text('data'),
+              leading: const Icon(Icons.safety_check),
+            ),
           ),
-          const SizedBox(height: 16),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(16)),
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: Colors.white,
-                )),
-            child: Container(
-                child: SwitchListTile(
+          Card(
+            child: SwitchListTile(
               title: const Text('โหมดไฟ'),
               subtitle: const Text('แสบตา?'),
               value: lightswitch,
@@ -71,26 +60,24 @@ class _OptionSettingState extends State<OptionSetting> {
                 });
               },
               secondary: const Icon(Icons.light_mode),
-            )),
-          )
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'ช่วยเหลือ',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: ListTile(
+              onTap: () {},
+              title: const Text('วิธีการใช้งาน'),
+              subtitle: const Text('คู่มือแนะนำการใช้งาน'),
+              leading: const Icon(Icons.help),
+            ),
+          ),
         ],
       ),
     ));
-  }
-
-  Widget _settingContainer(
-    IconData icon,
-    String label,
-  ) {
-    return SizedBox(
-      height: 5.0,
-      width: 5.0,
-      child: Row(
-        children: [
-          Icon(icon),
-          Text(label),
-        ],
-      ),
-    );
   }
 }

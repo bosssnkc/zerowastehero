@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zerowastehero/SettingsMenu.dart';
+import 'package:zerowastehero/contactUs.dart';
 import 'package:zerowastehero/profileData.dart';
 import 'package:zerowastehero/trashType.dart';
 
@@ -19,7 +20,7 @@ class _MainPageState extends State<MainPage> {
         const Text('กิจกรรม'),
         const HomeScreen(),
         const OptionSetting(),
-        const Text('ติดต่อเรา'),
+        const contactUs(),
       ];
 
   void _onItemTapped(int index) {
