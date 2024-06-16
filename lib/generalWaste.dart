@@ -176,7 +176,13 @@ class _genralWasteState extends State<generalWaste> {
           Row(
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Center(
+                            child: Text('WHAT'),
+                          ));
+                },
                 child: const Icon(Icons.add),
               ),
             ],

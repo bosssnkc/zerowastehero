@@ -32,10 +32,10 @@ class profilePage extends StatelessWidget {
             const Card(
               child: ListTile(
                 title: Text(
-                  'ชื่อผู้ใช้งาน',
+                  '{user_fname} {user_lname}',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text('example@gmail.com'),
+                subtitle: Text('{user email}'),
                 contentPadding: EdgeInsets.all(16),
                 leading: Icon(Icons.person),
               ),

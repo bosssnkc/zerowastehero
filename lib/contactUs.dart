@@ -12,22 +12,22 @@ class _MyWidgetState extends State<contactUs> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
+        padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'ติดต่อผู้พัฒนา',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Card(
+            const Card(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Row(
@@ -76,17 +76,17 @@ class _MyWidgetState extends State<contactUs> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Text(
+            const Text(
               'ข้อเสนอแนะ',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Card(
@@ -96,20 +96,26 @@ class _MyWidgetState extends State<contactUs> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextField(
-                      decoration: InputDecoration(
+                    TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'เขียนอะไรสักอย่าง';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'เขียนคำติชมหรือให้คำแนะนำเรา',
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                     Row(
                       children: [
                         TextButton(
                             onPressed: () {}, child: const Text('Confirm')),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         TextButton(

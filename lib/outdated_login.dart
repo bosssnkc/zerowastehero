@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/mainMenu.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class outdate_LoginPage extends StatefulWidget {
+  const outdate_LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<outdate_LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();

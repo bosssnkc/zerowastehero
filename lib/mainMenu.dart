@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zerowastehero/SettingsMenu.dart';
 import 'package:zerowastehero/contactUs.dart';
+import 'package:zerowastehero/eventNews.dart';
 import 'package:zerowastehero/profileData.dart';
 import 'package:zerowastehero/trashType.dart';
+import 'package:zerowastehero/wheretodump.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -17,7 +19,7 @@ class _MainPageState extends State<MainPage> {
 
   static List<Widget> get _widgetOptions => <Widget>[
         const profilePage(),
-        const Text('กิจกรรม'),
+        const eventNewsPage(),
         const HomeScreen(),
         const OptionSetting(),
         const contactUs(),
@@ -114,15 +116,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       MaterialPageRoute(
                           builder: (context) => const typeOfTrash())),
                 ),
-                _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ', Colors.black),
-                _buildGridItem(
-                    Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล', Colors.black),
-                _buildGridItem(Icons.local_hospital, 'สถานที่กำจัดขยะอันตราย',
-                    Colors.black),
+                InkWell(
+                  child:
+                      _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ', Colors.black),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const typeOfTrash())),
+                ),
+                InkWell(
+                  child: _buildGridItem(
+                      Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล', Colors.black),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const recycleLocation())),
+                ),
+                InkWell(
+                  child: _buildGridItem(Icons.local_hospital,
+                      'สถานที่กำจัดขยะอันตราย', Colors.black),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const hazardousLocation())),
+                ),
               ],
             ),
             const SizedBox(height: 16),
             _buildSectionHeader('ข่าวสาร'),
+            const SizedBox(height: 8),
             Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -141,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             const SizedBox(height: 16),
             _buildSectionHeader('กิจกรรม'),
+            const SizedBox(height: 8),
             InkWell(
               child: Container(
                 padding: const EdgeInsets.all(16.0),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/mainMenu.dart';
+import 'package:zerowastehero/register.dart';
+
+import 'database/database_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -30,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
@@ -56,7 +59,10 @@ class _LoginPageState extends State<LoginPage> {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      if (username == 'admin' && password == 'password') {
+      final dbHelper = DatabaseHelper();
+      final user = await dbHelper.getUser(username);
+
+      if (user != null && user['password'] == password) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isLoggedIn', true);
         Navigator.of(context).pushReplacement(
@@ -179,7 +185,11 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('ยังไม่มีบัญชีผู้ใช้?'),
                 TextButton(
                   onPressed: () {
-                    // ฟังก์ชัน เข้าสู่หน้าลงทะเบียน
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => RegisterPage(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'ลงทะเบียนตอนนี้',
@@ -195,11 +205,6 @@ class _LoginPageState extends State<LoginPage> {
                     'เข้าใช้งานด้วยบัญชีชั่วคราว',
                     style: TextStyle(color: Colors.red),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  _errorMessage,
-                  style: TextStyle(color: Colors.red),
                 ),
               ],
             ),
