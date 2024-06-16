@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/session.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -8,16 +10,21 @@ class ProfilePage extends StatelessWidget {
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', false);
+    prefs.remove('username'); // Remove stored username
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => SplashScreen()),
     );
   }
 
-  Future<Map<String, String>> _getUserInfo() async {
+  Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
-    String email = prefs.getString('email') ?? 'unknown@example.com';
-    return {'username': username, 'email': email};
+    final dbHelper = DatabaseHelper();
+    Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
+    if (userInfo == null) {
+      return {'fullname': 'Unknown User', 'email': 'unknown@example.com'};
+    }
+    return userInfo;
   }
 
   @override
@@ -36,7 +43,7 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            FutureBuilder<Map<String, String>>(
+            FutureBuilder<Map<String, dynamic>>(
               future: _getUserInfo(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -66,12 +73,12 @@ class ProfilePage extends StatelessWidget {
                   return Card(
                     child: ListTile(
                       title: Text(
-                        userInfo['username']!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        userInfo['fullname']!,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(userInfo['email']!),
-                      contentPadding: EdgeInsets.all(16),
-                      leading: Icon(Icons.person),
+                      contentPadding: const EdgeInsets.all(16),
+                      leading: const Icon(Icons.person),
                     ),
                   );
                 }
@@ -89,7 +96,11 @@ class ProfilePage extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ManageUsersPage(),
+                  ));
+                },
                 title: const Text('แก้ไขข้อมูลส่วนตัว'),
                 leading: const Icon(Icons.edit),
               ),

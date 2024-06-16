@@ -89,4 +89,33 @@ class DatabaseHelper {
     }
     return null;
   }
+
+  Future<Map<String, dynamic>?> getUser1(String username) async {
+    final db = await database;
+    var res =
+        await db.query("users", where: "username = ?", whereArgs: [username]);
+    return res.isNotEmpty ? res.first : null;
+  }
+
+  Future<List<Map<String, dynamic>>> getUsers() async {
+    final db = await database;
+    return await db.query('users');
+  }
+
+  Future<void> insertUser1(Map<String, dynamic> user) async {
+    final db = await database;
+    await db.insert('users', user,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> updateUser(Map<String, dynamic> user) async {
+    final db = await database;
+    await db.update('users', user,
+        where: 'user_id = ?', whereArgs: [user['user_id']]);
+  }
+
+  Future<void> deleteUser(int id) async {
+    final db = await database;
+    await db.delete('users', where: 'user_id = ?', whereArgs: [id]);
+  }
 }
