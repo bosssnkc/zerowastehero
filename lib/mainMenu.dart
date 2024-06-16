@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 2; // Default to the home page (index 2)
 
   static List<Widget> get _widgetOptions => <Widget>[
-        const profilePage(),
+        const ProfilePage(),
         const eventNewsPage(),
         const HomeScreen(),
         const OptionSetting(),

@@ -52,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  String _errorMessage = '';
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -62,16 +61,49 @@ class _LoginPageState extends State<LoginPage> {
       final dbHelper = DatabaseHelper();
       final user = await dbHelper.getUser(username);
 
-      if (user != null && user['password'] == password) {
+      if (user == null) {
+        // แสดง AlertDialog เมื่อไม่พบชื่อผู้ใช้
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('ข้อผิดพลาด'),
+              content: Text('ไม่พบชื่อผู้ใช้'),
+              actions: [
+                TextButton(
+                  child: Text('ตกลง'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else if (user['password'] != password) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('ข้อผิดพลาด'),
+              content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
+              actions: [
+                TextButton(
+                  child: Text('ตกลง'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isLoggedIn', true);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MainPage()),
         );
-      } else {
-        setState(() {
-          _errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
-        });
       }
     }
   }

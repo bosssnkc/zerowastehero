@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/session.dart';
 
-class profilePage extends StatelessWidget {
-  const profilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -11,6 +11,13 @@ class profilePage extends StatelessWidget {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => SplashScreen()),
     );
+  }
+
+  Future<Map<String, String>> _getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username') ?? 'Unknown User';
+    String email = prefs.getString('email') ?? 'unknown@example.com';
+    return {'username': username, 'email': email};
   }
 
   @override
@@ -29,16 +36,46 @@ class profilePage extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            const Card(
-              child: ListTile(
-                title: Text(
-                  '{user_fname} {user_lname}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text('{user email}'),
-                contentPadding: EdgeInsets.all(16),
-                leading: Icon(Icons.person),
-              ),
+            FutureBuilder<Map<String, String>>(
+              future: _getUserInfo(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Card(
+                    child: ListTile(
+                      title: Text(
+                        'Loading...',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      contentPadding: EdgeInsets.all(16),
+                      leading: Icon(Icons.person),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Card(
+                    child: ListTile(
+                      title: Text(
+                        'Error loading user info',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      contentPadding: EdgeInsets.all(16),
+                      leading: Icon(Icons.error),
+                    ),
+                  );
+                } else {
+                  final userInfo = snapshot.data!;
+                  return Card(
+                    child: ListTile(
+                      title: Text(
+                        userInfo['username']!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(userInfo['email']!),
+                      contentPadding: EdgeInsets.all(16),
+                      leading: Icon(Icons.person),
+                    ),
+                  );
+                }
+              },
             ),
             const SizedBox(
               height: 16,
@@ -53,15 +90,15 @@ class profilePage extends StatelessWidget {
             Card(
               child: ListTile(
                 onTap: () {},
-                title: Text('แก้ไขข้อมูลส่วนตัว'),
-                leading: Icon(Icons.edit),
+                title: const Text('แก้ไขข้อมูลส่วนตัว'),
+                leading: const Icon(Icons.edit),
               ),
             ),
             Card(
               child: ListTile(
                 onTap: () {},
-                title: Text('แก้ไขรหัสผ่าน'),
-                leading: Icon(Icons.lock_rounded),
+                title: const Text('แก้ไขรหัสผ่าน'),
+                leading: const Icon(Icons.lock_rounded),
               ),
             ),
             const SizedBox(
@@ -78,16 +115,16 @@ class profilePage extends StatelessWidget {
               ],
             ),
             ListTile(
-              title: Text('Logout'),
-              leading: Icon(Icons.logout),
+              title: const Text('Logout'),
+              leading: const Icon(Icons.logout),
               onTap: () => _logout(context),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => _logout(context),
               icon: const Icon(Icons.logout),
               tooltip: 'ลงชื่อออก',
               style: IconButton.styleFrom(backgroundColor: Colors.red),
-            )
+            ),
           ],
         ),
       ),
