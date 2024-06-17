@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zerowastehero/database/database_helper.dart';
@@ -19,10 +22,14 @@ class _RegisterPageState extends State<RegisterPage> {
   String? _gender;
   DateTime? _selectedDate;
 
+  String _hashPassword(String password) {
+    return md5.convert(utf8.encode(password)).toString();
+  }
+
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
-      String password = _passwordController.text;
+      String password = _hashPassword(_passwordController.text);
       String email = _emailController.text;
       String fullname = _fullnameController.text;
       String gender = _gender!;

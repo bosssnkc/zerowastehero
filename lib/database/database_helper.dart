@@ -90,13 +90,6 @@ class DatabaseHelper {
     return null;
   }
 
-  Future<Map<String, dynamic>?> getUser1(String username) async {
-    final db = await database;
-    var res =
-        await db.query("users", where: "username = ?", whereArgs: [username]);
-    return res.isNotEmpty ? res.first : null;
-  }
-
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
     return await db.query('users');
