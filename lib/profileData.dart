@@ -19,6 +19,7 @@ class ProfilePage extends StatelessWidget {
   Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
+    print(prefs.getString('username'));
     final dbHelper = DatabaseHelper();
     Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
     if (userInfo == null) {
@@ -73,7 +74,7 @@ class ProfilePage extends StatelessWidget {
                   return Card(
                     child: ListTile(
                       title: Text(
-                        userInfo['fullname']!,
+                        '${userInfo['fullname']!} ${userInfo['lastname']!}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(userInfo['email']!),

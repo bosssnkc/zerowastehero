@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/mainMenu.dart';
 import 'package:zerowastehero/register.dart';
 
@@ -53,10 +57,14 @@ class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  String _hashPassword(String password) {
+    return md5.convert(utf8.encode(password)).toString();
+  }
+
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
-      String password = _passwordController.text;
+      String password = _hashPassword(_passwordController.text);
 
       final dbHelper = DatabaseHelper();
       final user = await dbHelper.getUser(username);
@@ -100,7 +108,10 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isLoggedIn', true);
+        await prefs.setString('username',
+            username); //ส่งค่าชื่อไอดีเพื่อไปแสดงผลข้อมูลในหน้าบัญชีผู้ใช้
+        prefs.setBool('isLoggedIn',
+            true); //เปลี่ยนค่าล็อกอินให้เป็น True เมื่อทำงานสมบูรณ์
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => MainPage()),
         );
@@ -231,6 +242,9 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('หรือ'),
                 TextButton(
                   onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ManageUsersPage(),
+                    ));
                     // ฟังก์ชันการสร้างบัญชีชั่วคราว
                   },
                   child: const Text(

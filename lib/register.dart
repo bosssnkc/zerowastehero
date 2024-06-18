@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmPasswordController = TextEditingController();
   final _emailController = TextEditingController();
   final _fullnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
   String? _gender;
   DateTime? _selectedDate;
 
@@ -32,12 +33,20 @@ class _RegisterPageState extends State<RegisterPage> {
       String password = _hashPassword(_passwordController.text);
       String email = _emailController.text;
       String fullname = _fullnameController.text;
+      String lastname = _lastnameController.text;
       String gender = _gender!;
       String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
 
       final dbHelper = DatabaseHelper();
-      await dbHelper.insertUser(username, password,
-          DateTime.now().toIso8601String(), email, fullname, gender, birthdate);
+      await dbHelper.insertUser(
+          username,
+          password,
+          DateTime.now().toIso8601String(),
+          email,
+          fullname,
+          lastname,
+          gender,
+          birthdate);
 
       Navigator.of(context).pop();
     }
@@ -50,6 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _confirmPasswordController.dispose();
     _emailController.dispose();
     _fullnameController.dispose();
+    _lastnameController.dispose();
     super.dispose();
   }
 
@@ -182,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
-                    controller: _fullnameController,
+                    controller: _lastnameController,
                     decoration: const InputDecoration(
                       labelText: 'นามสกุล',
                       hintText: 'นามสกุล',

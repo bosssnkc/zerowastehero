@@ -24,7 +24,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -39,6 +39,7 @@ class DatabaseHelper {
         date_reg TEXT NOT NULL,
         email TEXT NOT NULL,
         fullname TEXT NOT NULL,
+        lastname TEXT NOT NULL,
         gender TEXT NOT NULL,
         birthdate TEXT NOT NULL
       )
@@ -46,24 +47,22 @@ class DatabaseHelper {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
+    if (oldVersion < 3) {
       await db.execute('''
-        ALTER TABLE users ADD COLUMN email TEXT NOT NULL DEFAULT '';
-      ''');
-      await db.execute('''
-        ALTER TABLE users ADD COLUMN fullname TEXT NOT NULL DEFAULT '';
-      ''');
-      await db.execute('''
-        ALTER TABLE users ADD COLUMN gender TEXT NOT NULL DEFAULT '';
-      ''');
-      await db.execute('''
-        ALTER TABLE users ADD COLUMN birthdate TEXT NOT NULL DEFAULT '';
+        ALTER TABLE users ADD COLUMN lastname TEXT NOT NULL DEFAULT '';
       ''');
     }
   }
 
-  Future<int> insertUser(String username, String password, String dateReg,
-      String email, String fullname, String gender, String birthdate) async {
+  Future<int> insertUser(
+      String username,
+      String password,
+      String dateReg,
+      String email,
+      String fullname,
+      String lastname,
+      String gender,
+      String birthdate) async {
     Database db = await database;
     return await db.insert('users', {
       'username': username,
@@ -71,6 +70,7 @@ class DatabaseHelper {
       'date_reg': dateReg,
       'email': email,
       'fullname': fullname,
+      'lastname': lastname,
       'gender': gender,
       'birthdate': birthdate
     });
