@@ -111,7 +111,40 @@ class ProfilePage extends StatelessWidget {
             ),
             Card(
               child: ListTile(
-                onTap: () {},
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('แก้ไขรหัสผ่าน'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('กรุณากรอก Password ปัจจุบัน'),
+                        SizedBox(
+                          height: 3,
+                        ),
+                        TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'password ปัจจุบัน'),
+                        ),
+                        TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'password ปัจจุบัน'),
+                        ),
+                        TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'password ปัจจุบัน'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 title: const Text('แก้ไขรหัสผ่าน'),
                 leading: const Icon(Icons.lock_rounded),
               ),
