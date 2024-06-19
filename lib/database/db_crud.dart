@@ -60,40 +60,42 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
       context: context,
       builder: (_) => AlertDialog(
         title: Text(user == null ? 'Add User' : 'Edit User'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _fullnameController,
-              decoration: InputDecoration(labelText: 'Full Name'),
-            ),
-            TextField(
-              controller: _lastnameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
-            ),
-            TextField(
-              controller: _gender,
-              decoration:
-                  InputDecoration(labelText: 'Gender', hintText: 'ชาย/หญิง'),
-            ),
-            TextField(
-              controller: _birthdate,
-              decoration: InputDecoration(
-                  labelText: 'Birthdate', hintText: 'YYYY-MM-dd'),
-            ),
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: 'Username'),
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+              ),
+              TextField(
+                controller: _fullnameController,
+                decoration: InputDecoration(labelText: 'Full Name'),
+              ),
+              TextField(
+                controller: _lastnameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              TextField(
+                controller: _gender,
+                decoration:
+                    InputDecoration(labelText: 'Gender', hintText: 'ชาย/หญิง'),
+              ),
+              TextField(
+                controller: _birthdate,
+                decoration: InputDecoration(
+                    labelText: 'Birthdate', hintText: 'YYYY-MM-dd'),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
