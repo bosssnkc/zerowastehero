@@ -79,7 +79,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                       subtitle: Text(userInfo['email']!),
                       contentPadding: const EdgeInsets.all(16),
-                      leading: const Icon(Icons.person),
+                      leading: const Icon(
+                        Icons.person,
+                        size: 50,
+                      ),
                     ),
                   );
                 }
