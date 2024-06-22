@@ -107,6 +107,16 @@ class DatabaseHelper {
         where: 'user_id = ?', whereArgs: [user['user_id']]);
   }
 
+  Future<void> updatePassword(String username, String newPassword) async {
+    final db = await database;
+    await db.update(
+      'users',
+      {'password': newPassword},
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+  }
+
   Future<void> deleteUser(int id) async {
     final db = await database;
     await db.delete('users', where: 'user_id = ?', whereArgs: [id]);
