@@ -92,6 +92,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void _navigateToTrashType(BuildContext context, int tabIndex) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => typeOfTrash(selectedTabIndex: tabIndex),
+      ), //ฟังก์ชัน Navigate ไปยัง Tab เฉพาะ
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -111,18 +120,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 InkWell(
                   child: _buildGridItem(
                       Icons.recycling, 'ขยะ 4 ประเภท', Colors.black),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const typeOfTrash())),
+                  onTap: () => _navigateToTrashType(
+                      context, 0), //Navigate ไปยัง tab index 0,
                 ),
                 InkWell(
                   child:
                       _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ', Colors.black),
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const typeOfTrash())),
+                  onTap: () => _navigateToTrashType(
+                      context, 1), //Navigate ไปยัง tab index 1,
                 ),
                 InkWell(
                   child: _buildGridItem(

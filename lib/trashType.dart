@@ -5,20 +5,44 @@ import 'package:zerowastehero/hazadousWaste.dart';
 import 'package:zerowastehero/recycleWaste.dart';
 
 class typeOfTrash extends StatefulWidget {
-  const typeOfTrash({super.key});
+  final int selectedTabIndex;
+  const typeOfTrash({super.key, this.selectedTabIndex = 0});
 
   @override
   State<typeOfTrash> createState() => _typeOfTrashState();
 }
 
-class _typeOfTrashState extends State<typeOfTrash> {
-  int numpage = 0;
-  var name = 'ขยะทั้ง 4 ประเภท';
+class _typeOfTrashState extends State<typeOfTrash>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late String name;
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+        length: 2, vsync: this, initialIndex: widget.selectedTabIndex);
+    _tabController.addListener(_handleTabSelection);
+    name = _getTabName(_tabController.index);
+  }
+
+  void _handleTabSelection() {
+    setState(() {
+      name = _getTabName(_tabController.index);
+    });
+  }
+
+  String _getTabName(int index) {
+    if (index == 0) {
+      return 'ขยะทั้ง 4 ประเภท';
+    } else {
+      return 'วิธีคัดแยกขยะ';
+    }
+  }
+  // var name = 'ขยะทั้ง 4 ประเภท';
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        initialIndex: 0,
+        initialIndex: widget.selectedTabIndex,
         length: 2,
         child: Scaffold(
             backgroundColor: Colors.green[100],
@@ -34,10 +58,11 @@ class _typeOfTrashState extends State<typeOfTrash> {
                 ),
               ),
             ),
-            body: const SafeArea(
+            body: SafeArea(
               child: Column(
                 children: [
                   TabBar(
+                    controller: _tabController,
                     tabs: [
                       Tab(
                         text: 'ขยะทั้ง 4 ประเภท',
@@ -49,7 +74,8 @@ class _typeOfTrashState extends State<typeOfTrash> {
                   ),
                   Expanded(
                     child: TabBarView(
-                      children: <Widget>[
+                      controller: _tabController,
+                      children: const <Widget>[
                         fourTypeOfTrash(),
                         howToSortingPage(),
                       ],
