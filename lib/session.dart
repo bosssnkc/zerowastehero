@@ -9,6 +9,8 @@ import 'package:zerowastehero/register.dart';
 
 import 'database/database_helper.dart';
 
+//หน้าล็อกอินและจัดเก็บข้อมูลการล็อกอิน
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -27,11 +29,11 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => MainPage()),
-      );
+      ); // เมื่อล็อกอินสมบูรณ์แล้วจะทำการเปลี่ยนหน้าไปยังหน้าหลัก
     } else {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+      ); // หากล็อกอินไม่สมบูรณ์จะกลับไปยังหน้าล็อกอินหน้าเดิม
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class recycleLocation extends StatefulWidget {
   const recycleLocation({super.key});
@@ -8,6 +9,14 @@ class recycleLocation extends StatefulWidget {
 }
 
 class _recycleLocationState extends State<recycleLocation> {
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(13.736717, 100.523186);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +33,7 @@ class _recycleLocationState extends State<recycleLocation> {
           ),
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
           child: Column(
@@ -69,8 +78,11 @@ class _recycleLocationState extends State<recycleLocation> {
                 child: SizedBox(
                   height: 300,
                   child: Center(
-                    child: Text('{location_recycleshop}'),
-                  ),
+                      child: GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                              target: _center,
+                              zoom: 11.0)) //Text('{location_recycleshop}'),
+                      ),
                 ),
               )
             ],
@@ -150,7 +162,10 @@ class _hazardousLocationState extends State<hazardousLocation> {
                 child: SizedBox(
                   height: 300,
                   child: Center(
-                    child: Text('{location_hazardousDump}'),
+                    child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(13.736717, 100.523186),
+                            zoom: 11.0)), //Text('{location_hazardousDump}'),
                   ),
                 ),
               )

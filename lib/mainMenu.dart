@@ -7,6 +7,8 @@ import 'package:zerowastehero/profileData.dart';
 import 'package:zerowastehero/trashType.dart';
 import 'package:zerowastehero/wheretodump.dart';
 
+//หน้าหลัก Main Menu ใช้เพื่อเชื่อมไปยังหน้าต่างอื่นๆ
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 

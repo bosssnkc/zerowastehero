@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="zerowastehero"
+        android:label="Zero Waste Hero"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -28,6 +28,9 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2"/>
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBo0mMdkVjJDvDIdKpSTiJI9kJdAhvbhYM"/>
     </application>
 </manifest>
