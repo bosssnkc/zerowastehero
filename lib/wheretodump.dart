@@ -117,7 +117,7 @@ class _hazardousLocationState extends State<hazardousLocation> {
           ),
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
           padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
           child: Column(
@@ -163,9 +163,20 @@ class _hazardousLocationState extends State<hazardousLocation> {
                   height: 300,
                   child: Center(
                     child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                            target: LatLng(13.736717, 100.523186),
-                            zoom: 11.0)), //Text('{location_hazardousDump}'),
+                      markers: {
+                        const Marker(
+                            markerId: MarkerId('thisLocation'),
+                            icon: BitmapDescriptor.defaultMarker,
+                            position: LatLng(13.736717, 100.523186),
+                            infoWindow: InfoWindow(title: 'ร้านขายข้าว')),
+                        const Marker(
+                            markerId: MarkerId('test2'),
+                            icon: BitmapDescriptor.defaultMarker,
+                            position: LatLng(14.736717, 100.523186))
+                      },
+                      initialCameraPosition: const CameraPosition(
+                          target: LatLng(13.736717, 100.523186), zoom: 11.0),
+                    ),
                   ),
                 ),
               )

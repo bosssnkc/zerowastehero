@@ -230,24 +230,4 @@ class _HomeScreenState extends State<HomeScreen> {
       style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
     );
   }
-
-  Widget _buildSectionContent(String content) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8.0,
-          ),
-        ],
-      ),
-      child: Text(
-        content,
-        style: const TextStyle(fontSize: 16.0),
-      ),
-    );
-  }
 }

@@ -39,22 +39,6 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     final _lastnameController = TextEditingController(text: user?['lastname']);
     final _gender = TextEditingController(text: user?['gender']);
     final _birthdate = TextEditingController(text: user?['birthdate']);
-    // DateTime? _selectedDate;
-    // String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
-
-    // Future<void> _selectDate(BuildContext context) async {
-    //   final DateTime? picked = await showDatePicker(
-    //     context: context,
-    //     initialDate: DateTime.now(),
-    //     firstDate: DateTime(1900),
-    //     lastDate: DateTime(2100),
-    //   );
-    //   if (picked != null && picked != _selectedDate) {
-    //     setState(() {
-    //       _selectedDate = picked;
-    //     });
-    //   }
-    // }
 
     showDialog(
       context: context,

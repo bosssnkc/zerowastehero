@@ -219,26 +219,19 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 16),
             Stack(
-              alignment: Alignment.centerRight,
-              children: <Widget>[
+              alignment: Alignment.center,
+              children: [
                 const Icon(Icons.logout),
                 TextButton(
                   style: TextButton.styleFrom(backgroundColor: Colors.red),
                   onPressed: () => _logout(context),
-                  child: const Text('Logout'),
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
                 ),
               ],
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              leading: const Icon(Icons.logout),
-              onTap: () => _logout(context),
-            ),
-            IconButton(
-              onPressed: () => _logout(context),
-              icon: const Icon(Icons.logout),
-              tooltip: 'ลงชื่อออก',
-              style: IconButton.styleFrom(backgroundColor: Colors.red),
             ),
           ],
         ),

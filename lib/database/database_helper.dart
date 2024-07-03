@@ -1,3 +1,5 @@
+// import 'dart:typed_data';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,7 +26,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -44,25 +46,50 @@ class DatabaseHelper {
         birthdate TEXT NOT NULL
       )
     ''');
+    await db.execute('''CREATE TABLE trash(
+        trash_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        trash_name TEXT, 
+        trash_type TEXT,
+        trash_des TEXT,
+        trash_pic BLOB )''');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 3) {
-      await db.execute('''
-        ALTER TABLE users ADD COLUMN lastname TEXT NOT NULL DEFAULT '';
-      ''');
+    if (oldVersion < 4) {
+      await db.execute('''CREATE TABLE trash(
+        trash_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        trash_name TEXT, 
+        trash_type TEXT,
+        trash_des TEXT,
+        trash_pic BLOB )''');
     }
   }
 
+  Future<int> insertTrash(
+    String trashname,
+    String trashtype,
+    String trashdes,
+    // Uint8List trashpic,
+  ) async {
+    Database db = await database;
+    return await db.insert('trash', {
+      'trash_name': trashname,
+      'trash_type': trashtype,
+      'trash_des': trashdes,
+      // 'trash_pic': trashpic,
+    });
+  }
+
   Future<int> insertUser(
-      String username,
-      String password,
-      String dateReg,
-      String email,
-      String fullname,
-      String lastname,
-      String gender,
-      String birthdate) async {
+    String username,
+    String password,
+    String dateReg,
+    String email,
+    String fullname,
+    String lastname,
+    String gender,
+    String birthdate,
+  ) async {
     Database db = await database;
     return await db.insert('users', {
       'username': username,
@@ -95,6 +122,17 @@ class DatabaseHelper {
     return await db.query('users');
   }
 
+  Future<List<Map<String, dynamic>>> getTrash() async {
+    final db = await database;
+    return await db.query('trash');
+  }
+
+  Future<List<Map<String, dynamic>>> getGeneralTrash() async {
+    final db = await database;
+    return await db
+        .query('trash', where: 'trash_type = ?', whereArgs: ['ขยะทั่วไป']);
+  }
+
   Future<void> insertUser1(Map<String, dynamic> user) async {
     final db = await database;
     await db.insert('users', user,
@@ -120,5 +158,10 @@ class DatabaseHelper {
   Future<void> deleteUser(int id) async {
     final db = await database;
     await db.delete('users', where: 'user_id = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteTrash(int id) async {
+    final db = await database;
+    await db.delete('trash', where: 'trash_id = ?', whereArgs: [id]);
   }
 }
