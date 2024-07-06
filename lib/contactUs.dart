@@ -14,7 +14,7 @@ class _MyWidgetState extends State<contactUs> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
@@ -121,9 +121,18 @@ class _MyWidgetState extends State<contactUs> {
                         TextButton(
                             onPressed: () {}, child: const Text('Cancel')),
                       ],
-                    )
+                    ),
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                'Zero Waste Hero version 1.0.0-beta',
               ),
             )
           ],

@@ -28,21 +28,24 @@ class _genralWasteState extends State<generalWaste> {
     });
   }
 
+  final _formValidator = GlobalKey<FormState>();
   final trashnameController = TextEditingController();
   final trashtypeController = TextEditingController();
   final trashdesController = TextEditingController();
   String? trashtypePicker;
 
   Future<void> _trashRegister() async {
-    String trashname = trashnameController.text;
-    String trashtype = trashtypePicker!;
-    String trashdes = trashdesController.text;
-    // Uint8List trashpic = await getImageBytes();
+    if (_formValidator.currentState!.validate()) {
+      String trashname = trashnameController.text;
+      String trashtype = trashtypePicker!;
+      String trashdes = trashdesController.text;
+      // Uint8List trashpic = await getImageBytes();
 
-    final db = DatabaseHelper();
-    await db.insertTrash(trashname, trashtype, trashdes);
+      final db = DatabaseHelper();
+      await db.insertTrash(trashname, trashtype, trashdes);
 
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -243,86 +246,89 @@ class _genralWasteState extends State<generalWaste> {
                       builder: (context) => Center(
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(32, 8, 32, 16),
-                          child: Column(
-                            children: [
-                              Text('data'),
-                              SizedBox(
-                                height: 16,
-                              ),
-                              TextFormField(
-                                controller: trashnameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'กรอกชื่อขยะ';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                    labelText: 'กรอกชื่อขยะ',
-                                    hintText: 'ชื่อขยะ',
-                                    border: OutlineInputBorder()),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              // TextFormField(
-                              //   controller: trashtypeController,
-                              //   validator: (value) {
-                              //     if (value == null || value.isEmpty) {
-                              //       return 'กรอกชนิดขยะ';
-                              //     }
-                              //     return null;
-                              //   },
-                              //   decoration: const InputDecoration(
-                              //       labelText: 'กรอกชนิดขยะ',
-                              //       hintText: 'ชนิดขยะ',
-                              //       border: OutlineInputBorder()),
-                              // ),
-                              DropdownButtonFormField<String>(
-                                value: trashtypePicker,
-                                items: [
-                                  'ขยะทั่วไป',
-                                  'ขยะอินทรีย์',
-                                  'ขยะรีไซเคิล',
-                                  'ขยะอันตราย'
-                                ]
-                                    .map((label) => DropdownMenuItem(
-                                          child: Text(label),
-                                          value: label,
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    trashtypePicker = value;
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'กรุณาเลือกชนิดของขยะ';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                controller: trashdesController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'กรอกรายละเอียดขยะ';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                    labelText: 'กรอกรายละเอียดขยะ',
-                                    hintText: 'รายละเอียดขยะ',
-                                    border: OutlineInputBorder()),
-                              ),
-                              TextButton(
-                                  onPressed: _trashRegister,
-                                  child: const Text('ตกลง'))
-                            ],
+                          child: Form(
+                            key: _formValidator,
+                            child: Column(
+                              children: [
+                                Text('data'),
+                                SizedBox(
+                                  height: 16,
+                                ),
+                                TextFormField(
+                                  controller: trashnameController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรอกชื่อขยะ';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                      labelText: 'กรอกชื่อขยะ',
+                                      hintText: 'ชื่อขยะ',
+                                      border: OutlineInputBorder()),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                // TextFormField(
+                                //   controller: trashtypeController,
+                                //   validator: (value) {
+                                //     if (value == null || value.isEmpty) {
+                                //       return 'กรอกชนิดขยะ';
+                                //     }
+                                //     return null;
+                                //   },
+                                //   decoration: const InputDecoration(
+                                //       labelText: 'กรอกชนิดขยะ',
+                                //       hintText: 'ชนิดขยะ',
+                                //       border: OutlineInputBorder()),
+                                // ),
+                                DropdownButtonFormField<String>(
+                                  value: trashtypePicker,
+                                  items: [
+                                    'ขยะทั่วไป',
+                                    'ขยะอินทรีย์',
+                                    'ขยะรีไซเคิล',
+                                    'ขยะอันตราย'
+                                  ]
+                                      .map((label) => DropdownMenuItem(
+                                            child: Text(label),
+                                            value: label,
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      trashtypePicker = value;
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'กรุณาเลือกชนิดของขยะ';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextFormField(
+                                  controller: trashdesController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรอกรายละเอียดขยะ';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                      labelText: 'กรอกรายละเอียดขยะ',
+                                      hintText: 'รายละเอียดขยะ',
+                                      border: OutlineInputBorder()),
+                                ),
+                                TextButton(
+                                    onPressed: _trashRegister,
+                                    child: const Text('ตกลง'))
+                              ],
+                            ),
                           ),
                         ),
                       ),
