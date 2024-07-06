@@ -1,5 +1,4 @@
-// import 'dart:typed_data';
-
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
@@ -14,6 +13,8 @@ class generalWaste extends StatefulWidget {
 class _genralWasteState extends State<generalWaste> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Map<String, dynamic>> _trash = [];
+  List<Map<String, dynamic>> _trashsearch = [];
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -28,10 +29,27 @@ class _genralWasteState extends State<generalWaste> {
     });
   }
 
+  Future<void> _searchfortrash() async {
+    String trashnamesearch = searchController.text;
+    if (trashnamesearch.isEmpty) {
+      setState(() {
+        _trashsearch = [];
+        _isSearching = false;
+      });
+      return;
+    }
+    final search = await _dbHelper.getGTrashItem(trashnamesearch);
+    setState(() {
+      _trashsearch = search;
+      _isSearching = true;
+    });
+  }
+
   final _formValidator = GlobalKey<FormState>();
   final trashnameController = TextEditingController();
   final trashtypeController = TextEditingController();
   final trashdesController = TextEditingController();
+  final searchController = TextEditingController();
   String? trashtypePicker;
 
   Future<void> _trashRegister() async {
@@ -179,7 +197,6 @@ class _genralWasteState extends State<generalWaste> {
   }
 
   Widget listOfGeneral() {
-    //TODO list
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -191,6 +208,7 @@ class _genralWasteState extends State<generalWaste> {
               alignment: Alignment.centerRight,
               children: <Widget>[
                 TextField(
+                  controller: searchController,
                   decoration: InputDecoration(
                     hintText: 'ค้นหารายการขยะ',
                     border: OutlineInputBorder(
@@ -199,7 +217,8 @@ class _genralWasteState extends State<generalWaste> {
                     ),
                   ),
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+                IconButton(
+                    onPressed: _searchfortrash, icon: const Icon(Icons.search))
               ],
             ),
             const SizedBox(
@@ -209,30 +228,43 @@ class _genralWasteState extends State<generalWaste> {
               'รายการขยะทั่วไป',
               style: TextStyle(fontSize: 24),
             ),
-            // list รายการด้านล่าง
-            // listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 1'),
-            // listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 2'),
-            // listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 3'),
-            // listGeneralWasteItem('รายการขยะทั่วไปชิ้นที่ 4'),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: _trash.length,
-                itemBuilder: (context, index) {
-                  final trash = _trash[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(trash['trash_name']),
-                      subtitle: Text(trash['trash_type']),
-                    ),
-                  );
-                }),
+            const SizedBox(
+              height: 10,
+            ),
+            _isSearching
+                ? _trashsearch.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _trashsearch.length,
+                        itemBuilder: (context, index) {
+                          final trash = _trashsearch[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(trash['trash_name']),
+                              subtitle: Text(trash['trash_type']),
+                            ),
+                          );
+                        })
+                    : const Text('ไม่พบรายการขยะ')
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _trash.length,
+                    itemBuilder: (context, index) {
+                      final trash = _trash[index];
+                      return Card(
+                        child: ListTile(
+                          title: Text(trash['trash_name']),
+                          subtitle: Text(trash['trash_type']),
+                        ),
+                      );
+                    }),
             Card(
               child: ListTile(
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => manageTrash()));
                 },
-                title: Text(
+                title: const Text(
                   'แก้ไข',
                 ),
               ),
@@ -250,8 +282,8 @@ class _genralWasteState extends State<generalWaste> {
                             key: _formValidator,
                             child: Column(
                               children: [
-                                Text('data'),
-                                SizedBox(
+                                const Text('data'),
+                                const SizedBox(
                                   height: 16,
                                 ),
                                 TextFormField(
@@ -270,19 +302,6 @@ class _genralWasteState extends State<generalWaste> {
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                // TextFormField(
-                                //   controller: trashtypeController,
-                                //   validator: (value) {
-                                //     if (value == null || value.isEmpty) {
-                                //       return 'กรอกชนิดขยะ';
-                                //     }
-                                //     return null;
-                                //   },
-                                //   decoration: const InputDecoration(
-                                //       labelText: 'กรอกชนิดขยะ',
-                                //       hintText: 'ชนิดขยะ',
-                                //       border: OutlineInputBorder()),
-                                // ),
                                 DropdownButtonFormField<String>(
                                   value: trashtypePicker,
                                   items: [

@@ -133,6 +133,13 @@ class DatabaseHelper {
         .query('trash', where: 'trash_type = ?', whereArgs: ['ขยะทั่วไป']);
   }
 
+  Future<List<Map<String, dynamic>>> getGTrashItem(
+      String trashnamesearch) async {
+    final db = await database;
+    return await db
+        .query('trash', where: 'trash_name = ?', whereArgs: [trashnamesearch]);
+  }
+
   Future<void> insertUser1(Map<String, dynamic> user) async {
     final db = await database;
     await db.insert('users', user,
