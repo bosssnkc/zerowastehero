@@ -146,10 +146,22 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<void> insertTrash1(Map<String, dynamic> newTrash) async {
+    final db = await database;
+    await db.insert('trash', newTrash,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
   Future<void> updateUser(Map<String, dynamic> user) async {
     final db = await database;
     await db.update('users', user,
         where: 'user_id = ?', whereArgs: [user['user_id']]);
+  }
+
+  Future<void> updateTrash(Map<String, dynamic> trash) async {
+    final db = await database;
+    await db.update('trash', trash,
+        where: 'trash_id = ?', whereArgs: [trash['trash_id']]);
   }
 
   Future<void> updatePassword(String username, String newPassword) async {

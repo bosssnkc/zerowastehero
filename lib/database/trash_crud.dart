@@ -36,7 +36,7 @@ class _manageTrashState extends State<manageTrash> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              title: Text('test'),
+              title: Text(trash == null ? 'Add Trash' : 'Edit Trash'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -56,6 +56,30 @@ class _manageTrashState extends State<manageTrash> {
                   ],
                 ),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final newTrash = {
+                      'trash_name': _trashnameController.text,
+                      'trash_type': _trashtypeController.text,
+                      'trash_des': _trashdesController.text,
+                    };
+                    if (trash == null) {
+                      await _dbHelper.insertTrash1(newTrash);
+                    } else {
+                      newTrash['trash_id'] = trash['trash_id'].toString();
+                      await _dbHelper.updateTrash(newTrash);
+                    }
+                    Navigator.of(context).pop();
+                    _loadTrashs();
+                  },
+                  child: Text(trash == null ? 'Add' : 'Save'),
+                ),
+              ],
             ));
   }
 

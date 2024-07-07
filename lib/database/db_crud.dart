@@ -101,7 +101,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
               if (user == null) {
                 await _dbHelper.insertUser1(newUser);
               } else {
-                newUser['user_id'] = user['user_id'];
+                newUser['user_id'] = user['user_id'].toString();
                 await _dbHelper.updateUser(newUser);
               }
               Navigator.of(context).pop();
