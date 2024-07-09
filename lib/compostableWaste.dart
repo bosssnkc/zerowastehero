@@ -241,6 +241,12 @@ class _compostableWasteState extends State<compostableWaste> {
                           child: ListTile(
                             title: Text(trash['trash_name']),
                             subtitle: Text(trash['trash_type']),
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text('รายละเอียดขยะ'),
+                                      content: Text(trash['trash_des']),
+                                    )),
                           ),
                         );
                       })
@@ -254,6 +260,12 @@ class _compostableWasteState extends State<compostableWaste> {
                       child: ListTile(
                         title: Text(trash['trash_name']),
                         subtitle: Text(trash['trash_type']),
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('รายละเอียดขยะ'),
+                                  content: Text(trash['trash_des']),
+                                )),
                       ),
                     );
                   }),
