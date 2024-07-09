@@ -23,7 +23,7 @@ class _genralWasteState extends State<generalWaste> {
   }
 
   Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getGeneralTrash();
+    final trashs = await _dbHelper.getGeneralTrash('ขยะทั่วไป');
     setState(() {
       _trash = trashs;
     });
@@ -61,6 +61,7 @@ class _genralWasteState extends State<generalWaste> {
 
       final db = DatabaseHelper();
       await db.insertTrash(trashname, trashtype, trashdes);
+      await _loadTrashs();
 
       Navigator.of(context).pop();
     }
