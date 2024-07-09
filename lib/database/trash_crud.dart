@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 
 class manageTrash extends StatefulWidget {
   const manageTrash({super.key});
@@ -11,6 +15,8 @@ class manageTrash extends StatefulWidget {
 class _manageTrashState extends State<manageTrash> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Map<String, dynamic>> _trash = [];
+  final ImagePicker _picker = ImagePicker();
+  Uint8List? _image;
 
   @override
   void initState() {
@@ -23,6 +29,15 @@ class _manageTrashState extends State<manageTrash> {
     setState(() {
       _trash = trashs;
     });
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = Uint8List.fromList(File(pickedFile.path).readAsBytesSync());
+      });
+    }
   }
 
   void _showTrash({Map<String, dynamic>? trash}) {
@@ -53,6 +68,18 @@ class _manageTrashState extends State<manageTrash> {
                       controller: _trashdesController,
                       decoration: InputDecoration(labelText: 'trashdes'),
                     ),
+                    SizedBox(height: 10),
+                    _image != null
+                        ? Image.memory(
+                            _image!,
+                            height: 100,
+                            width: 100,
+                          )
+                        : Text('No Image Selected'),
+                    ElevatedButton(
+                      onPressed: _pickImage,
+                      child: Text('Pick Image'),
+                    )
                   ],
                 ),
               ),
@@ -67,6 +94,7 @@ class _manageTrashState extends State<manageTrash> {
                       'trash_name': _trashnameController.text,
                       'trash_type': _trashtypeController.text,
                       'trash_des': _trashdesController.text,
+                      'trash_pic': _image ?? trash?['trash_pic'],
                     };
                     if (trash == null) {
                       await _dbHelper.insertTrash1(newTrash);
@@ -95,6 +123,9 @@ class _manageTrashState extends State<manageTrash> {
               child: ListTile(
                 title: Text(trash['trash_name']),
                 subtitle: Text(trash['trash_type']),
+                leading: trash['trash_pic'] != null
+                    ? Image.memory(Uint8List.fromList(trash['trash_pic']))
+                    : Icon(Icons.error),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

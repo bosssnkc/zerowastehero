@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
@@ -264,7 +266,15 @@ class _compostableWasteState extends State<compostableWaste> {
                             context: context,
                             builder: (context) => AlertDialog(
                                   title: Text('รายละเอียดขยะ'),
-                                  content: Text(trash['trash_des']),
+                                  content: Column(
+                                    children: [
+                                      trash['trash_pic'] != null
+                                          ? Image.memory(Uint8List.fromList(
+                                              trash['trash_pic']))
+                                          : Icon(Icons.image),
+                                      Text(trash['trash_des'])
+                                    ],
+                                  ),
                                 )),
                       ),
                     );
