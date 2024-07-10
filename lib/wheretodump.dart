@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:zerowastehero/testlocator.dart';
 
 class recycleLocation extends StatefulWidget {
   const recycleLocation({super.key});
@@ -59,7 +61,8 @@ class _recycleLocationState extends State<recycleLocation> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 10),
-                          Text('{location now}')
+                          Text('{location now}'),
+                          ElevatedButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => MapsPage())), child: Text('Now'))
                         ],
                       ), //Column inside location_now
                     ],
