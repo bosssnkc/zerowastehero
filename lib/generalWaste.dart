@@ -1,4 +1,6 @@
 // import 'dart:typed_data';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
@@ -23,7 +25,7 @@ class _genralWasteState extends State<generalWaste> {
   }
 
   Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getGeneralTrash();
+    final trashs = await _dbHelper.getGeneralTrash('ขยะทั่วไป');
     setState(() {
       _trash = trashs;
     });
@@ -61,6 +63,7 @@ class _genralWasteState extends State<generalWaste> {
 
       final db = DatabaseHelper();
       await db.insertTrash(trashname, trashtype, trashdes);
+      await _loadTrashs();
 
       Navigator.of(context).pop();
     }
@@ -242,6 +245,12 @@ class _genralWasteState extends State<generalWaste> {
                             child: ListTile(
                               title: Text(trash['trash_name']),
                               subtitle: Text(trash['trash_type']),
+                              onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: Text('รายละเอียดขยะ'),
+                                        content: Text(trash['trash_des']),
+                                      )),
                             ),
                           );
                         })
@@ -255,6 +264,20 @@ class _genralWasteState extends State<generalWaste> {
                         child: ListTile(
                           title: Text(trash['trash_name']),
                           subtitle: Text(trash['trash_type']),
+                          onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text('รายละเอียดขยะ'),
+                                    content: Column(
+                                      children: [
+                                        trash['trash_pic'] != null
+                                            ? Image.memory(Uint8List.fromList(
+                                                trash['trash_pic']))
+                                            : Icon(Icons.image),
+                                        Text(trash['trash_des'])
+                                      ],
+                                    ),
+                                  )),
                         ),
                       );
                     }),

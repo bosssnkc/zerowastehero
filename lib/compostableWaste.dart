@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/database/trash_crud.dart';
 
 class compostableWaste extends StatefulWidget {
   const compostableWaste({super.key});
@@ -8,6 +12,62 @@ class compostableWaste extends StatefulWidget {
 }
 
 class _compostableWasteState extends State<compostableWaste> {
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> _trash = [];
+  List<Map<String, dynamic>> _trashsearch = [];
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTrashs();
+  }
+
+  Future<void> _loadTrashs() async {
+    final trashs = await _dbHelper.getGeneralTrash('ขยะอินทรีย์');
+    setState(() {
+      _trash = trashs;
+    });
+  }
+
+  Future<void> _searchfortrash() async {
+    String trashnamesearch = searchController.text;
+    if (trashnamesearch.isEmpty) {
+      setState(() {
+        _trashsearch = [];
+        _isSearching = false;
+      });
+      return;
+    }
+    final search = await _dbHelper.getGTrashItem(trashnamesearch);
+    setState(() {
+      _trashsearch = search;
+      _isSearching = true;
+    });
+  }
+
+  final _formValidator = GlobalKey<FormState>();
+  final trashnameController = TextEditingController();
+  final trashtypeController = TextEditingController();
+  final trashdesController = TextEditingController();
+  final searchController = TextEditingController();
+  String? trashtypePicker;
+
+  Future<void> _trashRegister() async {
+    if (_formValidator.currentState!.validate()) {
+      String trashname = trashnameController.text;
+      String trashtype = trashtypePicker!;
+      String trashdes = trashdesController.text;
+      // Uint8List trashpic = await getImageBytes();
+
+      final db = DatabaseHelper();
+      await db.insertTrash(trashname, trashtype, trashdes);
+      await _loadTrashs();
+
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -169,14 +229,151 @@ class _compostableWasteState extends State<compostableWaste> {
             style: TextStyle(fontSize: 24),
           ),
           // list รายการด้านล่าง
-          listGeneralWasteItem('รายการขยะอินทรีย์ 1'),
-          listGeneralWasteItem('รายการขยะอินทรีย์ 2'),
-          listGeneralWasteItem('รายการขยะอินทรีย์ 3'),
-          listGeneralWasteItem('รายการขยะอินทรีย์ 4'),
+          const SizedBox(
+            height: 10,
+          ),
+          _isSearching
+              ? _trashsearch.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _trashsearch.length,
+                      itemBuilder: (context, index) {
+                        final trash = _trashsearch[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(trash['trash_name']),
+                            subtitle: Text(trash['trash_type']),
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text('รายละเอียดขยะ'),
+                                      content: Text(trash['trash_des']),
+                                    )),
+                          ),
+                        );
+                      })
+                  : const Text('ไม่พบรายการขยะ')
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _trash.length,
+                  itemBuilder: (context, index) {
+                    final trash = _trash[index];
+                    return Card(
+                      child: ListTile(
+                        title: Text(trash['trash_name']),
+                        subtitle: Text(trash['trash_type']),
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('รายละเอียดขยะ'),
+                                  content: Column(
+                                    children: [
+                                      trash['trash_pic'] != null
+                                          ? Image.memory(Uint8List.fromList(
+                                              trash['trash_pic']))
+                                          : Icon(Icons.image),
+                                      Text(trash['trash_des'])
+                                    ],
+                                  ),
+                                )),
+                      ),
+                    );
+                  }),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => manageTrash()));
+              },
+              title: const Text(
+                'แก้ไข',
+              ),
+            ),
+          ),
           Row(
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => Center(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 8, 32, 16),
+                        child: Form(
+                          key: _formValidator,
+                          child: Column(
+                            children: [
+                              const Text('data'),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              TextFormField(
+                                controller: trashnameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรอกชื่อขยะ';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                    labelText: 'กรอกชื่อขยะ',
+                                    hintText: 'ชื่อขยะ',
+                                    border: OutlineInputBorder()),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              DropdownButtonFormField<String>(
+                                value: trashtypePicker,
+                                items: [
+                                  'ขยะทั่วไป',
+                                  'ขยะอินทรีย์',
+                                  'ขยะรีไซเคิล',
+                                  'ขยะอันตราย'
+                                ]
+                                    .map((label) => DropdownMenuItem(
+                                          child: Text(label),
+                                          value: label,
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    trashtypePicker = value;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'กรุณาเลือกชนิดของขยะ';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              TextFormField(
+                                controller: trashdesController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรอกรายละเอียดขยะ';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                    labelText: 'กรอกรายละเอียดขยะ',
+                                    hintText: 'รายละเอียดขยะ',
+                                    border: OutlineInputBorder()),
+                              ),
+                              TextButton(
+                                  onPressed: _trashRegister,
+                                  child: const Text('ตกลง'))
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
                 child: const Icon(Icons.add),
               ),
             ],

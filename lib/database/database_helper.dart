@@ -1,5 +1,3 @@
-// import 'dart:typed_data';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -127,10 +125,11 @@ class DatabaseHelper {
     return await db.query('trash');
   }
 
-  Future<List<Map<String, dynamic>>> getGeneralTrash() async {
+  Future<List<Map<String, dynamic>>> getGeneralTrash(
+      String trashTypeSelector) async {
     final db = await database;
-    return await db
-        .query('trash', where: 'trash_type = ?', whereArgs: ['ขยะทั่วไป']);
+    return await db.query('trash',
+        where: 'trash_type = ?', whereArgs: [trashTypeSelector]);
   }
 
   Future<List<Map<String, dynamic>>> getGTrashItem(
