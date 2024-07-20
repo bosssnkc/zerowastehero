@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
 
-class recycleWaste extends StatefulWidget {
-  const recycleWaste({super.key});
+class hazadousWaste extends StatefulWidget {
+  const hazadousWaste({super.key});
 
   @override
-  State<recycleWaste> createState() => _recycleWasteState();
+  State<hazadousWaste> createState() => _hazadousWasteState();
 }
 
-class _recycleWasteState extends State<recycleWaste> {
+class _hazadousWasteState extends State<hazadousWaste> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Map<String, dynamic>> _trash = [];
   List<Map<String, dynamic>> _trashsearch = [];
@@ -24,7 +24,7 @@ class _recycleWasteState extends State<recycleWaste> {
   }
 
   Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getGeneralTrash('ขยะรีไซเคิล');
+    final trashs = await _dbHelper.getGeneralTrash('ขยะอันตราย');
     setState(() {
       _trash = trashs;
     });
@@ -79,7 +79,7 @@ class _recycleWasteState extends State<recycleWaste> {
               backgroundColor: Colors.green[300],
               elevation: 0,
               title: const Text(
-                'ขยะรีไซเคิล',
+                'ขยะอันตราย',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -100,7 +100,7 @@ class _recycleWasteState extends State<recycleWaste> {
                 text: 'รายละเอียด',
               ),
               Tab(
-                text: 'รายการขยะรีไซเคิล',
+                text: 'รายการขยะอันตราย',
               ),
             ],
           ),
@@ -125,7 +125,7 @@ class _recycleWasteState extends State<recycleWaste> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'ขยะรีไซเคิล',
+            'ขยะอันตราย',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 24),
           ),
@@ -211,7 +211,7 @@ class _recycleWasteState extends State<recycleWaste> {
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'ค้นหารายการขยะ',
+                  hintText: 'ค้นหารายการขยะอันตราย',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(32),
@@ -225,7 +225,7 @@ class _recycleWasteState extends State<recycleWaste> {
             height: 40,
           ),
           const Text(
-            'รายการขยะรีไซเคิล',
+            'รายการขยะอันตราย',
             style: TextStyle(fontSize: 24),
           ),
           // list รายการด้านล่าง

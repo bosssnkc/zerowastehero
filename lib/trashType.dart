@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:zerowastehero/compostableWaste.dart';
-import 'package:zerowastehero/generalWaste.dart';
-import 'package:zerowastehero/hazadousWaste.dart';
-import 'package:zerowastehero/recycleWaste.dart';
+import 'package:zerowastehero/trashs/compostableWaste.dart';
+import 'package:zerowastehero/trashs/generalWaste.dart';
+import 'package:zerowastehero/trashs/hazadousWaste.dart';
+import 'package:zerowastehero/trashs/recycleWaste.dart';
+import 'package:zerowastehero/searchPage.dart';
 
 class typeOfTrash extends StatefulWidget {
   final int selectedTabIndex;
@@ -16,6 +17,8 @@ class _typeOfTrashState extends State<typeOfTrash>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String name;
+
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(
@@ -37,7 +40,6 @@ class _typeOfTrashState extends State<typeOfTrash>
       return 'วิธีคัดแยกขยะ';
     }
   }
-  // var name = 'ขยะทั้ง 4 ประเภท';
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class _typeOfTrashState extends State<typeOfTrash>
                 children: [
                   TabBar(
                     controller: _tabController,
-                    tabs: [
+                    tabs: const [
                       Tab(
                         text: 'ขยะทั้ง 4 ประเภท',
                       ),
@@ -87,18 +89,74 @@ class _typeOfTrashState extends State<typeOfTrash>
   }
 }
 
-class fourTypeOfTrash extends StatelessWidget {
+class fourTypeOfTrash extends StatefulWidget {
   const fourTypeOfTrash({super.key});
 
   @override
+  State<fourTypeOfTrash> createState() => _fourTypeOfTrashState();
+}
+
+class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
+  final searchController = TextEditingController();
+  bool isTextEmpty = true;
+
+  Future<void> _searchTrash() async {
+    String trashsearch = searchController.text;
+    if (trashsearch.isEmpty) {
+      setState(() {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => searchPage()));
+      });
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(() {
+      setState(() {
+        isTextEmpty = searchController.text.isEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
         child: Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
             height: 30,
+          ),
+          Padding(
+              padding: EdgeInsets.fromLTRB(64, 0, 64, 0),
+              child: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                          hintText: 'ค้นหารายการขยะ',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(24),
+                          ))),
+                  IconButton(
+                      onPressed: _searchTrash,
+                      icon: isTextEmpty ? Icon(Icons.list) : Icon(Icons.search))
+                ],
+              )),
+          SizedBox(
+            height: 24,
           ),
           Text(
             'ขยะในประเภทต่างๆ',

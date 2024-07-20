@@ -213,7 +213,7 @@ class _genralWasteState extends State<generalWaste> {
                 TextField(
                   controller: searchController,
                   decoration: InputDecoration(
-                    hintText: 'ค้นหารายการขยะ',
+                    hintText: 'ค้นหารายการขยะทั่วไป',
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(32),

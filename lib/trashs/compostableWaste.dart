@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
 
-class hazadousWaste extends StatefulWidget {
-  const hazadousWaste({super.key});
+class compostableWaste extends StatefulWidget {
+  const compostableWaste({super.key});
 
   @override
-  State<hazadousWaste> createState() => _hazadousWasteState();
+  State<compostableWaste> createState() => _compostableWasteState();
 }
 
-class _hazadousWasteState extends State<hazadousWaste> {
+class _compostableWasteState extends State<compostableWaste> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Map<String, dynamic>> _trash = [];
   List<Map<String, dynamic>> _trashsearch = [];
@@ -24,7 +24,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
   }
 
   Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getGeneralTrash('ขยะอันตราย');
+    final trashs = await _dbHelper.getGeneralTrash('ขยะอินทรีย์');
     setState(() {
       _trash = trashs;
     });
@@ -79,7 +79,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
               backgroundColor: Colors.green[300],
               elevation: 0,
               title: const Text(
-                'ขยะอันตราย',
+                'ขยะอินทรีย์',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -100,7 +100,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
                 text: 'รายละเอียด',
               ),
               Tab(
-                text: 'รายการขยะอันตราย',
+                text: 'รายการขยะอินทรีย์',
               ),
             ],
           ),
@@ -125,7 +125,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'ขยะอันตราย',
+            'ขยะอินทรีย์',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 24),
           ),
@@ -211,7 +211,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
             children: <Widget>[
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'ค้นหารายการขยะ',
+                  hintText: 'ค้นหารายการขยะอินทรีย์',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(32),
@@ -225,7 +225,7 @@ class _hazadousWasteState extends State<hazadousWaste> {
             height: 40,
           ),
           const Text(
-            'รายการขยะอันตราย',
+            'รายการขยะอินทรีย์',
             style: TextStyle(fontSize: 24),
           ),
           // list รายการด้านล่าง
