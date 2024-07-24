@@ -77,6 +77,25 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+  Future<void> insertJsonData(List<Map<String, dynamic>> jsonData) async {
+    for (var item in jsonData) {
+      await DatabaseHelper().insertAdmin(item);
+    }
+  }
+
+  final List<Map<String, dynamic>> jsonData = [
+    {
+      'username': 'admin',
+      'password': md5.convert(utf8.encode('password')).toString(),
+      'date_reg': DateTime.now().toIso8601String(),
+      'email': 'admin@example.com',
+      'fullname': 'Wittaya',
+      'lastname': 'Sukchouy',
+      'gender': 'Male',
+      'birthdate': '1997-04-09'
+    }
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,12 +122,21 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'ลงทะเบียนบัญชีใหม่',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Stack(
+                    children: [
+                      const Text(
+                        'ลงทะเบียนบัญชีใหม่',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            await insertJsonData(jsonData);
+                          },
+                          child: Text('test'))
+                    ],
                   ),
                   const SizedBox(height: 20),
                   TextFormField(

@@ -148,6 +148,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showForm(),
+        // onPressed: () => _dbHelper.printUser(),
         child: Icon(Icons.add),
       ),
     );

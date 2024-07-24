@@ -1,3 +1,5 @@
+// import 'dart:ffi';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,7 +36,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE users(
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL,
+        username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         date_reg TEXT NOT NULL,
         email TEXT NOT NULL,
@@ -181,5 +183,19 @@ class DatabaseHelper {
   Future<void> deleteTrash(int id) async {
     final db = await database;
     await db.delete('trash', where: 'trash_id = ?', whereArgs: [id]);
+  }
+
+  Future<void> insertAdmin(Map<String, dynamic> adminData) async {
+    final db = await database;
+    await db.insert('users', adminData);
+  }
+
+  Future<void> printUser() async {
+    final db = await database;
+    List<Map<String, dynamic>> users = await db.query('users');
+
+    for (var user in users) {
+      print(user);
+    }
   }
 }
