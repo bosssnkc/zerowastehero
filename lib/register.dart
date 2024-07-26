@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
           Navigator.of(context).pop();
         } else {
-          // Show an error message if the username is invalid
+          // แสดง Error เมื่อผู้ใช้งานใส่รูปแบบตัวอักษรไม่ถูกต้อง
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -82,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         }
       } else {
-        // Show an error message if the username is already taken
+        // แสดง Error เมื่อมี username นี้อยู่ในระบบอยู่แล้ว
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
