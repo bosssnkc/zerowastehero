@@ -27,6 +27,19 @@ class _RegisterPageState extends State<RegisterPage> {
     return md5.convert(utf8.encode(password)).toString();
   }
 
+  Future<bool> _isUsernameTaken(String username) async {
+    final dbHelper = DatabaseHelper();
+    final db = await dbHelper.database;
+    List<Map> result =
+        await db.query('users', where: 'username = ?', whereArgs: [username]);
+    return result.isNotEmpty;
+  }
+
+  bool _isValidUsername(String username) {
+    final validCharacters = RegExp(r'^[a-zA-Z0-9]+$');
+    return validCharacters.hasMatch(username);
+  }
+
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
@@ -37,18 +50,54 @@ class _RegisterPageState extends State<RegisterPage> {
       String gender = _gender!;
       String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
 
-      final dbHelper = DatabaseHelper();
-      await dbHelper.insertUser(
-          username,
-          password,
-          DateTime.now().toIso8601String(),
-          email,
-          fullname,
-          lastname,
-          gender,
-          birthdate);
+      if (!await _isUsernameTaken(username)) {
+        if (_isValidUsername(username)) {
+          final dbHelper = DatabaseHelper();
+          await dbHelper.insertUser(
+              username,
+              password,
+              DateTime.now().toIso8601String(),
+              email,
+              fullname,
+              lastname,
+              gender,
+              birthdate);
 
-      Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        } else {
+          // Show an error message if the username is invalid
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Invalid Username'),
+              content: Text(
+                  'ชื่อผู้ใช้สามารถใช้ได้แค่ตัวอักษร ภาษาอังกฤษ a-Z, 0-9 เท่านั้น'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      } else {
+        // Show an error message if the username is already taken
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Username Taken'),
+            content: Text(
+                'This username is already taken. Please choose another one.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
