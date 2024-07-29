@@ -85,11 +85,11 @@ class _recycleLocationState extends State<recycleLocation> {
                   padding: EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         size: 50,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50,
                       ),
                       Expanded(
@@ -97,7 +97,7 @@ class _recycleLocationState extends State<recycleLocation> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'ตำแหน่งปัจจุบันของคุณ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -105,7 +105,7 @@ class _recycleLocationState extends State<recycleLocation> {
                                 ? Text(
                                     'Lat: ${userLocation!.latitude} Lon: ${userLocation!.longitude}')
                                 : Text('ไม่พบตำแหน่งปัจจุบัน'),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             ElevatedButton(
                                 onPressed: _getLocation,
                                 child: Text('Get Location'))

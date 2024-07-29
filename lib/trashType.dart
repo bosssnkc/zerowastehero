@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/trashs/compostableWaste.dart';
 import 'package:zerowastehero/trashs/generalWaste.dart';
 import 'package:zerowastehero/trashs/hazadousWaste.dart';
@@ -101,13 +102,19 @@ class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
   bool isTextEmpty = true;
 
   Future<void> _searchTrash() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String trashsearch = searchController.text;
     if (trashsearch.isEmpty) {
       setState(() {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => searchPage()));
       });
-      return;
+    } else {
+      setState(() {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => searchPage()));
+      });
+      prefs.setString('trashname', trashsearch);
     }
   }
 

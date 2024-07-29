@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/trashType.dart';
 // import 'package:image_picker/image_picker.dart';
 
 class searchPage extends StatefulWidget {
@@ -20,10 +22,20 @@ class _searchPageState extends State<searchPage> {
   }
 
   Future<void> _loadTrash() async {
-    final trashs = await _dbHelper.getTrash();
-    setState(() {
-      _trash = trashs;
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String trashnamesearch = prefs.getString('trashname') ?? '';
+    if (trashnamesearch == '') {
+      final trashs = await _dbHelper.getTrash();
+      setState(() {
+        _trash = trashs;
+      });
+    } else {
+      final search = await _dbHelper.getGTrashItem(trashnamesearch);
+      setState(() {
+        _trash = search;
+      });
+      prefs.remove('trashname');
+    }
   }
 
   @override

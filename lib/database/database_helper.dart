@@ -137,8 +137,8 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getGTrashItem(
       String trashnamesearch) async {
     final db = await database;
-    return await db
-        .query('trash', where: 'trash_name = ?', whereArgs: [trashnamesearch]);
+    return await db.query('trash',
+        where: 'trash_name LIKE ?', whereArgs: ['%$trashnamesearch%']);
   }
 
   Future<void> insertUser1(Map<String, dynamic> user) async {
