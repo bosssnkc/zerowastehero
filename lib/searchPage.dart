@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/database/database_helper.dart';
-import 'package:zerowastehero/trashType.dart';
 // import 'package:image_picker/image_picker.dart';
 
 class searchPage extends StatefulWidget {
