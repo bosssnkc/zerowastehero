@@ -7,7 +7,7 @@ import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/mainMenu.dart';
 import 'package:zerowastehero/register.dart';
 
-import 'database/database_helper.dart';
+// import 'database/database_helper.dart';
 import 'package:http/http.dart' as http;
 
 //หน้าล็อกอินและจัดเก็บข้อมูลการล็อกอิน
@@ -141,6 +141,7 @@ class _LoginPageState extends State<LoginPage> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username);
+        // await prefs.setString('user_id', user_id);
         await prefs.setBool('isLoggedIn', true);
 
         Navigator.of(context).pushReplacement(

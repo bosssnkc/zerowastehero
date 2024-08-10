@@ -185,11 +185,6 @@ class DatabaseHelper {
     await db.delete('trash', where: 'trash_id = ?', whereArgs: [id]);
   }
 
-  Future<void> insertAdmin(Map<String, dynamic> adminData) async {
-    final db = await database;
-    await db.insert('users', adminData);
-  }
-
   Future<void> printUser() async {
     final db = await database;
     List<Map<String, dynamic>> users = await db.query('users');

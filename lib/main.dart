@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zerowastehero/session.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
