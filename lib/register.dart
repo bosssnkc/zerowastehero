@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zerowastehero/database/database_helper.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -40,6 +41,67 @@ class _RegisterPageState extends State<RegisterPage> {
     return validCharacters.hasMatch(username);
   }
 
+  // Future<void> _register() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     String username = _usernameController.text;
+  //     String password = _hashPassword(_passwordController.text);
+  //     String email = _emailController.text;
+  //     String fullname = _fullnameController.text;
+  //     String lastname = _lastnameController.text;
+  //     String gender = _gender!;
+  //     String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+
+  //     if (!await _isUsernameTaken(username)) {
+  //       if (_isValidUsername(username)) {
+  //         final dbHelper = DatabaseHelper();
+  //         await dbHelper.insertUser(
+  //             username,
+  //             password,
+  //             DateTime.now().toIso8601String(),
+  //             email,
+  //             fullname,
+  //             lastname,
+  //             gender,
+  //             birthdate);
+
+  //         Navigator.of(context).pop();
+  //       } else {
+  //         // แสดง Error เมื่อผู้ใช้งานใส่รูปแบบตัวอักษรไม่ถูกต้อง
+  //         showDialog(
+  //           context: context,
+  //           builder: (context) => AlertDialog(
+  //             title: Text('Invalid Username'),
+  //             content: Text(
+  //                 'ชื่อผู้ใช้สามารถใช้ได้แค่ตัวอักษร ภาษาอังกฤษ a-Z, 0-9 เท่านั้น'),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () => Navigator.of(context).pop(),
+  //                 child: Text('OK'),
+  //               ),
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     } else {
+  //       // แสดง Error เมื่อมี username นี้อยู่ในระบบอยู่แล้ว
+  //       showDialog(
+  //         context: context,
+  //         builder: (context) => AlertDialog(
+  //           title: Text('Username Taken'),
+  //           content: Text(
+  //               'This username is already taken. Please choose another one.'),
+  //           actions: [
+  //             TextButton(
+  //               onPressed: () => Navigator.of(context).pop(),
+  //               child: Text('OK'),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     }
+  //   }
+  // }
+
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
@@ -50,45 +112,47 @@ class _RegisterPageState extends State<RegisterPage> {
       String gender = _gender!;
       String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
 
-      if (!await _isUsernameTaken(username)) {
-        if (_isValidUsername(username)) {
-          final dbHelper = DatabaseHelper();
-          await dbHelper.insertUser(
-              username,
-              password,
-              DateTime.now().toIso8601String(),
-              email,
-              fullname,
-              lastname,
-              gender,
-              birthdate);
+      // สร้าง JSON data
+      Map<String, dynamic> data = {
+        'username': username,
+        'password': password,
+        'date_reg': DateTime.now().toIso8601String(),
+        'email': email,
+        'firstname': fullname,
+        'lastname': lastname,
+        'gender': gender,
+        'birthdate': birthdate
+      };
 
-          Navigator.of(context).pop();
-        } else {
-          // แสดง Error เมื่อผู้ใช้งานใส่รูปแบบตัวอักษรไม่ถูกต้อง
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Invalid Username'),
-              content: Text(
-                  'ชื่อผู้ใช้สามารถใช้ได้แค่ตัวอักษร ภาษาอังกฤษ a-Z, 0-9 เท่านั้น'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-      } else {
-        // แสดง Error เมื่อมี username นี้อยู่ในระบบอยู่แล้ว
+      // ส่งข้อมูลไปยัง Rest API
+      final response = await http.post(
+        Uri.parse('https://zerowasteheroapp.com/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 201) {
+        // การลงทะเบียนสำเร็จ
+        Navigator.of(context).pop();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Username Taken'),
-            content: Text(
-                'This username is already taken. Please choose another one.'),
+            title: Text('Successful'),
+            content: Text('การลงทะเบียนเสร็จสมบูรณ์'),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('OK'))
+            ],
+          ),
+        );
+      } else {
+        // แสดง Error message จาก API
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('การลงทะเบียนล้มเหลว: ${response.body}'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),

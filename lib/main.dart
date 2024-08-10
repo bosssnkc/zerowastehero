@@ -16,21 +16,21 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        // home: SplashScreen(),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('TEST CONNNECTION'),
-          ),
-          body: Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                final respone =
-                    await http.get(Uri.parse('http://10.0.2.2:3000/api/data'));
-                print('Respond from NODE.js ${respone.body}');
-              },
-              child: Text('test connect'),
-            ),
-          ),
-        ));
+        home: SplashScreen());
+    // home: Scaffold(
+    //   appBar: AppBar(
+    //     title: Text('TEST CONNNECTION'),
+    //   ),
+    //   body: Center(
+    //     child: ElevatedButton(
+    //       onPressed: () async {
+    //         final respone = await http
+    //             .get(Uri.parse('http://zerowasteheroapp.com/api/data'));
+    //         print('Respond from NODE.js ${respone.body}');
+    //       },
+    //       child: Text('test connect'),
+    //     ),
+    //   ),
+    // ));
   }
 }

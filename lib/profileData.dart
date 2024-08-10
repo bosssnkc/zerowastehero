@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/database/database_helper.dart';
 import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/session.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,15 +28,31 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // Future<Map<String, dynamic>> _getUserInfo() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String username = prefs.getString('username') ?? 'Unknown User';
+  //   final dbHelper = DatabaseHelper();
+  //   Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
+  //   if (userInfo == null) {
+  //     return {'fullname': 'Unknown User', 'email': 'unknown@example.com'};
+  //   }
+  //   return userInfo;
+  // }
+
   Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
-    final dbHelper = DatabaseHelper();
-    Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
-    if (userInfo == null) {
-      return {'fullname': 'Unknown User', 'email': 'unknown@example.com'};
+    print(username);
+
+    final response = await http
+        .get(Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> userInfo = jsonDecode(response.body);
+      return userInfo;
+    } else {
+      return {'firstname': 'Unknown User', 'email': 'unknown@example.com'};
     }
-    return userInfo;
   }
 
   String _hashPassword(String password) {
@@ -96,6 +113,50 @@ class _ProfilePageState extends State<ProfilePage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
+            // FutureBuilder<Map<String, dynamic>>(
+            //   future: _getUserInfo(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Card(
+            //         child: ListTile(
+            //           title: Text(
+            //             'Loading...',
+            //             style: TextStyle(fontWeight: FontWeight.bold),
+            //           ),
+            //           contentPadding: EdgeInsets.all(16),
+            //           leading: Icon(Icons.person),
+            //         ),
+            //       );
+            //     } else if (snapshot.hasError) {
+            //       return const Card(
+            //         child: ListTile(
+            //           title: Text(
+            //             'Error loading user info',
+            //             style: TextStyle(fontWeight: FontWeight.bold),
+            //           ),
+            //           contentPadding: EdgeInsets.all(16),
+            //           leading: Icon(Icons.error),
+            //         ),
+            //       );
+            //     } else {
+            //       final userInfo = snapshot.data!;
+            //       return Card(
+            //         child: ListTile(
+            //           title: Text(
+            //             '${userInfo['fullname']!} ${userInfo['lastname']!}',
+            //             style: const TextStyle(fontWeight: FontWeight.bold),
+            //           ),
+            //           subtitle: Text(userInfo['email']!),
+            //           contentPadding: const EdgeInsets.all(16),
+            //           leading: const Icon(
+            //             Icons.person,
+            //             size: 50,
+            //           ),
+            //         ),
+            //       );
+            //     }
+            //   },
+            // ),
             FutureBuilder<Map<String, dynamic>>(
               future: _getUserInfo(),
               builder: (context, snapshot) {
@@ -121,12 +182,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       leading: Icon(Icons.error),
                     ),
                   );
-                } else {
+                } else if (snapshot.hasData) {
                   final userInfo = snapshot.data!;
                   return Card(
                     child: ListTile(
                       title: Text(
-                        '${userInfo['fullname']!} ${userInfo['lastname']!}',
+                        '${userInfo['firstname']} ${userInfo['lastname']}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(userInfo['email']!),
@@ -135,6 +196,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icons.person,
                         size: 50,
                       ),
+                    ),
+                  );
+                } else {
+                  return const Card(
+                    child: ListTile(
+                      title: Text(
+                        'User not found',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      contentPadding: EdgeInsets.all(16),
+                      leading: Icon(Icons.error),
                     ),
                   );
                 }

@@ -8,6 +8,7 @@ import 'package:zerowastehero/mainMenu.dart';
 import 'package:zerowastehero/register.dart';
 
 import 'database/database_helper.dart';
+import 'package:http/http.dart' as http;
 
 //หน้าล็อกอินและจัดเก็บข้อมูลการล็อกอิน
 
@@ -63,34 +64,90 @@ class _LoginPageState extends State<LoginPage> {
     return md5.convert(utf8.encode(password)).toString();
   }
 
+  // Future<void> _login() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     String username = _usernameController.text;
+  //     String password = _hashPassword(_passwordController.text);
+
+  //     final dbHelper = DatabaseHelper();
+  //     final user = await dbHelper.getUser(username);
+
+  //     if (user == null) {
+  //       // แสดง AlertDialog เมื่อไม่พบชื่อผู้ใช้
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('ข้อผิดพลาด'),
+  //             content: Text('ไม่พบชื่อผู้ใช้'),
+  //             actions: [
+  //               TextButton(
+  //                 child: Text('ตกลง'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     } else if (user['password'] != password) {
+  //       showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             title: Text('ข้อผิดพลาด'),
+  //             content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
+  //             actions: [
+  //               TextButton(
+  //                 child: Text('ตกลง'),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     } else {
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       await prefs.setString('username',
+  //           username); //ส่งค่าชื่อไอดีเพื่อไปแสดงผลข้อมูลในหน้าบัญชีผู้ใช้
+  //       prefs.setBool('isLoggedIn',
+  //           true); //เปลี่ยนค่าล็อกอินให้เป็น True เมื่อทำงานสมบูรณ์
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(builder: (context) => MainPage()),
+  //       );
+  //     }
+  //   }
+  // }
+
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
-      String password = _hashPassword(_passwordController.text);
+      String password = _passwordController.text;
 
-      final dbHelper = DatabaseHelper();
-      final user = await dbHelper.getUser(username);
+      final response = await http.post(
+        Uri.parse('https://zerowasteheroapp.com/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'username': username,
+          'password': password,
+        }),
+      );
 
-      if (user == null) {
-        // แสดง AlertDialog เมื่อไม่พบชื่อผู้ใช้
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('ข้อผิดพลาด'),
-              content: Text('ไม่พบชื่อผู้ใช้'),
-              actions: [
-                TextButton(
-                  child: Text('ตกลง'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', username);
+        await prefs.setBool('isLoggedIn', true);
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => MainPage()),
         );
-      } else if (user['password'] != password) {
+      } else {
+        // Show error message
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -107,15 +164,6 @@ class _LoginPageState extends State<LoginPage> {
               ],
             );
           },
-        );
-      } else {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('username',
-            username); //ส่งค่าชื่อไอดีเพื่อไปแสดงผลข้อมูลในหน้าบัญชีผู้ใช้
-        prefs.setBool('isLoggedIn',
-            true); //เปลี่ยนค่าล็อกอินให้เป็น True เมื่อทำงานสมบูรณ์
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MainPage()),
         );
       }
     }
