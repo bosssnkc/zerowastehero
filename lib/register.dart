@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/API/api.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
@@ -26,14 +26,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String _hashPassword(String password) {
     return md5.convert(utf8.encode(password)).toString();
-  }
-
-  Future<bool> _isUsernameTaken(String username) async {
-    final dbHelper = DatabaseHelper();
-    final db = await dbHelper.database;
-    List<Map> result =
-        await db.query('users', where: 'username = ?', whereArgs: [username]);
-    return result.isNotEmpty;
   }
 
   bool _isValidUsername(String username) {
@@ -126,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       // ส่งข้อมูลไปยัง Rest API
       final response = await http.post(
-        Uri.parse('https://zerowasteheroapp.com/register'),
+        Uri.parse(register),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data),
       );
@@ -137,12 +129,12 @@ class _RegisterPageState extends State<RegisterPage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Successful'),
-            content: Text('การลงทะเบียนเสร็จสมบูรณ์'),
+            title: const Text('Successful'),
+            content: const Text('การลงทะเบียนเสร็จสมบูรณ์'),
             actions: [
               TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('OK'))
+                  child: const Text('OK'))
             ],
           ),
         );
@@ -151,12 +143,12 @@ class _RegisterPageState extends State<RegisterPage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
+            title: const Text('Error'),
             content: Text('การลงทะเบียนล้มเหลว: ${response.body}'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -216,16 +208,12 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    children: [
-                      const Text(
-                        'ลงทะเบียนบัญชีใหม่',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    'ลงทะเบียนบัญชีใหม่',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -331,8 +319,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     items: ['ชาย', 'หญิง']
                         .map((label) => DropdownMenuItem(
-                              child: Text(label),
                               value: label,
+                              child: Text(label),
                             ))
                         .toList(),
                     onChanged: (value) {
@@ -374,7 +362,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.calendar_today),
+                        icon: const Icon(Icons.calendar_today),
                         onPressed: () => _selectDate(context),
                       ),
                     ],

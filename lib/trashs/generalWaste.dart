@@ -1,8 +1,12 @@
-// import 'dart:typed_data';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:zerowastehero/database/database_helper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zerowastehero/API/api.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
 
 class generalWaste extends StatefulWidget {
@@ -13,9 +17,8 @@ class generalWaste extends StatefulWidget {
 }
 
 class _genralWasteState extends State<generalWaste> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
-  List<Map<String, dynamic>> _trash = [];
-  List<Map<String, dynamic>> _trashsearch = [];
+  List<dynamic> _trash = [];
+  List<dynamic> _trashsearch = [];
   bool _isSearching = false;
 
   @override
@@ -25,26 +28,96 @@ class _genralWasteState extends State<generalWaste> {
   }
 
   Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getGeneralTrash('ขยะทั่วไป');
-    setState(() {
-      _trash = trashs;
-    });
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://zerowasteheroapp.com/show/trashs?trash_type=ขยะทั่วไป'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> trashs = jsonDecode(response.body);
+        setState(() {
+          _trash = trashs;
+        });
+      } else {
+        // Handle error
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to load trashs.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (error) {
+      // Handle network or other errors
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to load trashs.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> _searchfortrash() async {
     String trashnamesearch = searchController.text;
+
     if (trashnamesearch.isEmpty) {
+      _trashsearch = [];
       setState(() {
-        _trashsearch = [];
         _isSearching = false;
+        // print(_isSearching);
       });
       return;
     }
-    final search = await _dbHelper.getGTrashItem(trashnamesearch);
-    setState(() {
-      _trashsearch = search;
-      _isSearching = true;
-    });
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> searchResults = jsonDecode(response.body);
+        _trashsearch = searchResults;
+        setState(() {
+          _isSearching = true;
+          // print(_isSearching);
+        });
+      } else {
+        // Handle error
+        _trashsearch = [];
+        setState(() {
+          _isSearching = false;
+        });
+      }
+    } catch (error) {
+      // Handle network or other errors
+      _trashsearch = [];
+      setState(() {
+        _isSearching = false;
+      });
+    }
   }
 
   final _formValidator = GlobalKey<FormState>();
@@ -53,20 +126,96 @@ class _genralWasteState extends State<generalWaste> {
   final trashdesController = TextEditingController();
   final searchController = TextEditingController();
   String? trashtypePicker;
+  final ImagePicker _picker = ImagePicker();
+  Uint8List? _image;
 
   Future<void> _trashRegister() async {
     if (_formValidator.currentState!.validate()) {
       String trashname = trashnameController.text;
       String trashtype = trashtypePicker!;
       String trashdes = trashdesController.text;
-      // Uint8List trashpic = await getImageBytes();
 
-      final db = DatabaseHelper();
-      await db.insertTrash(trashname, trashtype, trashdes);
-      await _loadTrashs();
+      // Fetch the user_id from SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userId = prefs.getString('user_id');
 
-      Navigator.of(context).pop();
+      // Send data to API
+      final response = await http.post(
+        Uri.parse(addTrash),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'trash_name': trashname,
+          'trash_type': trashtype,
+          'trash_des': trashdes,
+          'trash_pic': _image,
+          'user_id': userId,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        // Load trash items if necessary
+        await _loadTrashs();
+        Navigator.of(context).pop();
+      } else {
+        // Handle error
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to register trash.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
+  }
+
+  Future<void> _pickImage() async {
+    final permissionStatus = await _requestPermission();
+    if (permissionStatus) {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        final bytes = await pickedFile.readAsBytes();
+        setState(() {
+          _image = bytes;
+        });
+      }
+    }
+  }
+
+  Future<bool> _requestPermission() async {
+    final status = await Permission.photos.request();
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      // Handle permission denied
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Permission needed'),
+          content: Text('This app needs photo access to pick images'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => openAppSettings(),
+              child: Text('Settings'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+    return false;
   }
 
   @override
@@ -366,6 +515,9 @@ class _genralWasteState extends State<generalWaste> {
                                       hintText: 'รายละเอียดขยะ',
                                       border: OutlineInputBorder()),
                                 ),
+                                ElevatedButton(
+                                    onPressed: _pickImage,
+                                    child: Text('เพิ่มรูปภาพ')),
                                 TextButton(
                                     onPressed: _trashRegister,
                                     child: const Text('ตกลง'))

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zerowastehero/API/api.dart';
 import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/mainMenu.dart';
 import 'package:zerowastehero/register.dart';
@@ -128,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       String password = _passwordController.text;
 
       final response = await http.post(
-        Uri.parse('https://zerowasteheroapp.com/login'),
+        Uri.parse(login),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'username': username,
@@ -141,7 +142,8 @@ class _LoginPageState extends State<LoginPage> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username);
-        // await prefs.setString('user_id', user_id);
+        await prefs.setString('user_id', responseData['user_id'].toString());
+        print(responseData['user_id']);
         await prefs.setBool('isLoggedIn', true);
 
         Navigator.of(context).pushReplacement(

@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zerowastehero/database/database_helper.dart';
 // import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class searchPage extends StatefulWidget {
   const searchPage({super.key});
@@ -11,8 +13,7 @@ class searchPage extends StatefulWidget {
 }
 
 class _searchPageState extends State<searchPage> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
-  List<Map<String, dynamic>> _trash = [];
+  List<dynamic> _trash = [];
 
   @override
   void initState() {
@@ -24,15 +25,35 @@ class _searchPageState extends State<searchPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String trashnamesearch = prefs.getString('trashname') ?? '';
     if (trashnamesearch == '') {
-      final trashs = await _dbHelper.getTrash();
-      setState(() {
-        _trash = trashs;
-      });
+      //
+      final response = await http.get(
+        Uri.parse('https://zerowasteheroapp.com/search/alltrashs'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> trashs = jsonDecode(response.body);
+        setState(() {
+          _trash = trashs;
+        });
+      }
     } else {
-      final search = await _dbHelper.getGTrashItem(trashnamesearch);
-      setState(() {
-        _trash = search;
-      });
+      // final search = await _dbHelper.getGTrashItem(trashnamesearch);
+      final response = await http.get(
+        Uri.parse(
+            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> search = jsonDecode(response.body);
+        setState(() {
+          _trash = search;
+        });
+      }
+
       prefs.remove('trashname');
     }
   }
@@ -74,7 +95,7 @@ class _searchPageState extends State<searchPage> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        await _dbHelper.deleteTrash(trash['trash_id']);
+                        // await _dbHelper.deleteTrash(trash['trash_id']);
                         _loadTrash();
                       },
                       icon: Icon(Icons.delete),

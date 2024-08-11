@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/API/api.dart';
 import 'package:zerowastehero/database/trash_crud.dart';
 
 class compostableWaste extends StatefulWidget {
@@ -17,7 +17,6 @@ class compostableWaste extends StatefulWidget {
 }
 
 class _compostableWasteState extends State<compostableWaste> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
   List<dynamic> _trash = [];
   List<dynamic> _trashsearch = [];
   bool _isSearching = false;
@@ -27,13 +26,6 @@ class _compostableWasteState extends State<compostableWaste> {
     super.initState();
     _loadTrashs();
   }
-
-  // Future<void> _loadTrashs() async {
-  //   final trashs = await _dbHelper.getGeneralTrash('ขยะอินทรีย์');
-  //   setState(() {
-  //     _trash = trashs;
-  //   });
-  // }
 
   Future<void> _loadTrashs() async {
     try {
@@ -84,22 +76,6 @@ class _compostableWasteState extends State<compostableWaste> {
     }
   }
 
-  // Future<void> _searchfortrash() async {
-  //   String trashnamesearch = searchController.text;
-  //   if (trashnamesearch.isEmpty) {
-  //     setState(() {
-  //       _trashsearch = [];
-  //       _isSearching = false;
-  //     });
-  //     return;
-  //   }
-  //   final search = await _dbHelper.getGTrashItem(trashnamesearch);
-  //   setState(() {
-  //     _trashsearch = search;
-  //     _isSearching = true;
-  //   });
-  // }
-
   Future<void> _searchfortrash() async {
     String trashnamesearch = searchController.text;
 
@@ -107,7 +83,7 @@ class _compostableWasteState extends State<compostableWaste> {
       _trashsearch = [];
       setState(() {
         _isSearching = false;
-        print(_isSearching);
+        // print(_isSearching);
       });
       return;
     }
@@ -126,7 +102,7 @@ class _compostableWasteState extends State<compostableWaste> {
         _trashsearch = searchResults;
         setState(() {
           _isSearching = true;
-          print(_isSearching);
+          // print(_isSearching);
         });
       } else {
         // Handle error
@@ -153,21 +129,6 @@ class _compostableWasteState extends State<compostableWaste> {
   final ImagePicker _picker = ImagePicker();
   Uint8List? _image;
 
-  // Future<void> _trashRegister() async {
-  //   if (_formValidator.currentState!.validate()) {
-  //     String trashname = trashnameController.text;
-  //     String trashtype = trashtypePicker!;
-  //     String trashdes = trashdesController.text;
-  //     // Uint8List trashpic = await getImageBytes();
-
-  //     final db = DatabaseHelper();
-  //     await db.insertTrash(trashname, trashtype, trashdes);
-  //     await _loadTrashs();
-
-  //     Navigator.of(context).pop();
-  //   }
-  // }
-
   Future<void> _trashRegister() async {
     if (_formValidator.currentState!.validate()) {
       String trashname = trashnameController.text;
@@ -176,12 +137,11 @@ class _compostableWasteState extends State<compostableWaste> {
 
       // Fetch the user_id from SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? userId = prefs.getInt('user_id');
-      print(userId);
+      String? userId = prefs.getString('user_id');
 
       // Send data to API
       final response = await http.post(
-        Uri.parse('https://zerowasteheroapp.com/add/newtrash'),
+        Uri.parse(addTrash),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

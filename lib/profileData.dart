@@ -23,6 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', false);
     prefs.remove('username'); // Remove stored username
+    prefs.remove('user_id');
+    print(prefs.getString('username'));
+    print(prefs.getString('user_id'));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => SplashScreen()),
     );
@@ -43,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
     print(username);
+    print(prefs.getString('user_id'));
 
     final response = await http
         .get(Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'));
