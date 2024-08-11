@@ -97,6 +97,26 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
+
+      // ตรวจสอบความถูกต้องของ username
+      if (!_isValidUsername(username)) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Invalid Username'),
+            content: const Text(
+                'Username ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลขเท่านั้น'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
+
       String password = _hashPassword(_passwordController.text);
       String email = _emailController.text;
       String fullname = _fullnameController.text;
