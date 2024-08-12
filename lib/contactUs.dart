@@ -132,7 +132,7 @@ class _MyWidgetState extends State<contactUs> {
             const Align(
               alignment: Alignment.bottomCenter,
               child: Text(
-                'Zero Waste Hero version 1.0.0-beta',
+                'Zero Waste Hero version 1.0.1-dev',
               ),
             )
           ],
