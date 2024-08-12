@@ -117,18 +117,19 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       }
 
-      String password = _hashPassword(_passwordController.text);
+      String password = _passwordController.text;
       String email = _emailController.text;
       String fullname = _fullnameController.text;
       String lastname = _lastnameController.text;
       String gender = _gender!;
       String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
+      String dateReg = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
       // สร้าง JSON data
       Map<String, dynamic> data = {
         'username': username,
         'password': password,
-        'date_reg': DateTime.now().toIso8601String(),
+        'date_reg': dateReg,
         'email': email,
         'firstname': fullname,
         'lastname': lastname,

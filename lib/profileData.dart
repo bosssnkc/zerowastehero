@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zerowastehero/database/database_helper.dart';
+import 'package:zerowastehero/API/api.dart';
 import 'package:zerowastehero/database/db_crud.dart';
 import 'package:zerowastehero/session.dart';
 import 'package:http/http.dart' as http;
@@ -41,15 +40,22 @@ class _ProfilePageState extends State<ProfilePage> {
   //   }
   //   return userInfo;
   // }
+  void clearFields() {
+    _currentPasswordController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+  }
 
   Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
-    print(username);
-    print(prefs.getString('user_id'));
+    String token = prefs.getString('jwt_token') ?? '';
+    print(token);
 
-    final response = await http
-        .get(Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'));
+    final response = await http.get(
+      Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'),
+      headers: {'Authorization': '$token'},
+    );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> userInfo = jsonDecode(response.body);
@@ -57,10 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
     } else {
       return {'firstname': 'Unknown User', 'email': 'unknown@example.com'};
     }
-  }
-
-  String _hashPassword(String password) {
-    return md5.convert(utf8.encode(password)).toString();
   }
 
   Future<void> _editPassword() async {
@@ -75,15 +77,24 @@ class _ProfilePageState extends State<ProfilePage> {
     String username = prefs.getString('username') ?? '';
 
     if (username.isNotEmpty) {
-      final dbHelper = DatabaseHelper();
-      String currentPasswordHash =
-          _hashPassword(_currentPasswordController.text);
-      Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
+      String currentPassword = _currentPasswordController.text;
+      String newPassword = _passwordController.text;
 
-      if (userInfo != null && userInfo['password'] == currentPasswordHash) {
-        String newPasswordHash = _hashPassword(_passwordController.text);
-        await dbHelper.updatePassword(username, newPasswordHash);
+      final response = await http.post(
+        Uri.parse(updatePassword),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'username': username,
+          'currentPassword': currentPassword,
+          'newPassword': newPassword,
+        }),
+      );
+
+      if (response.statusCode == 200) {
         Navigator.of(context).pop();
+        clearFields(); //เรียกใช้ฟังก์ชันเคลียข้อมูลเมื่อทำการเปลี่ยนรหัสผ่านเรียบร้อย
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('เปลี่ยนรหัสผ่านสำเร็จ')),
         );
@@ -277,7 +288,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () {
+                          clearFields();
+                          Navigator.of(context).pop();
+                        },
                         child: const Text('ยกเลิก'),
                       ),
                       ElevatedButton(

@@ -101,6 +101,10 @@ class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
   final searchController = TextEditingController();
   bool isTextEmpty = true;
 
+  void searchClear() {
+    searchController.clear();
+  }
+
   Future<void> _searchTrash() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String trashsearch = searchController.text;
@@ -114,7 +118,8 @@ class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => searchPage()));
       });
-      prefs.setString('trashname', trashsearch);
+      await prefs.setString('trashname', trashsearch);
+      searchController.clear();
     }
   }
 
@@ -158,20 +163,22 @@ class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
                             borderRadius: BorderRadius.circular(24),
                           ))),
                   IconButton(
-                      onPressed: _searchTrash,
+                      onPressed: () {
+                        _searchTrash();
+                      },
                       icon: isTextEmpty ? Icon(Icons.list) : Icon(Icons.search))
                 ],
               )),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
-          Text(
+          const Text(
             'ขยะในประเภทต่างๆ',
             style: TextStyle(
               fontSize: 24,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(

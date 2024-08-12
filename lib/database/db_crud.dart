@@ -17,15 +17,15 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
   @override
   void initState() {
     super.initState();
-    _loadUsers();
+    // _loadUsers();
   }
 
-  Future<void> _loadUsers() async {
-    final users = await _dbHelper.getUsers();
-    setState(() {
-      _users = users;
-    });
-  }
+  // Future<void> _loadUsers() async {
+  //   final users = await _dbHelper.getUsers();
+  //   setState(() {
+  //     _users = users;
+  //   });
+  // }
 
   String _hashPassword(String password) {
     return md5.convert(utf8.encode(password)).toString();
@@ -105,7 +105,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                 await _dbHelper.updateUser(newUser);
               }
               Navigator.of(context).pop();
-              _loadUsers();
+              // _loadUsers();
             },
             child: Text(user == null ? 'Add' : 'Save'),
           ),
@@ -138,7 +138,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                   icon: Icon(Icons.delete),
                   onPressed: () async {
                     await _dbHelper.deleteUser(user['user_id']);
-                    _loadUsers();
+                    // _loadUsers();
                   },
                 ),
               ],
@@ -148,7 +148,6 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showForm(),
-        // onPressed: () => _dbHelper.printUser(),
         child: Icon(Icons.add),
       ),
     );

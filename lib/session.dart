@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
+// import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/API/api.dart';
@@ -61,9 +61,9 @@ class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  String _hashPassword(String password) {
-    return md5.convert(utf8.encode(password)).toString();
-  }
+  // String _hashPassword(String password) {
+  //   return md5.convert(utf8.encode(password)).toString();
+  // }
 
   // Future<void> _login() async {
   //   if (_formKey.currentState!.validate()) {
@@ -139,10 +139,14 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+        final token = response.headers['authorization'];
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username);
         await prefs.setString('user_id', responseData['user_id'].toString());
+        // await prefs.setString('jwt_token', responseData['token']);
+        await prefs.setString('jwt_token', token!);
+        print(token);
         print(responseData['user_id']);
         await prefs.setBool('isLoggedIn', true);
 

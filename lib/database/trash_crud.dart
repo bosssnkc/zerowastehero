@@ -21,15 +21,15 @@ class _manageTrashState extends State<manageTrash> {
   @override
   void initState() {
     super.initState();
-    _loadTrashs();
+    // _loadTrashs();
   }
 
-  Future<void> _loadTrashs() async {
-    final trashs = await _dbHelper.getTrash();
-    setState(() {
-      _trash = trashs;
-    });
-  }
+  // Future<void> _loadTrashs() async {
+  //   final trashs = await _dbHelper.getTrash();
+  //   setState(() {
+  //     _trash = trashs;
+  //   });
+  // }
 
   Future<void> _pickImage() async {
     final permissionStatus = await _requestPermission();
@@ -139,7 +139,7 @@ class _manageTrashState extends State<manageTrash> {
                 await _dbHelper.updateTrash(newTrash);
               }
               Navigator.of(context).pop();
-              _loadTrashs();
+              // _loadTrashs();
             },
             child: Text(trash == null ? 'Add' : 'Save'),
           ),
@@ -173,7 +173,7 @@ class _manageTrashState extends State<manageTrash> {
                   IconButton(
                     onPressed: () async {
                       await _dbHelper.deleteTrash(trash['trash_id']);
-                      _loadTrashs();
+                      // _loadTrashs();
                     },
                     icon: Icon(Icons.delete),
                   ),

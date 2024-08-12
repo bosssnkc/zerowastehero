@@ -103,43 +103,15 @@ class DatabaseHelper {
     });
   }
 
-  Future<Map<String, dynamic>?> getUser(String username) async {
-    Database db = await database;
-    List<Map<String, dynamic>> results = await db.query(
-      'users',
-      where: 'username = ?',
-      whereArgs: [username],
-    );
+  // Future<List<Map<String, dynamic>>> getUsers() async {
+  //   final db = await database;
+  //   return await db.query('users');
+  // }
 
-    if (results.isNotEmpty) {
-      return results.first;
-    }
-    return null;
-  }
-
-  Future<List<Map<String, dynamic>>> getUsers() async {
-    final db = await database;
-    return await db.query('users');
-  }
-
-  Future<List<Map<String, dynamic>>> getTrash() async {
-    final db = await database;
-    return await db.query('trash');
-  }
-
-  Future<List<Map<String, dynamic>>> getGeneralTrash(
-      String trashTypeSelector) async {
-    final db = await database;
-    return await db.query('trash',
-        where: 'trash_type = ?', whereArgs: [trashTypeSelector]);
-  }
-
-  Future<List<Map<String, dynamic>>> getGTrashItem(
-      String trashnamesearch) async {
-    final db = await database;
-    return await db.query('trash',
-        where: 'trash_name LIKE ?', whereArgs: ['%$trashnamesearch%']);
-  }
+  // Future<List<Map<String, dynamic>>> getTrash() async {
+  //   final db = await database;
+  //   return await db.query('trash');
+  // }
 
   Future<void> insertUser1(Map<String, dynamic> user) async {
     final db = await database;
@@ -165,16 +137,6 @@ class DatabaseHelper {
         where: 'trash_id = ?', whereArgs: [trash['trash_id']]);
   }
 
-  Future<void> updatePassword(String username, String newPassword) async {
-    final db = await database;
-    await db.update(
-      'users',
-      {'password': newPassword},
-      where: 'username = ?',
-      whereArgs: [username],
-    );
-  }
-
   Future<void> deleteUser(int id) async {
     final db = await database;
     await db.delete('users', where: 'user_id = ?', whereArgs: [id]);
@@ -183,14 +145,5 @@ class DatabaseHelper {
   Future<void> deleteTrash(int id) async {
     final db = await database;
     await db.delete('trash', where: 'trash_id = ?', whereArgs: [id]);
-  }
-
-  Future<void> printUser() async {
-    final db = await database;
-    List<Map<String, dynamic>> users = await db.query('users');
-
-    for (var user in users) {
-      print(user);
-    }
   }
 }
