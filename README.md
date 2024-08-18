@@ -1,6 +1,6 @@
 # zerowastehero
 
-A new Flutter project.
+Flutter how to waste garbage Project by Wittaya Sukchouy Information Technology and Digital Innovation Chandrakasem Rajabhat University
 
 ## Getting Started
 
