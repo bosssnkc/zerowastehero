@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/API/api.dart';
-import 'package:zerowastehero/database/db_crud.dart';
+import 'package:zerowastehero/database/manage_user.dart';
 import 'package:zerowastehero/session.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -46,16 +47,51 @@ class _ProfilePageState extends State<ProfilePage> {
     _confirmPasswordController.clear();
   }
 
+  // @override
+  // void initState() {
+  //   checkTokenAndRefresh();
+  //   super.initState();
+  // }
+
+  // Future<void> checkTokenAndRefresh() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? token = prefs.getString('jwt_token');
+
+  // }
+
   Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
-    String token = prefs.getString('jwt_token') ?? '';
+    String? token = prefs.getString('jwt_token');
     print(token);
 
     final response = await http.get(
       Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'),
       headers: {'Authorization': '$token'},
     );
+    if (token != null) {
+      bool isExpired = JwtDecoder.isExpired(token);
+
+      if (isExpired) {
+        // Token is expired, redirect to login page
+        prefs.setBool('isLoggedIn', false);
+        prefs.remove('username');
+        prefs.remove('user_id');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      } else {
+        // Token is still valid, proceed as normal
+      }
+    } else {
+      // No token found, redirect to login page
+      prefs.setBool('isLoggedIn', false);
+      prefs.remove('username');
+      prefs.remove('user_id');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
 
     if (response.statusCode == 200) {
       Map<String, dynamic> userInfo = jsonDecode(response.body);
