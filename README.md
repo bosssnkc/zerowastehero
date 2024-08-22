@@ -4,6 +4,8 @@ Flutter how to waste garbage Project by Wittaya Sukchouy Information Technology 
 
 ## Getting Started
 
+don't forget to create file in path android/secrets.properties and put Google Maps API key inside this file 
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:

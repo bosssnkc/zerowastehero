@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zerowastehero/API/api.dart';
+import 'package:zerowastehero/Routes/routes.dart';
 
 class recycleWaste extends StatefulWidget {
   const recycleWaste({super.key});
