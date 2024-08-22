@@ -1,10 +1,10 @@
 # zerowastehero
 
-Flutter how to waste garbage Project by Wittaya Sukchouy Information Technology and Digital Innovation Chandrakasem Rajabhat University
+Flutter how to waste garbage Project by Wittaya Sukchouy Information Technology and Digital Innovation Chandrakasem Rajabhat University.
 
 ## Getting Started
 
-don't forget to create file in path android/secrets.properties and put Google Maps API key inside this file 
+Don't forget to create file in path android/secrets.properties and put Google Maps API key inside this file. , Don't forget to add Route/routes.dart to add endpoint API
 
 This project is a starting point for a Flutter application.
 
