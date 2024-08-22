@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:zerowastehero/SettingsMenu.dart';
-import 'package:zerowastehero/contactUs.dart';
-import 'package:zerowastehero/eventNews.dart';
-import 'package:zerowastehero/profileData.dart';
-import 'package:zerowastehero/trashType.dart';
-import 'package:zerowastehero/wheretodump.dart';
+import 'package:zerowastehero/location/hazardous_dump_location.dart';
+import 'package:zerowastehero/setting_page.dart';
+import 'package:zerowastehero/contact_page.dart';
+import 'package:zerowastehero/event_news_page.dart';
+import 'package:zerowastehero/profile_page.dart';
+import 'package:zerowastehero/trash_type.dart';
+import 'package:zerowastehero/location/recycleshop_location.dart';
 
 //หน้าหลัก Main Menu ใช้เพื่อเชื่อมไปยังหน้าต่างอื่นๆ
 
@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
         const eventNewsPage(),
         const HomeScreen(),
         const OptionSetting(),
-        const contactUs(),
+        const ContactUs(),
       ];
 
   void _onItemTapped(int index) {
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => typeOfTrash(selectedTabIndex: tabIndex),
+        builder: (context) => TypeOfTrash(selectedTabIndex: tabIndex),
       ), //ฟังก์ชัน Navigate ไปยัง Tab เฉพาะ
     );
   }
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const recycleLocation())),
+                          builder: (context) => const RecycleLocation())),
                 ),
                 InkWell(
                   child: _buildGridItem(Icons.local_hospital,
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const hazardousLocation())),
+                          builder: (context) => const HazardousLocation())),
                 ),
               ],
             ),

@@ -42,7 +42,7 @@ class _hazadousWasteState extends State<hazadousWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/show/trashs?trash_type=ขยะอันตราย'),
+            'https://zerowasteheroapp.com/search/trashs?trash_type=ขยะอันตราย'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -102,7 +102,7 @@ class _hazadousWasteState extends State<hazadousWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch&trash_type=ขยะอันตราย'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -490,7 +490,16 @@ class _hazadousWasteState extends State<hazadousWaste>
                                 context: context,
                                 builder: (context) => AlertDialog(
                                       title: Text('รายละเอียดขยะ'),
-                                      content: Text(trash['trash_des']),
+                                      content: Column(
+                                        children: [
+                                          Text(trash['trash_name']),
+                                          trash['trash_pic'] != null
+                                              ? Image.memory(Uint8List.fromList(
+                                                  trash['trash_pic']))
+                                              : Icon(Icons.image),
+                                          Text(trash['trash_des'])
+                                        ],
+                                      ),
                                     )),
                           ),
                         );
@@ -511,6 +520,7 @@ class _hazadousWasteState extends State<hazadousWaste>
                                   title: Text('รายละเอียดขยะ'),
                                   content: Column(
                                     children: [
+                                      Text(trash['trash_name']),
                                       trash['trash_pic'] != null
                                           ? Image.memory(Uint8List.fromList(
                                               trash['trash_pic']))

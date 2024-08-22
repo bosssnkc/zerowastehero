@@ -8,14 +8,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/API/api.dart';
 
-class recycleWaste extends StatefulWidget {
-  const recycleWaste({super.key});
+class compostableWaste extends StatefulWidget {
+  const compostableWaste({super.key});
 
   @override
-  State<recycleWaste> createState() => _recycleWasteState();
+  State<compostableWaste> createState() => _compostableWasteState();
 }
 
-class _recycleWasteState extends State<recycleWaste>
+class _compostableWasteState extends State<compostableWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -42,7 +42,7 @@ class _recycleWasteState extends State<recycleWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/show/trashs?trash_type=ขยะรีไซเคิล'),
+            'https://zerowasteheroapp.com/search/trashs?trash_type=ขยะอินทรีย์'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -102,7 +102,7 @@ class _recycleWasteState extends State<recycleWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch&trash_type=ขยะอินทรีย์'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -240,7 +240,7 @@ class _recycleWasteState extends State<recycleWaste>
             backgroundColor: Colors.green[300],
             elevation: 0,
             title: const Text(
-              'ขยะรีไซเคิล',
+              'ขยะอินทรีย์',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -252,7 +252,7 @@ class _recycleWasteState extends State<recycleWaste>
                 text: 'รายละเอียด',
               ),
               Tab(
-                text: 'รายการขยะรีไซเคิล',
+                text: 'รายการขยะอินทรีย์',
               ),
             ]),
           ),
@@ -363,7 +363,7 @@ class _recycleWasteState extends State<recycleWaste>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'ขยะรีไซเคิล',
+            'ขยะอินทรีย์',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 24),
           ),
@@ -450,7 +450,7 @@ class _recycleWasteState extends State<recycleWaste>
               TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'ค้นหารายการขยะรีไซเคิล',
+                  hintText: 'ค้นหารายการขยะอินทรีย์',
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(color: Colors.black),
                     borderRadius: BorderRadius.circular(32),
@@ -465,7 +465,7 @@ class _recycleWasteState extends State<recycleWaste>
             height: 40,
           ),
           const Text(
-            'รายการขยะรีไซเคิล',
+            'รายการขยะอินทรีย์',
             style: TextStyle(fontSize: 24),
           ),
           // list รายการด้านล่าง
@@ -487,7 +487,16 @@ class _recycleWasteState extends State<recycleWaste>
                                 context: context,
                                 builder: (context) => AlertDialog(
                                       title: Text('รายละเอียดขยะ'),
-                                      content: Text(trash['trash_des']),
+                                      content: Column(
+                                        children: [
+                                          Text(trash['trash_name']),
+                                          trash['trash_pic'] != null
+                                              ? Image.memory(Uint8List.fromList(
+                                                  trash['trash_pic']))
+                                              : Icon(Icons.image),
+                                          Text(trash['trash_des'])
+                                        ],
+                                      ),
                                     )),
                           ),
                         );
@@ -508,6 +517,7 @@ class _recycleWasteState extends State<recycleWaste>
                                   title: Text('รายละเอียดขยะ'),
                                   content: Column(
                                     children: [
+                                      Text(trash['trash_name']),
                                       trash['trash_pic'] != null
                                           ? Image.memory(Uint8List.fromList(
                                               trash['trash_pic']))

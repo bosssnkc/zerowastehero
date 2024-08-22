@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageUsersPage extends StatefulWidget {
+  const ManageUsersPage({super.key});
+
   @override
   _ManageUsersPageState createState() => _ManageUsersPageState();
 }

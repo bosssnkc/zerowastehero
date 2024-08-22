@@ -1,6 +1,6 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,14 +8,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/API/api.dart';
 
-class generalWaste extends StatefulWidget {
-  const generalWaste({super.key});
+class recycleWaste extends StatefulWidget {
+  const recycleWaste({super.key});
 
   @override
-  State<generalWaste> createState() => _genralWasteState();
+  State<recycleWaste> createState() => _recycleWasteState();
 }
 
-class _genralWasteState extends State<generalWaste>
+class _recycleWasteState extends State<recycleWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -42,7 +42,7 @@ class _genralWasteState extends State<generalWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/show/trashs?trash_type=ขยะทั่วไป'),
+            'https://zerowasteheroapp.com/search/trashs?trash_type=ขยะรีไซเคิล'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -102,7 +102,7 @@ class _genralWasteState extends State<generalWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch&trash_type=ขยะรีไซเคิล'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -240,20 +240,21 @@ class _genralWasteState extends State<generalWaste>
             backgroundColor: Colors.green[300],
             elevation: 0,
             title: const Text(
-              'ขยะทั่วไป',
+              'ขยะรีไซเคิล',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            bottom: TabBar(
-              controller: _tabController,
-              tabs: [
-                Tab(text: 'รายละเอียด'),
-                Tab(text: 'รายการขยะทั่วไป'),
-              ],
-            ),
+            bottom: TabBar(controller: _tabController, tabs: [
+              Tab(
+                text: 'รายละเอียด',
+              ),
+              Tab(
+                text: 'รายการขยะรีไซเคิล',
+              ),
+            ]),
           ),
           body: TabBarView(
             controller: _tabController,
@@ -362,7 +363,7 @@ class _genralWasteState extends State<generalWaste>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'ขยะทั่วไป',
+            'ขยะรีไซเคิล',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 24),
           ),
@@ -436,90 +437,99 @@ class _genralWasteState extends State<generalWaste>
   }
 
   Widget listOfGeneral() {
+    //TODO list
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Stack(
-              alignment: Alignment.centerRight,
-              children: <Widget>[
-                TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: 'ค้นหารายการขยะทั่วไป',
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
-                      borderRadius: BorderRadius.circular(32),
-                    ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Stack(
+            alignment: Alignment.centerRight,
+            children: <Widget>[
+              TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  hintText: 'ค้นหารายการขยะรีไซเคิล',
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.black),
+                    borderRadius: BorderRadius.circular(32),
                   ),
                 ),
-                IconButton(
-                    onPressed: _searchfortrash, icon: const Icon(Icons.search))
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text(
-              'รายการขยะทั่วไป',
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _isSearching
-                ? _trashsearch.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _trashsearch.length,
-                        itemBuilder: (context, index) {
-                          final trash = _trashsearch[index];
-                          return Card(
-                            child: ListTile(
-                              title: Text(trash['trash_name']),
-                              subtitle: Text(trash['trash_type']),
-                              onTap: () => showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        title: Text('รายละเอียดขยะ'),
-                                        content: Text(trash['trash_des']),
-                                      )),
-                            ),
-                          );
-                        })
-                    : const Text('ไม่พบรายการขยะ')
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _trash.length,
-                    itemBuilder: (context, index) {
-                      final trash = _trash[index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(trash['trash_name']),
-                          subtitle: Text(trash['trash_type']),
-                          onTap: () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: Text('รายละเอียดขยะ'),
-                                    content: Column(
-                                      children: [
-                                        trash['trash_pic'] != null
-                                            ? Image.memory(Uint8List.fromList(
-                                                trash['trash_pic']))
-                                            : Icon(Icons.image),
-                                        Text(trash['trash_des'])
-                                      ],
-                                    ),
-                                  )),
-                        ),
-                      );
-                    },
-                  ),
-          ],
-        ),
+              ),
+              IconButton(
+                  onPressed: _searchfortrash, icon: const Icon(Icons.search))
+            ],
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          const Text(
+            'รายการขยะรีไซเคิล',
+            style: TextStyle(fontSize: 24),
+          ),
+          // list รายการด้านล่าง
+          const SizedBox(
+            height: 10,
+          ),
+          _isSearching
+              ? _trashsearch.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _trashsearch.length,
+                      itemBuilder: (context, index) {
+                        final trash = _trashsearch[index];
+                        return Card(
+                          child: ListTile(
+                            title: Text(trash['trash_name']),
+                            subtitle: Text(trash['trash_type']),
+                            onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      title: Text('รายละเอียดขยะ'),
+                                      content: Column(
+                                        children: [
+                                          Text(trash['trash_name']),
+                                          trash['trash_pic'] != null
+                                              ? Image.memory(Uint8List.fromList(
+                                                  trash['trash_pic']))
+                                              : Icon(Icons.image),
+                                          Text(trash['trash_des']),
+                                        ],
+                                      ),
+                                    )),
+                          ),
+                        );
+                      })
+                  : const Text('ไม่พบรายการขยะ')
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _trash.length,
+                  itemBuilder: (context, index) {
+                    final trash = _trash[index];
+                    return Card(
+                      child: ListTile(
+                        title: Text(trash['trash_name']),
+                        subtitle: Text(trash['trash_type']),
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: Text('รายละเอียดขยะ'),
+                                  content: Column(
+                                    children: [
+                                      Text(trash['trash_name']),
+                                      trash['trash_pic'] != null
+                                          ? Image.memory(Uint8List.fromList(
+                                              trash['trash_pic']))
+                                          : Icon(Icons.image),
+                                      Text(trash['trash_des'])
+                                    ],
+                                  ),
+                                )),
+                      ),
+                    );
+                  }),
+        ],
       ),
     );
   }

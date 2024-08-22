@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zerowastehero/trashs/compostableWaste.dart';
-import 'package:zerowastehero/trashs/generalWaste.dart';
-import 'package:zerowastehero/trashs/hazadousWaste.dart';
-import 'package:zerowastehero/trashs/recycleWaste.dart';
-import 'package:zerowastehero/searchPage.dart';
+import 'package:zerowastehero/trashs/compostable_waste_page.dart';
+import 'package:zerowastehero/trashs/general_waste_page.dart';
+import 'package:zerowastehero/trashs/hazadous_waste_page.dart';
+import 'package:zerowastehero/trashs/recycle_waste_page.dart';
+import 'package:zerowastehero/search_page.dart';
 
-class typeOfTrash extends StatefulWidget {
+class TypeOfTrash extends StatefulWidget {
   final int selectedTabIndex;
-  const typeOfTrash({super.key, this.selectedTabIndex = 0});
+  const TypeOfTrash({super.key, this.selectedTabIndex = 0});
 
   @override
-  State<typeOfTrash> createState() => _typeOfTrashState();
+  State<TypeOfTrash> createState() => _TypeOfTrashState();
 }
 
-class _typeOfTrashState extends State<typeOfTrash>
+class _TypeOfTrashState extends State<TypeOfTrash>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String name;
@@ -79,7 +79,7 @@ class _typeOfTrashState extends State<typeOfTrash>
                     child: TabBarView(
                       controller: _tabController,
                       children: const <Widget>[
-                        fourTypeOfTrash(),
+                        FourTypeOfTrash(),
                         howToSortingPage(),
                       ],
                     ),
@@ -90,14 +90,14 @@ class _typeOfTrashState extends State<typeOfTrash>
   }
 }
 
-class fourTypeOfTrash extends StatefulWidget {
-  const fourTypeOfTrash({super.key});
+class FourTypeOfTrash extends StatefulWidget {
+  const FourTypeOfTrash({super.key});
 
   @override
-  State<fourTypeOfTrash> createState() => _fourTypeOfTrashState();
+  State<FourTypeOfTrash> createState() => _FourTypeOfTrashState();
 }
 
-class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
+class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
   final searchController = TextEditingController();
   bool isTextEmpty = true;
 
@@ -110,13 +110,13 @@ class _fourTypeOfTrashState extends State<fourTypeOfTrash> {
     String trashsearch = searchController.text;
     if (trashsearch.isEmpty) {
       setState(() {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => searchPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SearchPage()));
       });
     } else {
       setState(() {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => searchPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SearchPage()));
       });
       await prefs.setString('trashname', trashsearch);
       searchController.clear();

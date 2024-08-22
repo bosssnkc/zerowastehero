@@ -1,18 +1,19 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-class searchPage extends StatefulWidget {
-  const searchPage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
-  State<searchPage> createState() => _searchPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _searchPageState extends State<searchPage> {
+class _SearchPageState extends State<SearchPage> {
   List<dynamic> _trash = [];
 
   @override
@@ -42,7 +43,7 @@ class _searchPageState extends State<searchPage> {
       // final search = await _dbHelper.getGTrashItem(trashnamesearch);
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?name=$trashnamesearch'),
+            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -102,6 +103,22 @@ class _searchPageState extends State<searchPage> {
                     ),
                   ],
                 ),
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text('รายละเอียดขยะ'),
+                          content: Column(
+                            children: [
+                              Text(trash['trash_name']),
+                              trash['trash_pic'] != null
+                                  ? Image.memory(
+                                      Uint8List.fromList(trash['trash_pic']))
+                                  : Icon(Icons.image),
+                              Text(trash['trash_des']),
+                              const Text('วิธีการกำจัด')
+                            ],
+                          ),
+                        )),
               ),
             );
           },

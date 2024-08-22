@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class contactUs extends StatefulWidget {
-  const contactUs({super.key});
+class ContactUs extends StatefulWidget {
+  const ContactUs({super.key});
 
   @override
-  State<contactUs> createState() => _MyWidgetState();
+  State<ContactUs> createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<contactUs> {
+class _MyWidgetState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

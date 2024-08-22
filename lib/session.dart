@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-// import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/API/api.dart';
 import 'package:zerowastehero/database/manage_user.dart';
-import 'package:zerowastehero/mainMenu.dart';
+import 'package:zerowastehero/main_menu.dart';
 import 'package:zerowastehero/register.dart';
 
-// import 'database/database_helper.dart';
 import 'package:http/http.dart' as http;
 
 //หน้าล็อกอินและจัดเก็บข้อมูลการล็อกอิน
@@ -60,68 +58,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  // String _hashPassword(String password) {
-  //   return md5.convert(utf8.encode(password)).toString();
-  // }
-
-  // Future<void> _login() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     String username = _usernameController.text;
-  //     String password = _hashPassword(_passwordController.text);
-
-  //     final dbHelper = DatabaseHelper();
-  //     final user = await dbHelper.getUser(username);
-
-  //     if (user == null) {
-  //       // แสดง AlertDialog เมื่อไม่พบชื่อผู้ใช้
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: Text('ข้อผิดพลาด'),
-  //             content: Text('ไม่พบชื่อผู้ใช้'),
-  //             actions: [
-  //               TextButton(
-  //                 child: Text('ตกลง'),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else if (user['password'] != password) {
-  //       showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             title: Text('ข้อผิดพลาด'),
-  //             content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
-  //             actions: [
-  //               TextButton(
-  //                 child: Text('ตกลง'),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     } else {
-  //       SharedPreferences prefs = await SharedPreferences.getInstance();
-  //       await prefs.setString('username',
-  //           username); //ส่งค่าชื่อไอดีเพื่อไปแสดงผลข้อมูลในหน้าบัญชีผู้ใช้
-  //       prefs.setBool('isLoggedIn',
-  //           true); //เปลี่ยนค่าล็อกอินให้เป็น True เมื่อทำงานสมบูรณ์
-  //       Navigator.of(context).pushReplacement(
-  //         MaterialPageRoute(builder: (context) => MainPage()),
-  //       );
-  //     }
-  //   }
-  // }
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
