@@ -3,7 +3,7 @@
 Flutter how to waste garbage Project by Wittaya Sukchouy Information Technology and Digital Innovation Chandrakasem Rajabhat University.
 
 ## Getting Started
-First thing first using flutter pub get to get all dependencies
+First thing first using `flutter pub get` to get all dependencies
 
 Don't forget to create file in path android/secrets.properties and put Google Maps API key inside this file. , Don't forget to add Route/routes.dart to add endpoint API
 
