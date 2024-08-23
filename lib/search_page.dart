@@ -105,18 +105,65 @@ class _SearchPageState extends State<SearchPage> {
                 onTap: () => showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                          title: Text('รายละเอียดขยะ'),
-                          content: Column(
-                            children: [
-                              Text(trash['trash_name']),
-                              trash['trash_pic'] != null
-                                  ? Image.memory(
-                                      Uint8List.fromList(trash['trash_pic']))
-                                  : Icon(Icons.image),
-                              Text(trash['trash_des']),
-                              const Text('วิธีการกำจัด')
-                            ],
+                          insetPadding: const EdgeInsets.all(16),
+                          title: const Text(
+                            'รายละเอียดขยะ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          content: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 600,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  trash['trash_name'],
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: trash['trash_pic'] != null
+                                        ? Image.memory(Uint8List.fromList(
+                                            trash['trash_pic']))
+                                        : Icon(Icons.image),
+                                  ),
+                                ),
+                                const Text(
+                                  'รายละเอียดขยะ',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(trash['trash_des']),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                const Text(
+                                  'วิธีการกำจัด',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 300,
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                                onPressed: Navigator.of(context).pop,
+                                child: const Text('ปิด'))
+                          ],
                         )),
               ),
             );

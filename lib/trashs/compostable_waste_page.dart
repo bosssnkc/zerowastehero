@@ -265,24 +265,21 @@ class _compostableWasteState extends State<compostableWaste>
           floatingActionButton: _tabController!.index == 1
               ? FloatingActionButton(
                   onPressed: () {
-                    showModalBottomSheet(
+                    showDialog(
                       context: context,
-                      builder: (context) => Center(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                      builder: (_) => AlertDialog(
+                        insetPadding: EdgeInsets.all(16),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
+                        content: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 300,
                           child: Form(
                             key: _formValidator,
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const Text(
-                                  'เพิ่มรายการขยะชิ้นใหม่',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 16,
-                                ),
                                 TextFormField(
                                   controller: trashnameController,
                                   validator: (value) {
@@ -300,6 +297,10 @@ class _compostableWasteState extends State<compostableWaste>
                                   height: 8,
                                 ),
                                 DropdownButtonFormField<String>(
+                                  decoration: const InputDecoration(
+                                      labelText: 'เลือกประเภทขยะ',
+                                      hintText: 'ขยะอินทรีย์',
+                                      border: OutlineInputBorder()),
                                   value: trashtypePicker,
                                   items: [
                                     'ขยะทั่วไป',
@@ -340,10 +341,13 @@ class _compostableWasteState extends State<compostableWaste>
                                       hintText: 'รายละเอียดขยะ',
                                       border: OutlineInputBorder()),
                                 ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
                                 ElevatedButton(
                                     onPressed: _pickImage,
                                     child: Text('เพิ่มรูปภาพ')),
-                                TextButton(
+                                ElevatedButton(
                                     onPressed: _trashRegister,
                                     child: const Text('ตกลง'))
                               ],
@@ -360,180 +364,298 @@ class _compostableWasteState extends State<compostableWaste>
   }
 
   Widget detailedGeneral() {
-    return SingleChildScrollView(
-        child: Padding(
+    return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'ขยะอินทรีย์',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 24),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-                splashColor: Colors.amber,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.tab,
-                            size: 50,
-                          ),
-                          Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ))),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'วิธีการกำจัด',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 24),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-                splashColor: Colors.blue,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.table_bar,
-                            size: 50,
-                          ),
-                          Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ))),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'ขยะอินทรีย์',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                  splashColor: Colors.amber,
+                  onTap: () {},
+                  child: const SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.tab,
+                              size: 50,
+                            ),
+                            Text(
+                              'ข้อมูล',
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ))),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'วิธีการกำจัด',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                  splashColor: Colors.blue,
+                  onTap: () {},
+                  child: const SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.table_bar,
+                              size: 50,
+                            ),
+                            Text(
+                              'ข้อมูล',
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ))),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   Widget listOfGeneral() {
     //TODO list
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Stack(
-            alignment: Alignment.centerRight,
-            children: <Widget>[
-              TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'ค้นหารายการขยะอินทรีย์',
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.black),
-                    borderRadius: BorderRadius.circular(32),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Stack(
+              alignment: Alignment.centerRight,
+              children: <Widget>[
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: 'ค้นหารายการขยะอินทรีย์',
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(32),
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                  onPressed: _searchfortrash, icon: const Icon(Icons.search))
-            ],
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          const Text(
-            'รายการขยะอินทรีย์',
-            style: TextStyle(fontSize: 24),
-          ),
-          // list รายการด้านล่าง
-          const SizedBox(
-            height: 10,
-          ),
-          _isSearching
-              ? _trashsearch.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _trashsearch.length,
-                      itemBuilder: (context, index) {
-                        final trash = _trashsearch[index];
-                        return Card(
-                          child: ListTile(
-                            title: Text(trash['trash_name']),
-                            subtitle: Text(trash['trash_type']),
-                            onTap: () => showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                      title: Text('รายละเอียดขยะ'),
-                                      content: Column(
+                IconButton(
+                    onPressed: _searchfortrash, icon: const Icon(Icons.search))
+              ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            const Text(
+              'รายการขยะอินทรีย์',
+              style: TextStyle(fontSize: 24),
+            ),
+            // list รายการด้านล่าง
+            const SizedBox(
+              height: 10,
+            ),
+            _isSearching
+                ? _trashsearch.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _trashsearch.length,
+                        itemBuilder: (context, index) {
+                          final trash = _trashsearch[index];
+                          return Card(
+                            child: ListTile(
+                              title: Text(trash['trash_name']),
+                              subtitle: Text(trash['trash_type']),
+                              onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        insetPadding: const EdgeInsets.all(16),
+                                        title: const Text(
+                                          'รายละเอียดขยะ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        content: SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 600,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                trash['trash_name'],
+                                                style: const TextStyle(
+                                                    fontSize: 18),
+                                              ),
+                                              const SizedBox(
+                                                height: 16,
+                                              ),
+                                              Card(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: trash['trash_pic'] !=
+                                                          null
+                                                      ? Image.memory(
+                                                          Uint8List.fromList(
+                                                              trash[
+                                                                  'trash_pic']))
+                                                      : Icon(Icons.image),
+                                                ),
+                                              ),
+                                              const Text(
+                                                'รายละเอียดขยะ',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Card(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child:
+                                                      Text(trash['trash_des']),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 16,
+                                              ),
+                                              const Text(
+                                                'วิธีการกำจัด',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 300,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed:
+                                                  Navigator.of(context).pop,
+                                              child: const Text('ปิด'))
+                                        ],
+                                      )),
+                            ),
+                          );
+                        })
+                    : const Text('ไม่พบรายการขยะ')
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _trash.length,
+                    itemBuilder: (context, index) {
+                      final trash = _trash[index];
+                      return Card(
+                        child: ListTile(
+                          title: Text(trash['trash_name']),
+                          subtitle: Text(trash['trash_type']),
+                          onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    insetPadding: const EdgeInsets.all(16),
+                                    title: const Text(
+                                      'รายละเอียดขยะ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    content: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 600,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(trash['trash_name']),
-                                          trash['trash_pic'] != null
-                                              ? Image.memory(Uint8List.fromList(
-                                                  trash['trash_pic']))
-                                              : Icon(Icons.image),
-                                          Text(trash['trash_des'])
+                                          Text(
+                                            trash['trash_name'],
+                                            style:
+                                                const TextStyle(fontSize: 18),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: trash['trash_pic'] != null
+                                                  ? Image.memory(
+                                                      Uint8List.fromList(
+                                                          trash['trash_pic']))
+                                                  : Icon(Icons.image),
+                                            ),
+                                          ),
+                                          const Text(
+                                            'รายละเอียดขยะ',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(trash['trash_des']),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          const Text(
+                                            'วิธีการกำจัด',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(
+                                            height: 300,
+                                          ),
                                         ],
                                       ),
-                                    )),
-                          ),
-                        );
-                      })
-                  : const Text('ไม่พบรายการขยะ')
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _trash.length,
-                  itemBuilder: (context, index) {
-                    final trash = _trash[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(trash['trash_name']),
-                        subtitle: Text(trash['trash_type']),
-                        onTap: () => showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  title: Text('รายละเอียดขยะ'),
-                                  content: Column(
-                                    children: [
-                                      Text(trash['trash_name']),
-                                      trash['trash_pic'] != null
-                                          ? Image.memory(Uint8List.fromList(
-                                              trash['trash_pic']))
-                                          : Icon(Icons.image),
-                                      Text(trash['trash_des'])
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: Navigator.of(context).pop,
+                                          child: const Text('ปิด'))
                                     ],
-                                  ),
-                                )),
-                      ),
-                    );
-                  }),
-        ],
+                                  )),
+                        ),
+                      );
+                    }),
+          ],
+        ),
       ),
     );
   }
