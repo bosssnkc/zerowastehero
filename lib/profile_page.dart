@@ -31,33 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Future<Map<String, dynamic>> _getUserInfo() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String username = prefs.getString('username') ?? 'Unknown User';
-  //   final dbHelper = DatabaseHelper();
-  //   Map<String, dynamic>? userInfo = await dbHelper.getUser(username);
-  //   if (userInfo == null) {
-  //     return {'fullname': 'Unknown User', 'email': 'unknown@example.com'};
-  //   }
-  //   return userInfo;
-  // }
   void clearFields() {
     _currentPasswordController.clear();
     _passwordController.clear();
     _confirmPasswordController.clear();
   }
-
-  // @override
-  // void initState() {
-  //   checkTokenAndRefresh();
-  //   super.initState();
-  // }
-
-  // Future<void> checkTokenAndRefresh() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? token = prefs.getString('jwt_token');
-
-  // }
 
   Future<Map<String, dynamic>> _getUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -66,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
     print(token);
 
     final response = await http.get(
-      Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'),
+      Uri.parse('$getuserinfo$username'),
       headers: {'Authorization': '$token'},
     );
     if (token != null) {
@@ -77,27 +55,62 @@ class _ProfilePageState extends State<ProfilePage> {
         prefs.setBool('isLoggedIn', false);
         prefs.remove('username');
         prefs.remove('user_id');
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginPage()),
-        );
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Session หมดอายุ'),
+              content: Text('Session กรุณาทำการล็อกอินใหม่'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('ตกลง'),
+                ),
+              ],
+            ),
+          );
+        }
       } else {
         // Token is still valid, proceed as normal
       }
     } else {
       // No token found, redirect to login page
+      print('เข้าสู่เงื่อนไขไม่มีโทเคน');
       prefs.setBool('isLoggedIn', false);
       prefs.remove('username');
       prefs.remove('user_id');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('พบการเข้าถึงที่ไม่ถูกต้อง'),
+            content: Text('การเข้าถึงไม่ถูกต้อง กรุณาทำการล็อกอินใหม่'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('ตกลง'),
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     if (response.statusCode == 200) {
       Map<String, dynamic> userInfo = jsonDecode(response.body);
       return userInfo;
     } else {
-      return {'firstname': 'Unknown User', 'email': 'unknown@example.com'};
+      return {
+        'firstname': 'Unknown firstname',
+        'lastname': 'Unknown lastname',
+        'email': 'unknown@example.com'
+      };
     }
   }
 

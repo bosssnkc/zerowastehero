@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:zerowastehero/Routes/routes.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -28,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
     if (trashnamesearch == '') {
       //
       final response = await http.get(
-        Uri.parse('https://zerowasteheroapp.com/search/alltrashs'),
+        Uri.parse(searchalltrash),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -40,10 +41,8 @@ class _SearchPageState extends State<SearchPage> {
         });
       }
     } else {
-      // final search = await _dbHelper.getGTrashItem(trashnamesearch);
       final response = await http.get(
-        Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch'),
+        Uri.parse('$searchtrashs?trash_name=$trashnamesearch'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

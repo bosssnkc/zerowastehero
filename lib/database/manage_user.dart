@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zerowastehero/Routes/routes.dart';
 
 class ManageUsersPage extends StatefulWidget {
   const ManageUsersPage({super.key});
@@ -30,7 +31,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     String token = prefs.getString('jwt_token') ?? '';
 
     final response = await http.get(
-      Uri.parse('https://zerowasteheroapp.com/getuserinfo/$username'),
+      Uri.parse('$getuserinfo$username'),
       headers: {'Authorization': '$token'},
     );
 
@@ -60,7 +61,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     };
 
     final response = await http.put(
-      Uri.parse('https://zerowasteheroapp.com/update/userinfo/$username'),
+      Uri.parse('$update_userinfo$username'),
       headers: {'Authorization': token, 'Content-Type': 'application/json'},
       body: jsonEncode(updatedInfo),
     );

@@ -41,8 +41,7 @@ class _compostableWasteState extends State<compostableWaste>
   Future<void> _loadTrashs() async {
     try {
       final response = await http.get(
-        Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?trash_type=ขยะอินทรีย์'),
+        Uri.parse('$searchtrashs?trash_type=ขยะอินทรีย์'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -102,7 +101,7 @@ class _compostableWasteState extends State<compostableWaste>
     try {
       final response = await http.get(
         Uri.parse(
-            'https://zerowasteheroapp.com/search/trashs?trash_name=$trashnamesearch&trash_type=ขยะอินทรีย์'),
+            '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะอินทรีย์'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -270,12 +269,17 @@ class _compostableWasteState extends State<compostableWaste>
                       context: context,
                       builder: (context) => Center(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(32, 8, 32, 16),
+                          padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
                           child: Form(
                             key: _formValidator,
                             child: Column(
                               children: [
-                                const Text('data'),
+                                const Text(
+                                  'เพิ่มรายการขยะชิ้นใหม่',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 const SizedBox(
                                   height: 16,
                                 ),
