@@ -354,12 +354,30 @@ class _compostableWasteState extends State<compostableWaste>
                                     _imageFile != null
                                         ? Column(
                                             children: [
-                                              Image.file(
-                                                _imageFile!,
-                                                width: 100,
-                                                height: 100,
-                                                fit: BoxFit.cover,
-                                              ),
+                                              Stack(children: [
+                                                Image.file(
+                                                  _imageFile!,
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 200,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _imageFile = null;
+                                                        _image = null;
+                                                      });
+                                                    },
+                                                    icon:
+                                                        const Icon(Icons.close),
+                                                  ),
+                                                ),
+                                              ]),
                                               ElevatedButton(
                                                   onPressed: () async {
                                                     await _pickImage();
