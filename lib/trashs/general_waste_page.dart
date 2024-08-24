@@ -270,123 +270,136 @@ class _genralWasteState extends State<generalWaste>
               ? FloatingActionButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (_) => StatefulBuilder(
-                              builder: (context, setState) => AlertDialog(
-                                insetPadding: EdgeInsets.all(16),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
-                                content: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 400,
-                                  child: Form(
-                                    key: _formValidator,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          TextFormField(
-                                            controller: trashnameController,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'กรอกชื่อขยะ';
-                                              }
-                                              return null;
-                                            },
-                                            decoration: const InputDecoration(
-                                                labelText: 'กรอกชื่อขยะ',
-                                                hintText: 'ชื่อขยะ',
-                                                border: OutlineInputBorder()),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          DropdownButtonFormField<String>(
-                                            decoration: const InputDecoration(
-                                                labelText: 'เลือกประเภทขยะ',
-                                                hintText: 'ขยะทั่วไป',
-                                                border: OutlineInputBorder()),
-                                            value: trashtypePicker,
-                                            items: [
-                                              'ขยะทั่วไป',
-                                              'ขยะอินทรีย์',
-                                              'ขยะรีไซเคิล',
-                                              'ขยะอันตราย'
-                                            ]
-                                                .map(
-                                                    (label) => DropdownMenuItem(
-                                                          child: Text(label),
-                                                          value: label,
-                                                        ))
-                                                .toList(),
-                                            onChanged: (value) {
-                                              setState(() {
-                                                trashtypePicker = value;
-                                              });
-                                            },
-                                            validator: (value) {
-                                              if (value == null) {
-                                                return 'กรุณาเลือกชนิดของขยะ';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          TextFormField(
-                                            controller: trashdesController,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'กรอกรายละเอียดขยะ';
-                                              }
-                                              return null;
-                                            },
-                                            decoration: const InputDecoration(
-                                                labelText: 'กรอกรายละเอียดขยะ',
-                                                hintText: 'รายละเอียดขยะ',
-                                                border: OutlineInputBorder()),
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          _imageFile != null
-                                              ? Image.file(
-                                                  _imageFile!,
-                                                  width: 24,
-                                                  height: 24,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : const Text('ไม่ได้เลือกรูปภาพ'),
-                                          ElevatedButton(
-                                              onPressed: _pickImage,
-                                              child: const Text('เพิ่มรูปภาพ')),
-                                        ],
-                                      ),
+                      context: context,
+                      builder: (_) => StatefulBuilder(
+                        builder: (context, setState) => AlertDialog(
+                          insetPadding: EdgeInsets.all(16),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
+                          content: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 400,
+                            child: Form(
+                              key: _formValidator,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    TextFormField(
+                                      controller: trashnameController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรอกชื่อขยะ';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: const InputDecoration(
+                                          labelText: 'กรอกชื่อขยะ',
+                                          hintText: 'ชื่อขยะ',
+                                          border: OutlineInputBorder()),
                                     ),
-                                  ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    DropdownButtonFormField<String>(
+                                      decoration: const InputDecoration(
+                                          labelText: 'เลือกประเภทขยะ',
+                                          hintText: 'ขยะทั่วไป',
+                                          border: OutlineInputBorder()),
+                                      value: trashtypePicker,
+                                      items: [
+                                        'ขยะทั่วไป',
+                                        'ขยะอินทรีย์',
+                                        'ขยะรีไซเคิล',
+                                        'ขยะอันตราย'
+                                      ]
+                                          .map((label) => DropdownMenuItem(
+                                                child: Text(label),
+                                                value: label,
+                                              ))
+                                          .toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          trashtypePicker = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'กรุณาเลือกชนิดของขยะ';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: trashdesController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'กรอกรายละเอียดขยะ';
+                                        }
+                                        return null;
+                                      },
+                                      decoration: const InputDecoration(
+                                          labelText: 'กรอกรายละเอียดขยะ',
+                                          hintText: 'รายละเอียดขยะ',
+                                          border: OutlineInputBorder()),
+                                    ),
+                                    const SizedBox(
+                                      height: 16,
+                                    ),
+                                    _imageFile != null
+                                        ? Column(
+                                            children: [
+                                              Image.file(
+                                                _imageFile!,
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              ElevatedButton(
+                                                  onPressed: () async {
+                                                    await _pickImage();
+                                                    setState(() {});
+                                                  },
+                                                  child: const Text(
+                                                      'เปลี่ยนรูปภาพ'))
+                                            ],
+                                          )
+                                        : Column(children: [
+                                            const Text('ไม่ได้เลือกรูปภาพ'),
+                                            ElevatedButton(
+                                                onPressed: () async {
+                                                  await _pickImage();
+                                                  setState(() {});
+                                                },
+                                                child:
+                                                    const Text('เพิ่มรูปภาพ'))
+                                          ]),
+                                  ],
                                 ),
-                                actions: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        foregroundColor: Colors.white),
-                                    onPressed: _trashRegister,
-                                    child: const Text(
-                                      'เพิ่มรายการ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ],
                               ),
-                            ));
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white),
+                              onPressed: _trashRegister,
+                              child: const Text(
+                                'เพิ่มรายการ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                   child: Icon(Icons.add),
                 )

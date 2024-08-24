@@ -276,7 +276,7 @@ class _recycleWasteState extends State<recycleWaste>
                           insetPadding: EdgeInsets.all(16),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
-                          content: Container(
+                          content: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 400,
                             child: Form(
@@ -352,16 +352,33 @@ class _recycleWasteState extends State<recycleWaste>
                                       height: 16,
                                     ),
                                     _imageFile != null
-                                        ? Image.file(
-                                            _imageFile!,
-                                            width: 24,
-                                            height: 24,
-                                            fit: BoxFit.cover,
+                                        ? Column(
+                                            children: [
+                                              Image.file(
+                                                _imageFile!,
+                                                width: 100,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              ElevatedButton(
+                                                  onPressed: () async {
+                                                    await _pickImage();
+                                                    setState(() {});
+                                                  },
+                                                  child: const Text(
+                                                      'เปลี่ยนรูปภาพ'))
+                                            ],
                                           )
-                                        : const Text('ไม่ได้เลือกรูปภาพ'),
-                                    ElevatedButton(
-                                        onPressed: _pickImage,
-                                        child: Text('เพิ่มรูปภาพ')),
+                                        : Column(children: [
+                                            const Text('ไม่ได้เลือกรูปภาพ'),
+                                            ElevatedButton(
+                                                onPressed: () async {
+                                                  await _pickImage();
+                                                  setState(() {});
+                                                },
+                                                child:
+                                                    const Text('เพิ่มรูปภาพ'))
+                                          ]),
                                   ],
                                 ),
                               ),
