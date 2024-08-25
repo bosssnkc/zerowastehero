@@ -20,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    Future.delayed(const Duration(seconds: 2), () {
+      _checkLoginStatus();
+    });
   }
 
   Future<void> _checkLoginStatus() async {
@@ -28,20 +30,32 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     if (isLoggedIn) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => MainPage()),
+        MaterialPageRoute(builder: (context) => const MainPage()),
       ); // เมื่อล็อกอินสมบูรณ์แล้วจะทำการเปลี่ยนหน้าไปยังหน้าหลัก
     } else {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       ); // หากล็อกอินไม่สมบูรณ์จะกลับไปยังหน้าล็อกอินหน้าเดิม
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.green[100],
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Colors.green,
+              ),
+              Text('Loading'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -82,8 +96,6 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('user_id', responseData['user_id'].toString());
         // await prefs.setString('jwt_token', responseData['token']);
         await prefs.setString('jwt_token', token!);
-        print(token);
-        print(responseData['user_id']);
         await prefs.setBool('isLoggedIn', true);
 
         Navigator.of(context).pushReplacement(
@@ -98,8 +110,10 @@ class _LoginPageState extends State<LoginPage> {
               title: Text('ข้อผิดพลาด'),
               content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
               actions: [
-                TextButton(
-                  child: Text('ตกลง'),
+                ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(foregroundColor: Colors.black),
+                  child: const Text('ตกลง'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -124,7 +138,13 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.green[300],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green, Colors.lightGreen.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
+        ),
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -202,18 +222,24 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: _login,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white),
+                      child: const Text(
+                        'เข้าสู่ระบบ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      child: const Text('เข้าสู่ระบบ'),
                     ),
                     ElevatedButton(
                       onPressed: () {
+                        _usernameController.clear();
+                        _passwordController.clear();
                         // ฟังก์ชันยกเลิกหรือล้างฟอร์มด้านบน
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                      ),
-                      child: const Text('ยกเลิก'),
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white),
+                      child: const Text('ยกเลิก',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),

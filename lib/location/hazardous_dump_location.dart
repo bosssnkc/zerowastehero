@@ -62,6 +62,13 @@ class _hazardousLocationState extends State<HazardousLocation> {
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green, Colors.lightGreen.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
+        ),
         elevation: 0,
         backgroundColor: Colors.green[300],
         title: const Text(

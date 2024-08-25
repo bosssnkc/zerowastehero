@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:typed_data';
@@ -174,11 +173,13 @@ class _genralWasteState extends State<generalWaste>
         Navigator.of(context).pop();
       } else {
         // Handle error
+        String message =
+            'Error ${response.statusCode}: ${response.reasonPhrase}';
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to register trash.'),
+            title: const Text('Error'),
+            content: Text(message),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -201,6 +202,13 @@ class _genralWasteState extends State<generalWaste>
           _imageFile = File(pickedFile.path);
           _image = bytes;
         });
+        final fileSizeInBytes = bytes.length;
+        final fileSizeInKB = fileSizeInBytes / 1024;
+        final fileSizeInMB = fileSizeInKB / 1024;
+
+        print('File size: $fileSizeInBytes bytes');
+        print('File size: ${fileSizeInKB.toStringAsFixed(2)} KB');
+        print('File size: ${fileSizeInMB.toStringAsFixed(2)} MB');
       }
     }
   }
@@ -241,6 +249,13 @@ class _genralWasteState extends State<generalWaste>
       child: Scaffold(
           backgroundColor: Colors.green[100],
           appBar: AppBar(
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.green, Colors.lightGreen.shade300],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight)),
+            ),
             backgroundColor: Colors.green[300],
             elevation: 0,
             title: const Text(
@@ -253,7 +268,7 @@ class _genralWasteState extends State<generalWaste>
             ),
             bottom: TabBar(
               controller: _tabController,
-              tabs: [
+              tabs: const [
                 Tab(text: 'รายละเอียด'),
                 Tab(text: 'รายการขยะทั่วไป'),
               ],
@@ -262,7 +277,7 @@ class _genralWasteState extends State<generalWaste>
           body: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              detailedGeneral(),
+              const DetailedGeneralWaste(),
               listOfGeneral(),
             ],
           ),
@@ -273,7 +288,7 @@ class _genralWasteState extends State<generalWaste>
                       context: context,
                       builder: (_) => StatefulBuilder(
                         builder: (context, setState) => AlertDialog(
-                          insetPadding: EdgeInsets.all(16),
+                          insetPadding: const EdgeInsets.all(16),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
                           content: SizedBox(
@@ -423,87 +438,6 @@ class _genralWasteState extends State<generalWaste>
                 )
               : null),
     );
-  }
-
-  Widget detailedGeneral() {
-    return SingleChildScrollView(
-        child: Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Text(
-            'ขยะทั่วไป',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 24),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-                splashColor: Colors.amber,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.tab,
-                            size: 50,
-                          ),
-                          Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ))),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'วิธีการกำจัด',
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 24),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Card(
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-                splashColor: Colors.blue,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.table_bar,
-                            size: 50,
-                          ),
-                          Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ))),
-          ),
-        ],
-      ),
-    ));
   }
 
   Widget listOfGeneral() {
@@ -735,22 +669,95 @@ class _genralWasteState extends State<generalWaste>
       ),
     );
   }
+}
 
-  Widget listGeneralWasteItem(
-    String nameoflist,
-  ) {
-    return Card(
-      shadowColor: Colors.black,
-      elevation: 2,
-      child: ListTile(
-        title: Text(nameoflist),
-        onTap: () {},
-        splashColor: Colors.amber,
-        tileColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+class DetailedGeneralWaste extends StatefulWidget {
+  const DetailedGeneralWaste({super.key});
+
+  @override
+  State<DetailedGeneralWaste> createState() => DetailedGeneralWasteState();
+}
+
+class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+        child: Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'ขยะทั่วไป',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 24),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+                splashColor: Colors.amber,
+                onTap: () {},
+                child: const SizedBox(
+                    height: 300,
+                    width: 300,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.tab,
+                            size: 50,
+                          ),
+                          Text(
+                            'ข้อมูล',
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                    ))),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            'วิธีการกำจัด',
+            textAlign: TextAlign.start,
+            style: TextStyle(fontSize: 24),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+                splashColor: Colors.blue,
+                onTap: () {},
+                child: const SizedBox(
+                    height: 300,
+                    width: 300,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.table_bar,
+                            size: 50,
+                          ),
+                          Text(
+                            'ข้อมูล',
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                    ))),
+          ),
+        ],
       ),
-    );
+    ));
   }
 }

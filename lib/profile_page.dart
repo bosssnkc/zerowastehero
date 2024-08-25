@@ -24,8 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
     prefs.setBool('isLoggedIn', false);
     prefs.remove('username'); // Remove stored username
     prefs.remove('user_id');
-    print(prefs.getString('username'));
-    print(prefs.getString('user_id'));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => SplashScreen()),
     );
@@ -78,7 +76,6 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } else {
       // No token found, redirect to login page
-      print('เข้าสู่เงื่อนไขไม่มีโทเคน');
       prefs.setBool('isLoggedIn', false);
       prefs.remove('username');
       prefs.remove('user_id');
@@ -337,6 +334,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     actions: [
                       TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white),
                         onPressed: () {
                           clearFields();
                           Navigator.of(context).pop();
@@ -344,6 +344,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Text('ยกเลิก'),
                       ),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.green),
                         onPressed: () async {
                           await _editPassword();
                         },

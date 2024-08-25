@@ -38,6 +38,13 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green, Colors.lightGreen.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
+        ),
         backgroundColor: Colors.green[300],
         elevation: 0,
         centerTitle: true,

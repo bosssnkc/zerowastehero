@@ -95,7 +95,6 @@ class _compostableWasteState extends State<compostableWaste>
       _trashsearch = [];
       setState(() {
         _isSearching = false;
-        // print(_isSearching);
       });
       return;
     }
@@ -114,7 +113,6 @@ class _compostableWasteState extends State<compostableWaste>
         _trashsearch = searchResults;
         setState(() {
           _isSearching = true;
-          // print(_isSearching);
         });
       } else {
         // Handle error
@@ -173,11 +171,13 @@ class _compostableWasteState extends State<compostableWaste>
         Navigator.of(context).pop();
       } else {
         // Handle error
+        String message =
+            'Error ${response.statusCode}: ${response.reasonPhrase}';
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to register trash.'),
+            title: const Text('Error'),
+            content: Text(message),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -240,6 +240,13 @@ class _compostableWasteState extends State<compostableWaste>
       child: Scaffold(
           backgroundColor: Colors.green[100],
           appBar: AppBar(
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.green, Colors.lightGreen.shade300],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight)),
+            ),
             backgroundColor: Colors.green[300],
             elevation: 0,
             title: const Text(
@@ -250,7 +257,7 @@ class _compostableWasteState extends State<compostableWaste>
                 fontWeight: FontWeight.bold,
               ),
             ),
-            bottom: TabBar(controller: _tabController, tabs: [
+            bottom: TabBar(controller: _tabController, tabs: const [
               Tab(
                 text: 'รายละเอียด',
               ),
@@ -262,7 +269,7 @@ class _compostableWasteState extends State<compostableWaste>
           body: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              detailedGeneral(),
+              const DetailedCompostableWaste(),
               listOfGeneral(),
             ],
           ),
@@ -305,9 +312,8 @@ class _compostableWasteState extends State<compostableWaste>
                                     ),
                                     DropdownButtonFormField<String>(
                                       decoration: const InputDecoration(
-                                          labelText: 'เลือกประเภทขยะ',
-                                          hintText: 'ขยะอินทรีย์',
-                                          border: OutlineInputBorder()),
+                                        labelText: 'เลือกประเภทขยะ',
+                                      ),
                                       value: trashtypePicker,
                                       items: [
                                         'ขยะทั่วไป',
@@ -422,88 +428,6 @@ class _compostableWasteState extends State<compostableWaste>
                   child: Icon(Icons.add),
                 )
               : null),
-    );
-  }
-
-  Widget detailedGeneral() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'ขยะอินทรีย์',
-              textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                  splashColor: Colors.amber,
-                  onTap: () {},
-                  child: const SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.tab,
-                              size: 50,
-                            ),
-                            Text(
-                              'ข้อมูล',
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ))),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'วิธีการกำจัด',
-              textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                  splashColor: Colors.blue,
-                  onTap: () {},
-                  child: const SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.table_bar,
-                              size: 50,
-                            ),
-                            Text(
-                              'ข้อมูล',
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ))),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -737,20 +661,95 @@ class _compostableWasteState extends State<compostableWaste>
       ),
     );
   }
+}
 
-  Widget listGeneralWasteItem(
-    String nameoflist,
-  ) {
-    return Card(
-      shadowColor: Colors.black,
-      elevation: 2,
-      child: ListTile(
-        title: Text(nameoflist),
-        onTap: () {},
-        splashColor: Colors.amber,
-        tileColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+class DetailedCompostableWaste extends StatefulWidget {
+  const DetailedCompostableWaste({super.key});
+
+  @override
+  State<DetailedCompostableWaste> createState() =>
+      _DetailedCompostableWasteState();
+}
+
+class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'ขยะอินทรีย์',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                  splashColor: Colors.amber,
+                  onTap: () {},
+                  child: const SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.tab,
+                              size: 50,
+                            ),
+                            Text(
+                              'ข้อมูล',
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ))),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'วิธีการกำจัด',
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                  splashColor: Colors.blue,
+                  onTap: () {},
+                  child: const SizedBox(
+                      height: 300,
+                      width: 300,
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.table_bar,
+                              size: 50,
+                            ),
+                            Text(
+                              'ข้อมูล',
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ))),
+            ),
+          ],
         ),
       ),
     );

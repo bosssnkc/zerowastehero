@@ -50,6 +50,13 @@ class _TypeOfTrashState extends State<TypeOfTrash>
         child: Scaffold(
             backgroundColor: Colors.green[100],
             appBar: AppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.green, Colors.lightGreen.shade300],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight)),
+              ),
               backgroundColor: Colors.green[300],
               elevation: 0,
               title: Text(
@@ -60,21 +67,30 @@ class _TypeOfTrashState extends State<TypeOfTrash>
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              bottom: TabBar(
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                indicatorColor: const Color(0xff1d976c),
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.black54,
+                controller: _tabController,
+                tabs: const [
+                  Tab(
+                    child: Text(
+                      'ขยะทั้ง 4 ประเภท',
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      'วิธีคัดแยกขยะ',
+                    ),
+                  ),
+                ],
+              ),
             ),
             body: SafeArea(
               child: Column(
                 children: [
-                  TabBar(
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(
-                        text: 'ขยะทั้ง 4 ประเภท',
-                      ),
-                      Tab(
-                        text: 'วิธีคัดแยกขยะ',
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,
@@ -150,7 +166,7 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
             height: 30,
           ),
           Padding(
-              padding: EdgeInsets.fromLTRB(64, 0, 64, 0),
+              padding: const EdgeInsets.fromLTRB(64, 0, 64, 0),
               child: Stack(
                 alignment: Alignment.centerRight,
                 children: [
@@ -159,14 +175,19 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
                       decoration: InputDecoration(
                           hintText: 'ค้นหารายการขยะ',
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                            borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(24),
                           ))),
                   IconButton(
-                      onPressed: () {
-                        _searchTrash();
-                      },
-                      icon: isTextEmpty ? Icon(Icons.list) : Icon(Icons.search))
+                    tooltip:
+                        isTextEmpty ? 'แสดงรายการทั้งหมด' : 'ค้นหารายการขยะ',
+                    onPressed: () {
+                      _searchTrash();
+                    },
+                    icon: isTextEmpty
+                        ? const Icon(Icons.list)
+                        : const Icon(Icons.search),
+                  )
                 ],
               )),
           const SizedBox(

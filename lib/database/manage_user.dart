@@ -52,7 +52,6 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
     String token = prefs.getString('jwt_token') ?? '';
-    print(token);
 
     Map<String, dynamic> updatedInfo = {
       'firstname': _firstnameController.text,
@@ -94,8 +93,15 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green, Colors.lightGreen.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
+        ),
         backgroundColor: Colors.green[300],
-        title: Text('Manage Users'),
+        title: const Text('Manage Users'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -150,6 +156,8 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
             ElevatedButton(
               onPressed: _updateUserInfo,
               child: const Text('อัพเดทข้อมูล'),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, foregroundColor: Colors.white),
             ),
           ],
         ),

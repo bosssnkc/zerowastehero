@@ -113,13 +113,21 @@ class _MyWidgetState extends State<ContactUs> {
                     ),
                     Row(
                       children: [
-                        TextButton(
-                            onPressed: () {}, child: const Text('Confirm')),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.green),
+                            onPressed: () {},
+                            child: const Text('Confirm')),
                         const SizedBox(
                           width: 20,
                         ),
                         TextButton(
-                            onPressed: () {}, child: const Text('Cancel')),
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.white,
+                                backgroundColor: Colors.red),
+                            onPressed: () {},
+                            child: const Text('Cancel')),
                       ],
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OptionSetting extends StatefulWidget {
   const OptionSetting({super.key});
@@ -10,14 +11,6 @@ class OptionSetting extends StatefulWidget {
 
 class _OptionSettingState extends State<OptionSetting> {
   bool lightswitch = false;
-
-  void lightSwitchCtrl() {
-    if (lightswitch == false) {
-      return debugPrint('OFF');
-    } else {
-      return debugPrint('ON');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +36,56 @@ class _OptionSettingState extends State<OptionSetting> {
           ),
           Card(
             child: ListTile(
-              onTap: () {},
-              title: const Text('ตั้งค่า 2'),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => StatefulBuilder(
+                    builder: (context, setState) => AlertDialog(
+                      title: const Text('เลือกตัวอักษร / Fonts'),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 300,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              onTap: () {},
+                              title: const Text('Pridi'),
+                              subtitle: Text(
+                                'ทดสอบข้อความ',
+                                style: GoogleFonts.pridi(),
+                              ),
+                            ),
+                            ListTile(
+                              onTap: () {},
+                              title: const Text('Kanit'),
+                              subtitle: Text(
+                                'ทดสอบข้อความ',
+                                style: GoogleFonts.kanit(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('ตกลง'))
+                      ],
+                    ),
+                  ),
+                );
+              },
+              title: const Text('ตั้งค่าตัวอักษร'),
               subtitle: const Text('data'),
-              leading: const Icon(Icons.safety_check),
+              leading: const Icon(Icons.font_download),
             ),
           ),
           Card(
@@ -54,7 +93,7 @@ class _OptionSettingState extends State<OptionSetting> {
               title: const Text('โหมดไฟ'),
               subtitle: const Text('แสบตา?'),
               value: lightswitch,
-              onChanged: (value) {
+              onChanged: (bool value) {
                 setState(() {
                   lightswitch = value;
                 });

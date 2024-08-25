@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:zerowastehero/Routes/routes.dart';
@@ -23,10 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _lastnameController = TextEditingController();
   String? _gender;
   DateTime? _selectedDate;
-
-  String _hashPassword(String password) {
-    return md5.convert(utf8.encode(password)).toString();
-  }
 
   bool _isValidUsername(String username) {
     final validCharacters = RegExp(r'^[a-zA-Z0-9]+$');
@@ -208,6 +203,13 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green, Colors.lightGreen.shade300],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight)),
+        ),
         backgroundColor: Colors.green[300],
         elevation: 0,
         centerTitle: true,
