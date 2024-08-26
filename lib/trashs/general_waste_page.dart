@@ -703,19 +703,20 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.tab,
-                            size: 50,
+                          Text(
+                            'ขยะทั่วไป (General Waste)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
-                          )
+                            '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ],
                       ),
                     ))),
@@ -739,18 +740,14 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.table_bar,
-                            size: 50,
-                          ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
+                            '    สามารถทิ้งได้ตามถังขยะทั่วไปที่มีถังสีน้ำเงินหรือสังเกตุได้จากข้อความที่เขียนบ่งบอกว่าขยะทั่วไป',
+                            style: TextStyle(fontSize: 16),
                           )
                         ],
                       ),

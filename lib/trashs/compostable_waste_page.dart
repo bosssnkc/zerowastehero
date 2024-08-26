@@ -696,18 +696,19 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                   child: const SizedBox(
                       height: 300,
                       width: 300,
-                      child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.tab,
-                              size: 50,
+                            Text(
+                              'ขยะอินทรีย์ (Compostable Waste)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                             Text(
-                              'ข้อมูล',
-                              textAlign: TextAlign.center,
+                              '    หรืออีกชื่อคือขยะเปียก คือขยะที่สามารถย่อยสลายได้ง่ายตามธรรมชาติ มีความชื้นและส่งกลิ่นเหม็น ขยะประเภทนี้สามารถนำไปทำเป็นปุ๋ยหมักชีวภาพได้ ตัวอย่างของขยะประเภทขยะเปียกเช่น เศษใบไม้ เศษอาหาร เศษเนื้อสัตว์ เปลือกผลไม้ โดยประเทศไทยจำแนกให้ขยะประเภทขยะเปียกสามารถทิ้งได้ในถังขยะที่มีสีเขียว',
+                              style: TextStyle(fontSize: 16),
                             )
                           ],
                         ),
@@ -732,18 +733,14 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                   child: const SizedBox(
                       height: 300,
                       width: 300,
-                      child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.table_bar,
-                              size: 50,
-                            ),
                             Text(
-                              'ข้อมูล',
-                              textAlign: TextAlign.center,
+                              '    ขยะอินทรีย์เป็นขยะประเภทสามารถย่อยสลายได้ง่ายส่วนมากมักนิยมนำเป็นหมักเป็นปุ๋ย และปุ๋ยชีวภาพได้',
+                              style: TextStyle(fontSize: 16),
                             )
                           ],
                         ),

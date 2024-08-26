@@ -157,6 +157,29 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 16),
+            _buildSectionHeader('กิจกรรม'),
+            const SizedBox(height: 8),
+            InkWell(
+              onTap: () async {},
+              child: Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8.0,
+                    ),
+                  ],
+                ),
+                child: const Image(
+                  image: NetworkImage(
+                      'https://today-obs.line-scdn.net/0hLnvofk9gE0FLFgPqHlNsFnNAHzB4cAlIaSQPcm0XGnJmOgQecydAIm4RHW02c1MVayUIImhDGnlvJAARdA/w1200'),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             _buildSectionHeader('ข่าวสาร'),
             const SizedBox(height: 8),
             Container(
@@ -176,27 +199,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
                 )),
             const SizedBox(height: 16),
-            _buildSectionHeader('กิจกรรม'),
-            const SizedBox(height: 8),
-            InkWell(
-              child: Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                ),
-                child: const Text(
-                  '{ภาพตัวอย่างกิจกรรม}',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ),
-            )
           ],
         ),
       ),

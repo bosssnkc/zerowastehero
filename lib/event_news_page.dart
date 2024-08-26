@@ -18,20 +18,22 @@ class _eventNewsPageState extends State<eventNewsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'ข่าวสาร',
+              'กิจกรรม',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 8,
             ),
-            SizedBox(
-              height: 200,
-              child: Card(
-                child: InkWell(
-                  onTap: () {},
-                  splashColor: Colors.red[50],
-                  child: const Center(
-                    child: Text('ภาพ'),
+            const Card(
+              child: SizedBox(
+                height: 200,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Image(
+                      image: NetworkImage(
+                          'https://today-obs.line-scdn.net/0hLnvofk9gE0FLFgPqHlNsFnNAHzB4cAlIaSQPcm0XGnJmOgQecydAIm4RHW02c1MVayUIImhDGnlvJAARdA/w1200'),
+                    ),
                   ),
                 ),
               ),
@@ -40,7 +42,7 @@ class _eventNewsPageState extends State<eventNewsPage> {
               height: 16,
             ),
             const Text(
-              'กิจกรรม',
+              'ข่าวสาร',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(

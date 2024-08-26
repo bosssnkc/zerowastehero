@@ -698,18 +698,19 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.tab,
-                            size: 50,
+                          Text(
+                            'ขยะรีไซเคิล (Recycle Waste)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
+                            '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง',
+                            style: TextStyle(fontSize: 16),
                           )
                         ],
                       ),
@@ -734,18 +735,14 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.table_bar,
-                            size: 50,
-                          ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
+                            '    ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้',
+                            style: TextStyle(fontSize: 16),
                           )
                         ],
                       ),

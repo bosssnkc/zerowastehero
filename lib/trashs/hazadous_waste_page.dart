@@ -702,18 +702,19 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.tab,
-                            size: 50,
+                          Text(
+                            'ขยะอันตราย (Hazardous Waste)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
+                            '    คือขยะที่มีการปนเปื้อนสารเคมีและเป็นอันตรายต่อสิ่งแวดล้อมหรือสามารถติดไฟได้ง่าย ต้องมีการกำจัดอย่างถูกวิธีและไม่สามารถทิ้งรวมกับขยะประเภทอื่นได้ ตัวอย่างของขยะประเภทขยะอันตรายเช่น หลอดไฟ ถ่านไฟฉาย วัตถุไวไฟ ยาที่หมดอายุ สารพิษ อุปกรณ์อิเล็กทรอนิกส์ โดยประเทศไทยจำแนกให้ขยะประเภทขยะอันตรายสามารถทิ้งได้ในที่ถังขยะที่มีสีแดง',
+                            style: TextStyle(fontSize: 16),
                           )
                         ],
                       ),
@@ -738,18 +739,14 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                 child: const SizedBox(
                     height: 300,
                     width: 300,
-                    child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.table_bar,
-                            size: 50,
-                          ),
                           Text(
-                            'ข้อมูล',
-                            textAlign: TextAlign.center,
+                            '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง วิธีการปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย',
+                            style: TextStyle(fontSize: 16),
                           )
                         ],
                       ),
