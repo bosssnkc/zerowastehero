@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             style: TextButton.styleFrom(foregroundColor: Colors.black),
           ),
         ),
-        darkTheme: ThemeData.dark(),
+        // darkTheme: ThemeData.dark(),
         home: SplashScreen());
   }
 }
