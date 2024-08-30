@@ -19,11 +19,13 @@ class _SearchPageState extends State<SearchPage> {
   int _itemsToShow = 10;
   bool _isSearchClicked = false;
   final _searchBoxController = TextEditingController();
+  String? _userData = '';
 
   @override
   void initState() {
     super.initState();
     _loadTrash();
+    _loadUserData();
   }
 
   Future<void> _onChangedSearch() async {
@@ -53,6 +55,11 @@ class _SearchPageState extends State<SearchPage> {
         _isLoading = false;
       });
     }
+  }
+
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _userData = prefs.getString('user_id');
   }
 
   Future<void> _loadTrash() async {
@@ -87,7 +94,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[100],
       appBar: AppBar(
         centerTitle: true,
         flexibleSpace: Container(
@@ -168,9 +174,10 @@ class _SearchPageState extends State<SearchPage> {
                         children: [
                           Card(
                             child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent),
                               child: const Text(
                                 'ขยะทั่วไป',
-                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -182,9 +189,10 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           Card(
                             child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent),
                               child: const Text(
                                 'ขยะอินทรีย์',
-                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -196,9 +204,10 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           Card(
                             child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent),
                               child: const Text(
                                 'ขยะรีไซเคิล',
-                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -210,9 +219,10 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           Card(
                             child: TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent),
                               child: const Text(
                                 'ขยะอันตราย',
-                                style: TextStyle(color: Colors.black),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -241,19 +251,23 @@ class _SearchPageState extends State<SearchPage> {
                             leading: trash['trash_pic'] != null
                                 ? Icon(Icons.error_outline)
                                 : Icon(Icons.error),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => (trash: trash),
-                                  icon: Icon(Icons.edit),
-                                ),
-                                IconButton(
-                                  onPressed: () async {},
-                                  icon: Icon(Icons.delete),
-                                ),
-                              ],
-                            ),
+                            trailing:
+                                _userData == trash['user_id'].toString() ||
+                                        _userData == '1'
+                                    ? Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () => (trash: trash),
+                                            icon: Icon(Icons.edit),
+                                          ),
+                                          IconButton(
+                                            onPressed: () async {},
+                                            icon: Icon(Icons.delete),
+                                          ),
+                                        ],
+                                      )
+                                    : null,
                             onTap: () => showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(

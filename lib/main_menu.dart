@@ -36,7 +36,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[50],
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -85,8 +84,8 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.green,
+        // unselectedItemColor: Colors.black,
+        // selectedItemColor: Colors.green,
         onTap: _onItemTapped,
       ),
     );
@@ -127,28 +126,26 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisSpacing: 16.0,
               children: [
                 InkWell(
-                  child: _buildGridItem(
-                      Icons.recycling, 'ขยะ 4 ประเภท', Colors.black),
+                  child: _buildGridItem(Icons.recycling, 'ขยะ 4 ประเภท'),
                   onTap: () => _navigateToTrashType(
                       context, 0), //Navigate ไปยัง tab index 0,
                 ),
                 InkWell(
-                  child:
-                      _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ', Colors.black),
+                  child: _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ'),
                   onTap: () => _navigateToTrashType(
                       context, 1), //Navigate ไปยัง tab index 1,
                 ),
                 InkWell(
-                  child: _buildGridItem(
-                      Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล', Colors.black),
+                  child:
+                      _buildGridItem(Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล'),
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const RecycleLocation())),
                 ),
                 InkWell(
-                  child: _buildGridItem(Icons.local_hospital,
-                      'สถานที่กำจัดขยะอันตราย', Colors.black),
+                  child: _buildGridItem(
+                      Icons.local_hospital, 'สถานที่กำจัดขยะอันตราย'),
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -205,30 +202,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildGridItem(IconData icon, String label, Color iconColor) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8.0,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 60, color: iconColor),
-          const SizedBox(height: 8.0),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-        ],
+  Widget _buildGridItem(IconData icon, String label) {
+    return Card(
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          // color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 60),
+            const SizedBox(height: 8.0),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style:
+                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }

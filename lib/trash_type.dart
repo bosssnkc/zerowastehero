@@ -48,7 +48,6 @@ class _TypeOfTrashState extends State<TypeOfTrash>
         initialIndex: widget.selectedTabIndex,
         length: 2,
         child: Scaffold(
-            backgroundColor: Colors.green[100],
             appBar: AppBar(
               flexibleSpace: Container(
                 decoration: BoxDecoration(
@@ -68,11 +67,6 @@ class _TypeOfTrashState extends State<TypeOfTrash>
                 ),
               ),
               bottom: TabBar(
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: Colors.transparent,
-                indicatorColor: const Color(0xff1d976c),
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.black54,
                 controller: _tabController,
                 tabs: const [
                   Tab(
@@ -174,9 +168,13 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
                       controller: searchController,
                       decoration: InputDecoration(
                           hintText: 'ค้นหารายการขยะ',
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(24),
+                            borderRadius: BorderRadius.circular(20),
                           ))),
                   IconButton(
                     tooltip:

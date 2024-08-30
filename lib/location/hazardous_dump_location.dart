@@ -60,7 +60,6 @@ class _hazardousLocationState extends State<HazardousLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[50],
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(

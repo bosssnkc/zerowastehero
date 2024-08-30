@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OptionSetting extends StatefulWidget {
   const OptionSetting({super.key});
@@ -11,6 +12,15 @@ class OptionSetting extends StatefulWidget {
 
 class _OptionSettingState extends State<OptionSetting> {
   bool lightswitch = false;
+
+  Future<void> _getValueSwitch(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('lightswitch', value);
+    print(prefs.getBool('lightswitch'));
+    setState(() {
+      lightswitch = prefs.getBool('lightswitch')!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +106,7 @@ class _OptionSettingState extends State<OptionSetting> {
               onChanged: (bool value) {
                 setState(() {
                   lightswitch = value;
+                  _getValueSwitch(value);
                 });
               },
               secondary: const Icon(Icons.light_mode),

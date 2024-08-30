@@ -91,7 +91,6 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(

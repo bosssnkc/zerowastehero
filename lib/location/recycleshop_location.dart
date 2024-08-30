@@ -62,7 +62,6 @@ class _recycleLocationState extends State<RecycleLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[50],
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(

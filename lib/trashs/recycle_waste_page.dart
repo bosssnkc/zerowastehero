@@ -240,7 +240,6 @@ class _recycleWasteState extends State<recycleWaste>
       initialIndex: 0,
       length: 2,
       child: Scaffold(
-          backgroundColor: Colors.green[100],
           appBar: AppBar(
             flexibleSpace: Container(
               decoration: BoxDecoration(
@@ -277,6 +276,8 @@ class _recycleWasteState extends State<recycleWaste>
           ),
           floatingActionButton: _tabController!.index == 1
               ? FloatingActionButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100)),
                   onPressed: () {
                     showDialog(
                       context: context,
