@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
     String? token = prefs.getString('jwt_token');
-    print(token);
+    // print(token);
 
     final response = await http.get(
       Uri.parse('$getuserinfo$username'),
@@ -55,17 +55,17 @@ class _ProfilePageState extends State<ProfilePage> {
         prefs.remove('user_id');
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           );
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Session หมดอายุ'),
-              content: Text('Session กรุณาทำการล็อกอินใหม่'),
+              title: const Text('Session หมดอายุ'),
+              content: const Text('Session กรุณาทำการล็อกอินใหม่'),
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('ตกลง'),
+                  child: const Text('ตกลง'),
                 ),
               ],
             ),
@@ -81,17 +81,17 @@ class _ProfilePageState extends State<ProfilePage> {
       prefs.remove('user_id');
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('พบการเข้าถึงที่ไม่ถูกต้อง'),
-            content: Text('การเข้าถึงไม่ถูกต้อง กรุณาทำการล็อกอินใหม่'),
+            title: const Text('พบการเข้าถึงที่ไม่ถูกต้อง'),
+            content: const Text('การเข้าถึงไม่ถูกต้อง กรุณาทำการล็อกอินใหม่'),
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('ตกลง'),
+                child: const Text('ตกลง'),
               ),
             ],
           ),
@@ -283,7 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListTile(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ManageUsersPage(),
+                    builder: (context) => const ManageUsersPage(),
                   ));
                 },
                 title: const Text('แก้ไขข้อมูลส่วนตัว'),

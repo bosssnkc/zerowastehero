@@ -12,8 +12,9 @@ import 'package:http/http.dart' as http;
 //หน้าล็อกอินและจัดเก็บข้อมูลการล็อกอิน
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -65,7 +66,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setBool('isLoggedIn', true);
 
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MainPage()),
+          MaterialPageRoute(builder: (context) => const MainPage()),
         );
       } else {
         // Show error message
@@ -107,8 +108,8 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('ข้อผิดพลาด'),
-              content: Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
+              title: const Text('ข้อผิดพลาด'),
+              content: const Text('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'),
               actions: [
                 ElevatedButton(
                   style:
@@ -249,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => RegisterPage(),
+                        builder: (context) => const RegisterPage(),
                       ),
                     );
                   },
@@ -262,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ManageUsersPage(),
+                      builder: (context) => const ManageUsersPage(),
                     ));
                     // ฟังก์ชันการสร้างบัญชีชั่วคราว
                   },

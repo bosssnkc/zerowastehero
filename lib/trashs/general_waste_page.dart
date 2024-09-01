@@ -9,14 +9,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 
-class generalWaste extends StatefulWidget {
-  const generalWaste({super.key});
+class GeneralWaste extends StatefulWidget {
+  const GeneralWaste({super.key});
 
   @override
-  State<generalWaste> createState() => _genralWasteState();
+  State<GeneralWaste> createState() => _GenralWasteState();
 }
 
-class _genralWasteState extends State<generalWaste>
+class _GenralWasteState extends State<GeneralWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -59,12 +59,12 @@ class _genralWasteState extends State<generalWaste>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to load trashs.'),
+            title: const Text('Error'),
+            content: const Text('Failed to load trashs.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -75,12 +75,12 @@ class _genralWasteState extends State<generalWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to load trashs.'),
+          title: const Text('Error'),
+          content: const Text('Failed to load trashs.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -183,7 +183,7 @@ class _genralWasteState extends State<generalWaste>
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -222,16 +222,16 @@ class _genralWasteState extends State<generalWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Permission needed'),
-          content: Text('This app needs photo access to pick images'),
+          title: const Text('Permission needed'),
+          content: const Text('This app needs photo access to pick images'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => openAppSettings(),
-              child: Text('Settings'),
+              child: const Text('Settings'),
             ),
           ],
         ),
@@ -332,8 +332,8 @@ class _genralWasteState extends State<generalWaste>
                                         'ขยะอันตราย'
                                       ]
                                           .map((label) => DropdownMenuItem(
-                                                child: Text(label),
                                                 value: label,
+                                                child: Text(label),
                                               ))
                                           .toList(),
                                       onChanged: (value) {
@@ -435,7 +435,7 @@ class _genralWasteState extends State<generalWaste>
                       ),
                     );
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 )
               : null),
     );
@@ -528,7 +528,8 @@ class _genralWasteState extends State<generalWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : Icon(Icons.image),
+                                                        : const Icon(
+                                                            Icons.image),
                                                   ),
                                                 ),
                                                 const Text(

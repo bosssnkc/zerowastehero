@@ -17,8 +17,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Zero Waste Hero',
-        theme: ThemeClass.lightTheme,
-        home: SplashScreen());
+      title: 'Zero Waste Hero',
+      theme: ThemeClass.lightTheme,
+      home: const SplashScreen(),
+      // เข้าสู่หน้า SplashScreen เพื่อทำการตรวจสอบการล็อกอิน
+      // หากมีข้อมูลว่ากำลังล็อกอินอยู่จะเข้าสู่หน้าหลักทันที
+    );
   }
 }

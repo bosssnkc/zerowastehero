@@ -6,10 +6,10 @@ class HazardousLocation extends StatefulWidget {
   const HazardousLocation({super.key});
 
   @override
-  State<HazardousLocation> createState() => _hazardousLocationState();
+  State<HazardousLocation> createState() => _HazardousLocationState();
 }
 
-class _hazardousLocationState extends State<HazardousLocation> {
+class _HazardousLocationState extends State<HazardousLocation> {
   late GoogleMapController mapController;
   Position? userLocation;
 
@@ -81,19 +81,19 @@ class _hazardousLocationState extends State<HazardousLocation> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
           child: Column(
             children: [
               Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         size: 50,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 50,
                       ),
                       Expanded(
@@ -101,18 +101,18 @@ class _hazardousLocationState extends State<HazardousLocation> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'ตำแหน่งปัจจุบันของคุณ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             userLocation != null
                                 ? Text(
                                     'Lat: ${userLocation!.latitude} Lon: ${userLocation!.longitude}')
-                                : Text('ไม่พบตำแหน่งปัจจุบัน'),
-                            SizedBox(height: 10),
+                                : const Text('ไม่พบตำแหน่งปัจจุบัน'),
+                            const SizedBox(height: 10),
                             ElevatedButton(
                                 onPressed: _getLocation,
-                                child: Text('Get Location'))
+                                child: const Text('Get Location'))
                           ],
                         ),
                       ), //Column inside location_now
@@ -120,14 +120,14 @@ class _hazardousLocationState extends State<HazardousLocation> {
                   ),
                 ),
               ),
-              SizedBox(height: 24),
-              Center(
+              const SizedBox(height: 24),
+              const Center(
                 child: Text(
                   'แผนที่',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Card(
                 child: SizedBox(
                   height: 300,
@@ -137,16 +137,16 @@ class _hazardousLocationState extends State<HazardousLocation> {
                       markers: {
                         userLocation != null
                             ? Marker(
-                                markerId: MarkerId('userLocation'),
+                                markerId: const MarkerId('userLocation'),
                                 position: LatLng(
                                   userLocation!.latitude,
                                   userLocation!.longitude,
                                 ),
-                                infoWindow: InfoWindow(
+                                infoWindow: const InfoWindow(
                                   title: 'ตำนแห่งปัจจุบันของคุณ',
                                 ),
                               )
-                            : Marker(
+                            : const Marker(
                                 markerId: MarkerId('thisLocation'),
                                 icon: BitmapDescriptor.defaultMarker,
                                 position: LatLng(13.736717, 100.523186),
@@ -162,7 +162,7 @@ class _hazardousLocationState extends State<HazardousLocation> {
                                   userLocation!.latitude,
                                   userLocation!.longitude,
                                 )
-                              : LatLng(13.736717, 100.523186),
+                              : const LatLng(13.736717, 100.523186),
                           // target: LatLng(
                           //   userLocation!.latitude,
                           //   userLocation!.longitude,

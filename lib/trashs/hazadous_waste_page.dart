@@ -9,14 +9,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 
-class hazadousWaste extends StatefulWidget {
-  const hazadousWaste({super.key});
+class HazadousWaste extends StatefulWidget {
+  const HazadousWaste({super.key});
 
   @override
-  State<hazadousWaste> createState() => _hazadousWasteState();
+  State<HazadousWaste> createState() => _HazadousWasteState();
 }
 
-class _hazadousWasteState extends State<hazadousWaste>
+class _HazadousWasteState extends State<HazadousWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -59,12 +59,12 @@ class _hazadousWasteState extends State<hazadousWaste>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to load trashs.'),
+            title: const Text('Error'),
+            content: const Text('Failed to load trashs.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -75,12 +75,12 @@ class _hazadousWasteState extends State<hazadousWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to load trashs.'),
+          title: const Text('Error'),
+          content: const Text('Failed to load trashs.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -183,7 +183,7 @@ class _hazadousWasteState extends State<hazadousWaste>
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -215,16 +215,16 @@ class _hazadousWasteState extends State<hazadousWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Permission needed'),
-          content: Text('This app needs photo access to pick images'),
+          title: const Text('Permission needed'),
+          content: const Text('This app needs photo access to pick images'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => openAppSettings(),
-              child: Text('Settings'),
+              child: const Text('Settings'),
             ),
           ],
         ),
@@ -329,8 +329,8 @@ class _hazadousWasteState extends State<hazadousWaste>
                                         'ขยะอันตราย'
                                       ]
                                           .map((label) => DropdownMenuItem(
-                                                child: Text(label),
                                                 value: label,
+                                                child: Text(label),
                                               ))
                                           .toList(),
                                       onChanged: (value) {
@@ -432,7 +432,7 @@ class _hazadousWasteState extends State<hazadousWaste>
                       ),
                     );
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 )
               : null),
     );
@@ -527,7 +527,8 @@ class _hazadousWasteState extends State<hazadousWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : Icon(Icons.image),
+                                                        : const Icon(
+                                                            Icons.image),
                                                   ),
                                                 ),
                                                 const Text(
@@ -622,7 +623,7 @@ class _hazadousWasteState extends State<hazadousWaste>
                                                             trash['trash_pic']),
                                                         fit: BoxFit.cover,
                                                       )
-                                                    : Icon(Icons.image),
+                                                    : const Icon(Icons.image),
                                               ),
                                             ),
                                             const Text(

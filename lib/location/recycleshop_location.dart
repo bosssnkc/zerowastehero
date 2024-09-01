@@ -6,10 +6,10 @@ class RecycleLocation extends StatefulWidget {
   const RecycleLocation({super.key});
 
   @override
-  State<RecycleLocation> createState() => _recycleLocationState();
+  State<RecycleLocation> createState() => _RecycleLocationState();
 }
 
-class _recycleLocationState extends State<RecycleLocation> {
+class _RecycleLocationState extends State<RecycleLocation> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(13.736717, 100.523186);
@@ -83,12 +83,12 @@ class _recycleLocationState extends State<RecycleLocation> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 64, 16, 16),
+          padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
           child: Column(
             children: [
               Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
                       const Icon(
@@ -110,11 +110,11 @@ class _recycleLocationState extends State<RecycleLocation> {
                             userLocation != null
                                 ? Text(
                                     'Lat: ${userLocation!.latitude} Lon: ${userLocation!.longitude}')
-                                : Text('ไม่พบตำแหน่งปัจจุบัน'),
+                                : const Text('ไม่พบตำแหน่งปัจจุบัน'),
                             const SizedBox(height: 10),
                             ElevatedButton(
                                 onPressed: _getLocation,
-                                child: Text('Get Location'))
+                                child: const Text('Get Location'))
                           ],
                         ),
                       ), //Column inside location_now
@@ -122,14 +122,14 @@ class _recycleLocationState extends State<RecycleLocation> {
                   ),
                 ),
               ),
-              SizedBox(height: 24),
-              Center(
+              const SizedBox(height: 24),
+              const Center(
                 child: Text(
                   'แผนที่',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Card(
                 child: SizedBox(
                   height: 300,
@@ -141,12 +141,12 @@ class _recycleLocationState extends State<RecycleLocation> {
                           markers: userLocation != null
                               ? {
                                   Marker(
-                                    markerId: MarkerId('userLocation'),
+                                    markerId: const MarkerId('userLocation'),
                                     position: LatLng(
                                       userLocation!.latitude,
                                       userLocation!.longitude,
                                     ),
-                                    infoWindow: InfoWindow(
+                                    infoWindow: const InfoWindow(
                                       title: 'ตำนแห่งปัจจุบันของคุณ',
                                     ),
                                   )

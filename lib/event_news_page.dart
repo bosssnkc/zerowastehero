@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class eventNewsPage extends StatefulWidget {
-  const eventNewsPage({super.key});
+class EventNewsPage extends StatefulWidget {
+  const EventNewsPage({super.key});
 
   @override
-  State<eventNewsPage> createState() => _eventNewsPageState();
+  State<EventNewsPage> createState() => _EventNewsPageState();
 }
 
-class _eventNewsPageState extends State<eventNewsPage> {
+class _EventNewsPageState extends State<EventNewsPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

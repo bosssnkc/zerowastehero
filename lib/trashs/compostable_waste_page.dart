@@ -9,14 +9,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 
-class compostableWaste extends StatefulWidget {
-  const compostableWaste({super.key});
+class CompostableWaste extends StatefulWidget {
+  const CompostableWaste({super.key});
 
   @override
-  State<compostableWaste> createState() => _compostableWasteState();
+  State<CompostableWaste> createState() => _CompostableWasteState();
 }
 
-class _compostableWasteState extends State<compostableWaste>
+class _CompostableWasteState extends State<CompostableWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -181,7 +181,7 @@ class _compostableWasteState extends State<compostableWaste>
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -213,16 +213,16 @@ class _compostableWasteState extends State<compostableWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Permission needed'),
-          content: Text('This app needs photo access to pick images'),
+          title: const Text('Permission needed'),
+          content: const Text('This app needs photo access to pick images'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => openAppSettings(),
-              child: Text('Settings'),
+              child: const Text('Settings'),
             ),
           ],
         ),
@@ -281,7 +281,7 @@ class _compostableWasteState extends State<compostableWaste>
                       context: context,
                       builder: (_) => StatefulBuilder(
                         builder: (context, setState) => AlertDialog(
-                          insetPadding: EdgeInsets.all(16),
+                          insetPadding: const EdgeInsets.all(16),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
                           content: SizedBox(
@@ -323,8 +323,8 @@ class _compostableWasteState extends State<compostableWaste>
                                         'ขยะอันตราย'
                                       ]
                                           .map((label) => DropdownMenuItem(
-                                                child: Text(label),
                                                 value: label,
+                                                child: Text(label),
                                               ))
                                           .toList(),
                                       onChanged: (value) {
@@ -426,7 +426,7 @@ class _compostableWasteState extends State<compostableWaste>
                       ),
                     );
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 )
               : null),
     );
@@ -521,7 +521,8 @@ class _compostableWasteState extends State<compostableWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : Icon(Icons.image),
+                                                        : const Icon(
+                                                            Icons.image),
                                                   ),
                                                 ),
                                                 const Text(
@@ -616,7 +617,7 @@ class _compostableWasteState extends State<compostableWaste>
                                                             trash['trash_pic']),
                                                         fit: BoxFit.cover,
                                                       )
-                                                    : Icon(Icons.image),
+                                                    : const Icon(Icons.image),
                                               ),
                                             ),
                                             const Text(

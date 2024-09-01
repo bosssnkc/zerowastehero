@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,7 +15,7 @@ class _OptionSettingState extends State<OptionSetting> {
   Future<void> _getValueSwitch(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('lightswitch', value);
-    print(prefs.getBool('lightswitch'));
+    // print(prefs.getBool('lightswitch'));
     setState(() {
       lightswitch = prefs.getBool('lightswitch')!;
     });

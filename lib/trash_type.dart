@@ -90,7 +90,7 @@ class _TypeOfTrashState extends State<TypeOfTrash>
                       controller: _tabController,
                       children: const <Widget>[
                         FourTypeOfTrash(),
-                        howToSortingPage(),
+                        HowToSortingPage(),
                       ],
                     ),
                   ),
@@ -156,7 +156,7 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
@@ -200,9 +200,9 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
           const SizedBox(
             height: 20,
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(16),
-            child: gridWieget(),
+            child: GridWieget(),
           )
         ],
       ),
@@ -210,8 +210,8 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
   }
 }
 
-class howToSortingPage extends StatelessWidget {
-  const howToSortingPage({super.key});
+class HowToSortingPage extends StatelessWidget {
+  const HowToSortingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -488,8 +488,8 @@ class howToSortingPage extends StatelessWidget {
   }
 }
 
-class gridWieget extends StatelessWidget {
-  const gridWieget({
+class GridWieget extends StatelessWidget {
+  const GridWieget({
     super.key,
   });
 
@@ -505,28 +505,28 @@ class gridWieget extends StatelessWidget {
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const generalWaste();
+                return const GeneralWaste();
               }));
             },
             child: gridItem('ขยะทั่วไป', Icons.delete, Colors.blue)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const recycleWaste();
+                return const RecycleWaste();
               }));
             },
             child: gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const compostableWaste();
+                return const CompostableWaste();
               }));
             },
             child: gridItem('ขยะอินทรีย์', Icons.eco, Colors.green)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const hazadousWaste();
+                return const HazadousWaste();
               }));
             },
             child: gridItem('ขยะอันตราย', Icons.masks_rounded, Colors.red)),

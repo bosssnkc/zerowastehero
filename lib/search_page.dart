@@ -249,8 +249,8 @@ class _SearchPageState extends State<SearchPage> {
                             title: Text(trash['trash_name']),
                             subtitle: Text(trash['trash_type']),
                             leading: trash['trash_pic'] != null
-                                ? Icon(Icons.error_outline)
-                                : Icon(Icons.error),
+                                ? const Icon(Icons.error_outline)
+                                : const Icon(Icons.error),
                             trailing:
                                 _userData == trash['user_id'].toString() ||
                                         _userData == '1'
@@ -259,11 +259,11 @@ class _SearchPageState extends State<SearchPage> {
                                         children: [
                                           IconButton(
                                             onPressed: () => (trash: trash),
-                                            icon: Icon(Icons.edit),
+                                            icon: const Icon(Icons.edit),
                                           ),
                                           IconButton(
                                             onPressed: () async {},
-                                            icon: Icon(Icons.delete),
+                                            icon: const Icon(Icons.delete),
                                           ),
                                         ],
                                       )
@@ -298,16 +298,16 @@ class _SearchPageState extends State<SearchPage> {
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child:
-                                                      trash['trash_pic'] != null
-                                                          ? Image.memory(
-                                                              height: 300,
-                                                              width: 300,
-                                                              base64Decode(trash[
-                                                                  'trash_pic']),
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                          : Icon(Icons.image),
+                                                  child: trash['trash_pic'] !=
+                                                          null
+                                                      ? Image.memory(
+                                                          height: 300,
+                                                          width: 300,
+                                                          base64Decode(trash[
+                                                              'trash_pic']),
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : const Icon(Icons.image),
                                                 ),
                                               ),
                                               const Text(

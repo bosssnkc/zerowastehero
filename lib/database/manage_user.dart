@@ -8,7 +8,7 @@ class ManageUsersPage extends StatefulWidget {
   const ManageUsersPage({super.key});
 
   @override
-  _ManageUsersPageState createState() => _ManageUsersPageState();
+  State<ManageUsersPage> createState() => _ManageUsersPageState();
 }
 
 class _ManageUsersPageState extends State<ManageUsersPage> {
@@ -32,7 +32,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
 
     final response = await http.get(
       Uri.parse('$getuserinfo$username'),
-      headers: {'Authorization': '$token'},
+      headers: {'Authorization': token},
     );
 
     if (response.statusCode == 200) {
@@ -44,7 +44,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
       });
     } else {
       // Handle the error scenario
-      print('Failed to fetch user info');
+      // print('Failed to fetch user info');
     }
   }
 
@@ -154,9 +154,9 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _updateUserInfo,
-              child: const Text('อัพเดทข้อมูล'),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green, foregroundColor: Colors.white),
+              child: const Text('อัพเดทข้อมูล'),
             ),
           ],
         ),

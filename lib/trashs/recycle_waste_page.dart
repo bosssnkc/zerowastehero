@@ -9,14 +9,14 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 
-class recycleWaste extends StatefulWidget {
-  const recycleWaste({super.key});
+class RecycleWaste extends StatefulWidget {
+  const RecycleWaste({super.key});
 
   @override
-  State<recycleWaste> createState() => _recycleWasteState();
+  State<RecycleWaste> createState() => _RecycleWasteState();
 }
 
-class _recycleWasteState extends State<recycleWaste>
+class _RecycleWasteState extends State<RecycleWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
@@ -59,12 +59,12 @@ class _recycleWasteState extends State<recycleWaste>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to load trashs.'),
+            title: const Text('Error'),
+            content: const Text('Failed to load trashs.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -75,12 +75,12 @@ class _recycleWasteState extends State<recycleWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to load trashs.'),
+          title: const Text('Error'),
+          content: const Text('Failed to load trashs.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -183,7 +183,7 @@ class _recycleWasteState extends State<recycleWaste>
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
@@ -215,16 +215,16 @@ class _recycleWasteState extends State<recycleWaste>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Permission needed'),
-          content: Text('This app needs photo access to pick images'),
+          title: const Text('Permission needed'),
+          content: const Text('This app needs photo access to pick images'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => openAppSettings(),
-              child: Text('Settings'),
+              child: const Text('Settings'),
             ),
           ],
         ),
@@ -283,7 +283,7 @@ class _recycleWasteState extends State<recycleWaste>
                       context: context,
                       builder: (_) => StatefulBuilder(
                         builder: (context, setState) => AlertDialog(
-                          insetPadding: EdgeInsets.all(16),
+                          insetPadding: const EdgeInsets.all(16),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           title: const Text('เพิ่มรายการขยะชิ้นใหม่'),
                           content: SizedBox(
@@ -326,8 +326,8 @@ class _recycleWasteState extends State<recycleWaste>
                                         'ขยะอันตราย'
                                       ]
                                           .map((label) => DropdownMenuItem(
-                                                child: Text(label),
                                                 value: label,
+                                                child: Text(label),
                                               ))
                                           .toList(),
                                       onChanged: (value) {
@@ -429,7 +429,7 @@ class _recycleWasteState extends State<recycleWaste>
                       ),
                     );
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 )
               : null),
     );
@@ -524,7 +524,8 @@ class _recycleWasteState extends State<recycleWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : Icon(Icons.image),
+                                                        : const Icon(
+                                                            Icons.image),
                                                   ),
                                                 ),
                                                 const Text(
@@ -619,7 +620,7 @@ class _recycleWasteState extends State<recycleWaste>
                                                             trash['trash_pic']),
                                                         fit: BoxFit.cover,
                                                       )
-                                                    : Icon(Icons.image),
+                                                    : const Icon(Icons.image),
                                               ),
                                             ),
                                             const Text(

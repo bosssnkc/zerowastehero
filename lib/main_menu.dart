@@ -13,25 +13,25 @@ class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 2; // Default to the home page (index 2)
+  int _selectedIndex = 2; // หน้า Home ถูกตั้งค่าไว้ (index = 2)
 
   static List<Widget> get _widgetOptions => <Widget>[
-        const ProfilePage(),
-        const eventNewsPage(),
-        const HomeScreen(),
-        const OptionSetting(),
-        const ContactUs(),
+        const ProfilePage(), //เข้าสู่หน้าจัดการโปรไฟล์ผู้ใช้งาน
+        const EventNewsPage(), //เข้าสู่หน้ากิจกรรมและข่าวสาร
+        const HomeScreen(), //หน้าหลัก
+        const OptionSetting(), //เข้าสู่หน้าตั้งค่า
+        const ContactUs(), //เข้าสู่หน้าติดต่อผู้พัฒนาและให้คำแนะนำติชม
       ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
+  } //ฟังก์ชันตรวจสอบว่าผู้ใช้เลือกหน้าต่างใดอยู่
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => TypeOfTrash(selectedTabIndex: tabIndex),
-      ), //ฟังก์ชัน Navigate ไปยัง Tab เฉพาะ
+      ), //ฟังก์ชัน Navigate ไปยังหน้าที่ระบุ Tab เฉพาะเจาะจง
     );
   }
 
@@ -139,17 +139,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   child:
                       _buildGridItem(Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล'),
                   onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RecycleLocation())),
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RecycleLocation(),
+                    ),
+                  ), // ฟังก์ชันเรียกดูหน้า สถานที่รับซื้อของเก่า
                 ),
                 InkWell(
                   child: _buildGridItem(
                       Icons.local_hospital, 'สถานที่กำจัดขยะอันตราย'),
                   onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HazardousLocation())),
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HazardousLocation(),
+                    ),
+                  ), //ฟังก์ชันเรียกดูหน้า สถานที่ทิ้งขยะอันตราย
                 ),
               ],
             ),
@@ -176,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _buildSectionHeader('ข่าวสาร'),
             const SizedBox(height: 8),
             Container(
