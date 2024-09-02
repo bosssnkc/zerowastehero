@@ -486,12 +486,26 @@ class _GenralWasteState extends State<GeneralWaste>
                         shrinkWrap: true,
                         itemCount: _trashsearch
                             .where(
-                                (_trashsearch) => _trashsearch['status'] != 3)
+                              (_trashsearch) =>
+                                  _trashsearch['status'] == 1 ||
+                                  (_trashsearch['status'] == 2 &&
+                                      (_userData ==
+                                              _trashsearch['user_id']
+                                                  .toString() ||
+                                          _userData == '1')),
+                            )
                             .length,
                         itemBuilder: (context, index) {
                           final trash = _trashsearch
                               .where(
-                                  (_trashsearch) => _trashsearch['status'] != 3)
+                                (_trashsearch) =>
+                                    _trashsearch['status'] == 1 ||
+                                    (_trashsearch['status'] == 2 &&
+                                        (_userData ==
+                                                _trashsearch['user_id']
+                                                    .toString() ||
+                                            _userData == '1')),
+                              )
                               .toList()[index];
                           return Card(
                               color: trash['status'] == 2
@@ -499,288 +513,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                   : trash['status'] == 3
                                       ? Colors.red
                                       : null,
-                              child: trash['status'] != 2 &&
-                                      trash['status'] != 3
-                                  ? ListTile(
-                                      title: Text(trash['trash_name']),
-                                      subtitle: Text(trash['trash_type']),
-                                      leading: trash['trash_pic'] != null
-                                          ? const Icon(Icons.error_outline)
-                                          : const Icon(Icons.error),
-                                      trailing: _userData ==
-                                                  trash['user_id'].toString() ||
-                                              _userData == '1'
-                                          ? Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                IconButton(
-                                                  onPressed: () =>
-                                                      (trash: trash),
-                                                  icon: const Icon(Icons.edit),
-                                                ),
-                                                IconButton(
-                                                  onPressed: () async {},
-                                                  icon:
-                                                      const Icon(Icons.delete),
-                                                ),
-                                              ],
-                                            )
-                                          : null,
-                                      onTap: () => showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                                insetPadding:
-                                                    const EdgeInsets.all(16),
-                                                title: const Text(
-                                                  'รายละเอียดขยะ',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                content: SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  height: 600,
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          trash['trash_name'],
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 18),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 16,
-                                                        ),
-                                                        Card(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: trash[
-                                                                        'trash_pic'] !=
-                                                                    null
-                                                                ? Image.memory(
-                                                                    height: 300,
-                                                                    width: 300,
-                                                                    base64Decode(
-                                                                        trash[
-                                                                            'trash_pic']),
-                                                                    fit: BoxFit
-                                                                        .cover,
-                                                                  )
-                                                                : const Icon(
-                                                                    Icons
-                                                                        .image),
-                                                          ),
-                                                        ),
-                                                        const Text(
-                                                          'รายละเอียดขยะ',
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        Card(
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Text(trash[
-                                                                'trash_des']),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 16,
-                                                        ),
-                                                        const Text(
-                                                          'วิธีการกำจัด',
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 300,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                actions: [
-                                                  ElevatedButton(
-                                                      onPressed:
-                                                          Navigator.of(context)
-                                                              .pop,
-                                                      child: const Text('ปิด'))
-                                                ],
-                                              )),
-                                    )
-                                  : _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
-                                      ? ListTile(
-                                          title: Text(trash['trash_name']),
-                                          subtitle: Text(trash['trash_type']),
-                                          leading: trash['trash_pic'] != null
-                                              ? const Icon(Icons.error_outline)
-                                              : const Icon(Icons.error),
-                                          trailing: _userData ==
-                                                      trash['user_id']
-                                                          .toString() ||
-                                                  _userData == '1'
-                                              ? Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    IconButton(
-                                                      onPressed: () =>
-                                                          (trash: trash),
-                                                      icon: const Icon(
-                                                          Icons.edit),
-                                                    ),
-                                                    IconButton(
-                                                      onPressed: () async {},
-                                                      icon: const Icon(
-                                                          Icons.delete),
-                                                    ),
-                                                  ],
-                                                )
-                                              : null,
-                                          onTap: () => showDialog(
-                                              context: context,
-                                              builder: (context) => AlertDialog(
-                                                    insetPadding:
-                                                        const EdgeInsets.all(
-                                                            16),
-                                                    title: const Text(
-                                                      'รายละเอียดขยะ',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    content: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .width,
-                                                      height: 600,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              trash[
-                                                                  'trash_name'],
-                                                              style:
-                                                                  const TextStyle(
-                                                                      fontSize:
-                                                                          18),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 16,
-                                                            ),
-                                                            Card(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child: trash[
-                                                                            'trash_pic'] !=
-                                                                        null
-                                                                    ? Image
-                                                                        .memory(
-                                                                        height:
-                                                                            300,
-                                                                        width:
-                                                                            300,
-                                                                        base64Decode(
-                                                                            trash['trash_pic']),
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      )
-                                                                    : const Icon(
-                                                                        Icons
-                                                                            .image),
-                                                              ),
-                                                            ),
-                                                            const Text(
-                                                              'รายละเอียดขยะ',
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            Card(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child: Text(trash[
-                                                                    'trash_des']),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 16,
-                                                            ),
-                                                            const Text(
-                                                              'วิธีการกำจัด',
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 300,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      ElevatedButton(
-                                                          onPressed:
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop,
-                                                          child:
-                                                              const Text('ปิด'))
-                                                    ],
-                                                  )),
-                                        )
-                                      : null);
-                        })
-                    : const Text('ไม่พบรายการขยะ')
-                : ListView.builder(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        _trash.where((_trash) => _trash['status'] != 3).length,
-                    itemBuilder: (context, index) {
-                      final trash = _trash
-                          .where((_trash) => _trash['status'] != 3)
-                          .toList()[index];
-                      return Card(
-                        color: trash['status'] == 2
-                            ? Colors.yellow[200]
-                            : trash['status'] == 3
-                                ? Colors.red
-                                : null,
-                        child: trash['status'] != 2 && trash['status'] != 3
-                            ? ListTile(
+                              child: ListTile(
                                 title: Text(trash['trash_name']),
                                 subtitle: Text(trash['trash_type']),
                                 leading: trash['trash_pic'] != null
@@ -892,129 +625,137 @@ class _GenralWasteState extends State<GeneralWaste>
                                                 child: const Text('ปิด'))
                                           ],
                                         )),
-                              )
-                            : _userData == trash['user_id'].toString() ||
-                                    _userData == '1'
-                                ? ListTile(
-                                    title: Text(trash['trash_name']),
-                                    subtitle: Text(trash['trash_type']),
-                                    leading: trash['trash_pic'] != null
-                                        ? const Icon(Icons.error_outline)
-                                        : const Icon(Icons.error),
-                                    trailing: _userData ==
-                                                trash['user_id'].toString() ||
-                                            _userData == '1'
-                                        ? Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                onPressed: () => (trash: trash),
-                                                icon: const Icon(Icons.edit),
-                                              ),
-                                              IconButton(
-                                                onPressed: () async {},
-                                                icon: const Icon(Icons.delete),
-                                              ),
-                                            ],
-                                          )
-                                        : null,
-                                    onTap: () => showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                              insetPadding:
-                                                  const EdgeInsets.all(16),
-                                              title: const Text(
-                                                'รายละเอียดขยะ',
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              content: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                height: 600,
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        trash['trash_name'],
-                                                        style: const TextStyle(
-                                                            fontSize: 18),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 16,
-                                                      ),
-                                                      Card(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: trash[
-                                                                      'trash_pic'] !=
-                                                                  null
-                                                              ? Image.memory(
-                                                                  height: 300,
-                                                                  width: 300,
-                                                                  base64Decode(
-                                                                      trash[
-                                                                          'trash_pic']),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                )
-                                                              : const Icon(
-                                                                  Icons.image),
-                                                        ),
-                                                      ),
-                                                      const Text(
-                                                        'รายละเอียดขยะ',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      Card(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(trash[
-                                                              'trash_des']),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 16,
-                                                      ),
-                                                      const Text(
-                                                        'วิธีการกำจัด',
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 300,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              actions: [
-                                                ElevatedButton(
-                                                    onPressed:
-                                                        Navigator.of(context)
-                                                            .pop,
-                                                    child: const Text('ปิด'))
-                                              ],
-                                            )),
-                                  )
-                                // หากไม่ตรงเงื่อนไขใดๆเลยจะไม่แสดงผลข้อมูลที่เป็น status 2 ออกมาเลย
+                              ));
+                        })
+                    : const Text('ไม่พบรายการขยะ')
+                : ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _trash
+                        .where(
+                          (_trash) =>
+                              _trash['status'] == 1 ||
+                              (_trash['status'] == 2 &&
+                                  (_userData == _trash['user_id'].toString() ||
+                                      _userData == '1')),
+                        )
+                        .length,
+                    itemBuilder: (context, index) {
+                      final trash = _trash
+                          .where(
+                            (_trash) =>
+                                _trash['status'] == 1 ||
+                                (_trash['status'] == 2 &&
+                                    (_userData ==
+                                            _trash['user_id'].toString() ||
+                                        _userData == '1')),
+                          )
+                          .toList()[index];
+                      return Card(
+                        color: trash['status'] == 2
+                            ? Colors.yellow[200]
+                            : trash['status'] == 3
+                                ? Colors.red
                                 : null,
+                        child: ListTile(
+                          title: Text(trash['trash_name']),
+                          subtitle: Text(trash['trash_type']),
+                          leading: trash['trash_pic'] != null
+                              ? const Icon(Icons.error_outline)
+                              : const Icon(Icons.error),
+                          trailing: _userData == trash['user_id'].toString() ||
+                                  _userData == '1'
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => (trash: trash),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {},
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                  ],
+                                )
+                              : null,
+                          onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    insetPadding: const EdgeInsets.all(16),
+                                    title: const Text(
+                                      'รายละเอียดขยะ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    content: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 600,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              trash['trash_name'],
+                                              style:
+                                                  const TextStyle(fontSize: 18),
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Card(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: trash['trash_pic'] !=
+                                                        null
+                                                    ? Image.memory(
+                                                        height: 300,
+                                                        width: 300,
+                                                        base64Decode(
+                                                            trash['trash_pic']),
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : const Icon(Icons.image),
+                                              ),
+                                            ),
+                                            const Text(
+                                              'รายละเอียดขยะ',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Card(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(trash['trash_des']),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            const Text(
+                                              'วิธีการกำจัด',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(
+                                              height: 300,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          onPressed: Navigator.of(context).pop,
+                                          child: const Text('ปิด'))
+                                    ],
+                                  )),
+                        ),
                       );
                     },
                   ),
