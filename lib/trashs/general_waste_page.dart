@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,10 +18,16 @@ class _GenralWasteState extends State<GeneralWaste>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
   List<dynamic> _trash = [];
-  List<dynamic> _trashsearch = [];
-  bool _isSearching = false;
-  File? _imageFile;
   String? _userData = '';
+  final _formValidator = GlobalKey<FormState>();
+  final trashnameController = TextEditingController();
+  final trashtypeController = TextEditingController();
+  final trashdesController = TextEditingController();
+  final searchController = TextEditingController();
+  String? trashtypePicker;
+  final ImagePicker _picker = ImagePicker();
+  Uint8List? _image;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -43,10 +47,14 @@ class _GenralWasteState extends State<GeneralWaste>
 
   Future<void> _loadTrashs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String trashnamesearch = searchController.text;
     _userData = prefs.getString('user_id');
+
     try {
       final response = await http.get(
-        Uri.parse('$searchtrashs?trash_type=ขยะทั่วไป'),
+        Uri.parse(trashnamesearch.isEmpty
+            ? '$searchtrashs?trash_type=ขยะทั่วไป'
+            : '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะทั่วไป'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -56,6 +64,7 @@ class _GenralWasteState extends State<GeneralWaste>
         List<dynamic> trashs = jsonDecode(response.body);
         setState(() {
           _trash = trashs;
+          _isLoading = false;
         });
       } else {
         // Handle error
@@ -91,59 +100,6 @@ class _GenralWasteState extends State<GeneralWaste>
     }
   }
 
-  Future<void> _searchfortrash() async {
-    String trashnamesearch = searchController.text;
-
-    if (trashnamesearch.isEmpty) {
-      _trashsearch = [];
-      setState(() {
-        _isSearching = false;
-        // print(_isSearching);
-      });
-      return;
-    }
-
-    try {
-      final response = await http.get(
-        Uri.parse(
-            '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะทั่วไป'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        List<dynamic> searchResults = jsonDecode(response.body);
-        _trashsearch = searchResults;
-        setState(() {
-          _isSearching = true;
-          // print(_isSearching);
-        });
-      } else {
-        // Handle error
-        _trashsearch = [];
-        setState(() {
-          _isSearching = false;
-        });
-      }
-    } catch (error) {
-      // Handle network or other errors
-      _trashsearch = [];
-      setState(() {
-        _isSearching = false;
-      });
-    }
-  }
-
-  final _formValidator = GlobalKey<FormState>();
-  final trashnameController = TextEditingController();
-  final trashtypeController = TextEditingController();
-  final trashdesController = TextEditingController();
-  final searchController = TextEditingController();
-  String? trashtypePicker;
-  final ImagePicker _picker = ImagePicker();
-  Uint8List? _image;
-
   Future<void> _trashRegister() async {
     if (_formValidator.currentState!.validate()) {
       String trashname = trashnameController.text;
@@ -174,6 +130,7 @@ class _GenralWasteState extends State<GeneralWaste>
         // Load trash items if necessary
         await _loadTrashs();
         Navigator.of(context).pop();
+        _textFieldClear();
       } else {
         // Handle error
         String message =
@@ -202,7 +159,6 @@ class _GenralWasteState extends State<GeneralWaste>
       if (pickedFile != null) {
         final bytes = await pickedFile.readAsBytes();
         setState(() {
-          _imageFile = File(pickedFile.path);
           _image = bytes;
         });
         final fileSizeInBytes = bytes.length;
@@ -242,6 +198,322 @@ class _GenralWasteState extends State<GeneralWaste>
       return false;
     }
     return false;
+  }
+
+  Future<void> _textFieldClear() async {
+    setState(() {
+      trashnameController.clear();
+      trashdesController.clear();
+      trashtypePicker = null;
+      _image = null;
+    });
+  }
+
+  Future<void> getTrashUpdateInfo(dynamic trashlist) async {
+    print(trashlist);
+    setState(() {
+      trashnameController.text = trashlist['trash_name'];
+      trashdesController.text = trashlist['trash_des'];
+      trashtypePicker = trashlist['trash_type'];
+      _image = trashlist['trash_pic'] != null
+          ? base64Decode(trashlist['trash_pic'])
+          : null;
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          actions: [
+            ElevatedButton(
+              onPressed: () async {
+                // Collect updated data
+                final updatedTrash = {
+                  'trash_name': trashnameController.text,
+                  'trash_des': trashdesController.text,
+                  'trash_type': trashtypePicker,
+                  // If a new image was selected, add it to the updated data
+                  'trash_pic': _image != null
+                      ? base64Encode(_image!)
+                      : trashlist['trash_pic'] ?? '',
+                  'trash_id': trashlist['trash_id']
+                };
+
+                // Send the update request to the server
+                final response = await http.put(
+                  Uri.parse(updatetrash),
+                  headers: {'Content-Type': 'application/json'},
+                  body: jsonEncode(updatedTrash),
+                );
+
+                if (response.statusCode == 200) {
+                  print('Trash updated successfully'); //Debug if failed
+                  trashlist['trash_pic'] = _image != null
+                      ? base64Encode(_image!)
+                      : trashlist['trash_pic'];
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('อัพเดทสำเร็จ'),
+                      content: const Text('อัพเดทข้อมูลสำเร็จ'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  print('Failed to update trash'); //Debug if failed
+                  String message =
+                      'Error ${response.statusCode}: ${response.reasonPhrase}';
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Error'),
+                      content: Text(message),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                _loadTrashs();
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, foregroundColor: Colors.white),
+              child: const Text(
+                'บันทึก',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red, foregroundColor: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _loadTrashs();
+                _textFieldClear();
+              },
+              child: const Text('ยกเลิก'),
+            ),
+          ],
+          insetPadding: const EdgeInsets.all(16),
+          title: const Text('แก้ไขรายการขยะ'),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 600,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: trashnameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรอกชื่อขยะ';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'ชื่อขยะ',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    value: trashtypePicker,
+                    items: [
+                      'ขยะทั่วไป',
+                      'ขยะอินทรีย์',
+                      'ขยะรีไซเคิล',
+                      'ขยะอันตราย'
+                    ]
+                        .map((label) => DropdownMenuItem(
+                              value: label,
+                              child: Text(label),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        trashtypePicker = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    maxLines: 7,
+                    controller: trashdesController,
+                    decoration: const InputDecoration(
+                      labelText: 'รายละเอียดขยะ',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('รูปภาพ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await _pickImage();
+                          setState(() {
+                            if (_image != null) {
+                              trashlist['trash_pic'] = base64Encode(_image!);
+                            }
+                          });
+                        },
+                        child: const Text('อัพโหลดหรือเปลี่ยนรูปภาพ'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  trashlist['trash_pic'] != null
+                      ? Stack(
+                          children: [
+                            Positioned(
+                              child: Image.memory(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                base64Decode(trashlist['trash_pic']),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    _image = null;
+
+                                    trashlist['trash_pic'] = null;
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : const Icon(Icons.image_not_supported),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> deleteTrashWindow(dynamic listtrash) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('ยืนยันการลบรายการขยะ'),
+              insetPadding: const EdgeInsets.all(16),
+              content: Text(
+                  'ต้องการลบรายการขยะ ${listtrash['trash_name']} ใช่หรือไม่'),
+              actions: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white),
+                    onPressed: () async {
+                      try {
+                        final response = await http.put(
+                          Uri.parse(deletetrash),
+                          headers: {'Content-Type': 'application/json'},
+                          body: jsonEncode(
+                            {'trash_id': listtrash['trash_id']},
+                          ),
+                        );
+                        if (response.statusCode == 200) {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('ลบข้อมูลสำเร็จ'),
+                              content: const Text('ลบข้อมูลสำเร็จ'),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('ตกลง'))
+                              ],
+                            ),
+                          );
+                        } else if (response.statusCode == 404) {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('ลบข้อมูลไม่สำเร็จ'),
+                              content: const Text('Error 404 ไม่พบรายการขยะ'),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('ตกลง'))
+                              ],
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('ลบข้อมูลไม่สำเร็จ'),
+                              content: const Text('ลบข้อมูลรายการขยะไม่สำเร็จ'),
+                              actions: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('ตกลง'))
+                              ],
+                            ),
+                          );
+                        }
+                      } catch (error) {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('ไม่สามารถลบได้'),
+                                  content: const Text(
+                                      'ไม่สามารถลบข้อมูลได้ Database Error'),
+                                  actions: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('ตกลง'))
+                                  ],
+                                ));
+                      }
+                      _loadTrashs();
+                    },
+                    child: const Text('ยืนยันการลบ')),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _loadTrashs();
+                    },
+                    child: const Text('ยกเลิก'))
+              ],
+            ));
   }
 
   @override
@@ -288,6 +560,7 @@ class _GenralWasteState extends State<GeneralWaste>
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100)),
                   onPressed: () {
+                    _textFieldClear();
                     showDialog(
                       context: context,
                       builder: (_) => StatefulBuilder(
@@ -370,12 +643,12 @@ class _GenralWasteState extends State<GeneralWaste>
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    _imageFile != null
+                                    _image != null
                                         ? Column(
                                             children: [
                                               Stack(children: [
-                                                Image.file(
-                                                  _imageFile!,
+                                                Image.memory(
+                                                  _image!,
                                                   width: MediaQuery.of(context)
                                                       .size
                                                       .width,
@@ -388,7 +661,6 @@ class _GenralWasteState extends State<GeneralWaste>
                                                   child: IconButton(
                                                     onPressed: () {
                                                       setState(() {
-                                                        _imageFile = null;
                                                         _image = null;
                                                       });
                                                     },
@@ -433,6 +705,15 @@ class _GenralWasteState extends State<GeneralWaste>
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                             ),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white),
+                                onPressed: () {
+                                  _textFieldClear();
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('ยกเลิก'))
                           ],
                         ),
                       ),
@@ -466,7 +747,13 @@ class _GenralWasteState extends State<GeneralWaste>
                   ),
                 ),
                 IconButton(
-                    onPressed: _searchfortrash, icon: const Icon(Icons.search))
+                    onPressed: () {
+                      setState(() {
+                        _isLoading = true;
+                        _loadTrashs();
+                      });
+                    },
+                    icon: const Icon(Icons.search))
               ],
             ),
             const SizedBox(
@@ -479,286 +766,159 @@ class _GenralWasteState extends State<GeneralWaste>
             const SizedBox(
               height: 10,
             ),
-            _isSearching
-                ? _trashsearch.isNotEmpty
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.green,
+                    ),
+                  )
+                : _trash.isNotEmpty
                     ? ListView.builder(
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: _trashsearch
+                        itemCount: _trash
                             .where(
-                              (_trashsearch) =>
-                                  _trashsearch['status'] == 1 ||
-                                  (_trashsearch['status'] == 2 &&
+                              (_trash) =>
+                                  _trash['status'] == 1 ||
+                                  (_trash['status'] == 2 &&
                                       (_userData ==
-                                              _trashsearch['user_id']
-                                                  .toString() ||
+                                              _trash['user_id'].toString() ||
                                           _userData == '1')),
                             )
                             .length,
                         itemBuilder: (context, index) {
-                          final trash = _trashsearch
+                          final trash = _trash
                               .where(
-                                (_trashsearch) =>
-                                    _trashsearch['status'] == 1 ||
-                                    (_trashsearch['status'] == 2 &&
+                                (_trash) =>
+                                    _trash['status'] == 1 ||
+                                    (_trash['status'] == 2 &&
                                         (_userData ==
-                                                _trashsearch['user_id']
-                                                    .toString() ||
+                                                _trash['user_id'].toString() ||
                                             _userData == '1')),
                               )
                               .toList()[index];
                           return Card(
-                              color: trash['status'] == 2
-                                  ? Colors.yellow[200]
-                                  : trash['status'] == 3
-                                      ? Colors.red
-                                      : null,
-                              child: ListTile(
-                                title: Text(trash['trash_name']),
-                                subtitle: Text(trash['trash_type']),
-                                leading: trash['trash_pic'] != null
-                                    ? const Icon(Icons.error_outline)
-                                    : const Icon(Icons.error),
-                                trailing:
-                                    _userData == trash['user_id'].toString() ||
-                                            _userData == '1'
-                                        ? Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                onPressed: () => (trash: trash),
-                                                icon: const Icon(Icons.edit),
-                                              ),
-                                              IconButton(
-                                                onPressed: () async {},
-                                                icon: const Icon(Icons.delete),
-                                              ),
-                                            ],
-                                          )
-                                        : null,
-                                onTap: () => showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          insetPadding:
-                                              const EdgeInsets.all(16),
-                                          title: const Text(
-                                            'รายละเอียดขยะ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          content: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 600,
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    trash['trash_name'],
-                                                    style: const TextStyle(
-                                                        fontSize: 18),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 16,
-                                                  ),
-                                                  Card(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child:
-                                                          trash['trash_pic'] !=
-                                                                  null
-                                                              ? Image.memory(
-                                                                  height: 300,
-                                                                  width: 300,
-                                                                  base64Decode(
-                                                                      trash[
-                                                                          'trash_pic']),
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                )
-                                                              : const Icon(
-                                                                  Icons.image),
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    'รายละเอียดขยะ',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Card(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                          trash['trash_des']),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 16,
-                                                  ),
-                                                  const Text(
-                                                    'วิธีการกำจัด',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 300,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          actions: [
-                                            ElevatedButton(
-                                                onPressed:
-                                                    Navigator.of(context).pop,
-                                                child: const Text('ปิด'))
-                                          ],
-                                        )),
-                              ));
-                        })
-                    : const Text('ไม่พบรายการขยะ')
-                : ListView.builder(
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _trash
-                        .where(
-                          (_trash) =>
-                              _trash['status'] == 1 ||
-                              (_trash['status'] == 2 &&
-                                  (_userData == _trash['user_id'].toString() ||
-                                      _userData == '1')),
-                        )
-                        .length,
-                    itemBuilder: (context, index) {
-                      final trash = _trash
-                          .where(
-                            (_trash) =>
-                                _trash['status'] == 1 ||
-                                (_trash['status'] == 2 &&
-                                    (_userData ==
-                                            _trash['user_id'].toString() ||
-                                        _userData == '1')),
-                          )
-                          .toList()[index];
-                      return Card(
-                        color: trash['status'] == 2
-                            ? Colors.yellow[200]
-                            : trash['status'] == 3
-                                ? Colors.red
-                                : null,
-                        child: ListTile(
-                          title: Text(trash['trash_name']),
-                          subtitle: Text(trash['trash_type']),
-                          leading: trash['trash_pic'] != null
-                              ? const Icon(Icons.error_outline)
-                              : const Icon(Icons.error),
-                          trailing: _userData == trash['user_id'].toString() ||
-                                  _userData == '1'
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => (trash: trash),
-                                      icon: const Icon(Icons.edit),
-                                    ),
-                                    IconButton(
-                                      onPressed: () async {},
-                                      icon: const Icon(Icons.delete),
-                                    ),
-                                  ],
-                                )
-                              : null,
-                          onTap: () => showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    insetPadding: const EdgeInsets.all(16),
-                                    title: const Text(
-                                      'รายละเอียดขยะ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    content: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 600,
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                            color: trash['status'] == 2
+                                ? Colors.yellow[200]
+                                : trash['status'] == 3
+                                    ? Colors.red
+                                    : null,
+                            child: ListTile(
+                              title: Text(trash['trash_name']),
+                              subtitle: Text(trash['trash_type']),
+                              leading: trash['trash_pic'] != null
+                                  ? const Icon(Icons.error_outline)
+                                  : const Icon(Icons.error),
+                              trailing:
+                                  _userData == trash['user_id'].toString() ||
+                                          _userData == '1'
+                                      ? Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text(
-                                              trash['trash_name'],
-                                              style:
-                                                  const TextStyle(fontSize: 18),
+                                            IconButton(
+                                              onPressed: () async {
+                                                getTrashUpdateInfo(trash);
+                                              },
+                                              icon: const Icon(Icons.edit),
                                             ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            Card(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: trash['trash_pic'] !=
-                                                        null
-                                                    ? Image.memory(
-                                                        height: 300,
-                                                        width: 300,
-                                                        base64Decode(
-                                                            trash['trash_pic']),
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : const Icon(Icons.image),
-                                              ),
-                                            ),
-                                            const Text(
-                                              'รายละเอียดขยะ',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Card(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(trash['trash_des']),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            const Text(
-                                              'วิธีการกำจัด',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            const SizedBox(
-                                              height: 300,
+                                            IconButton(
+                                              onPressed: () async {
+                                                deleteTrashWindow(trash);
+                                              },
+                                              icon: const Icon(Icons.delete),
                                             ),
                                           ],
+                                        )
+                                      : null,
+                              onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        insetPadding: const EdgeInsets.all(16),
+                                        title: const Text(
+                                          'รายละเอียดขยะ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    ),
-                                    actions: [
-                                      ElevatedButton(
-                                          onPressed: Navigator.of(context).pop,
-                                          child: const Text('ปิด'))
-                                    ],
-                                  )),
-                        ),
-                      );
-                    },
-                  ),
+                                        content: SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 600,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  trash['trash_name'],
+                                                  style: const TextStyle(
+                                                      fontSize: 18),
+                                                ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                Card(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: trash['trash_pic'] !=
+                                                            null
+                                                        ? Image.memory(
+                                                            height: 300,
+                                                            width: 300,
+                                                            base64Decode(trash[
+                                                                'trash_pic']),
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : const Icon(
+                                                            Icons.image),
+                                                  ),
+                                                ),
+                                                const Text(
+                                                  'รายละเอียดขยะ',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Card(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                        trash['trash_des']),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                const Text(
+                                                  'วิธีการกำจัด',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 300,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                              onPressed:
+                                                  Navigator.of(context).pop,
+                                              child: const Text('ปิด'))
+                                        ],
+                                      )),
+                            ),
+                          );
+                        },
+                      )
+                    : const Text('ไม่พบรายการขยะ')
           ],
         ),
       ),
