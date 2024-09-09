@@ -226,6 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
+            autovalidateMode: AutovalidateMode.always,
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
@@ -249,6 +250,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'กรุณากรอกชื่อผู้ใช้';
+                      } else if (!value.contains(RegExp(r'^[a-zA-Z0-9]+$'))) {
+                        return 'ชื่อผู้ใช้ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลขเท่านั้น';
                       }
                       return null;
                     },
@@ -265,6 +268,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'กรุณากรอกรหัสผ่าน';
+                      } else if (!value
+                          .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
+                        return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
                       }
                       return null;
                     },
@@ -281,6 +287,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'กรุณายืนยันรหัสผ่าน';
+                      } else if (!value
+                          .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
+                        return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
                       }
                       if (value != _passwordController.text) {
                         return 'รหัสผ่านไม่ตรงกัน';
@@ -299,6 +308,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'กรุณากรอกอีเมล์';
+                      } else if (!value.contains('@') || !value.contains('.')) {
+                        return 'รูปแบบ email ไม่ถูกต้อง';
                       }
                       return null;
                     },
@@ -306,6 +317,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 20),
                   TextFormField(
                     controller: _fullnameController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: 'ชื่อจริง',
                       hintText: 'ชื่อจริง',

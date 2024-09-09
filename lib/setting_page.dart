@@ -37,14 +37,6 @@ class _OptionSettingState extends State<OptionSetting> {
           const SizedBox(height: 16),
           Card(
             child: ListTile(
-              onTap: () {},
-              title: const Text('ตั้งค่าภาษา'),
-              subtitle: const Text('ตั้งค่าภาษาใช้งาน'),
-              leading: const Icon(Icons.language),
-            ),
-          ),
-          Card(
-            child: ListTile(
               onTap: () {
                 showDialog(
                   context: context,
@@ -93,7 +85,7 @@ class _OptionSettingState extends State<OptionSetting> {
                 );
               },
               title: const Text('ตั้งค่าตัวอักษร'),
-              subtitle: const Text('data'),
+              subtitle: const Text('ตัวอักษร'),
               leading: const Icon(Icons.font_download),
             ),
           ),

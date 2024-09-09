@@ -1,9 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zerowastehero/Routes/routes.dart';
-import 'package:zerowastehero/database/manage_user.dart';
 import 'package:zerowastehero/main_menu.dart';
 import 'package:zerowastehero/register.dart';
 
@@ -73,6 +72,84 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _forgotUsernameController = TextEditingController();
+  final _forgotEmailController = TextEditingController();
+
+  Future<void> createGuestToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.remove('guestToken');
+    String? guestToken = prefs.getString('guestToken');
+
+    if (guestToken == null) {
+      guestToken = Uuid().v4();
+      await prefs.setString('guestToken', guestToken);
+      await prefs.setBool('isLoggedIn', true);
+      print(guestToken);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainPage()),
+      );
+    }
+  }
+
+  Future<void> _forgotPassword() async {
+    String forgotUsername = _forgotUsernameController.text;
+    String forgotEmail = _forgotEmailController.text;
+
+    try {
+      final response = await http.post(
+        Uri.parse(forgotPassword),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': forgotUsername,
+          'email': forgotEmail,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('รหัสผ่านถูกรีเซ็ต'),
+                  content: const Text(
+                      'กรุณาตรวจสอบ E-mail เพื่อรับรหัสผ่านที่ถูกรีเซ็ต หากไม่พบ email ให้ตรวจสอบใน เมล์ขยะ/Junk Mail'),
+                  actions: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('ตกลง'))
+                  ],
+                ));
+      } else {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('ข้อผิดพลาด'),
+                  content: const Text(
+                      'ไม่สามารถรีเซ็ตรหัสผ่านได้ username หรือ email ไม่ถูกต้องกรุณาลองใหม่'),
+                  actions: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('ตกลง'))
+                  ],
+                ));
+      }
+    } catch (e) {
+      print('Error $e');
+    }
+  }
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
@@ -209,6 +286,62 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextButton(
                     onPressed: () {
                       // ฟังก์ชันกู้คืนรหัสผ่าน
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('ลืมรหัสผ่าน'),
+                          content: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 200,
+                            child: Form(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    TextFormField(
+                                      controller: _forgotUsernameController,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Username',
+                                          hintText:
+                                              'username ที่เคยลงทะเบียนไว้'),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: _forgotEmailController,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Email',
+                                          hintText: 'email@example.com'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white),
+                              onPressed: () {
+                                _forgotPassword();
+                              },
+                              child: const Text(
+                                'ตกลง',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('ยกเลิก'))
+                          ],
+                        ),
+                      );
                     },
                     child: const Text(
                       'ลืมรหัสผ่าน?',
@@ -262,9 +395,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Text('หรือ'),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ManageUsersPage(),
-                    ));
+                    createGuestToken();
                     // ฟังก์ชันการสร้างบัญชีชั่วคราว
                   },
                   child: const Text(

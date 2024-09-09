@@ -18,12 +18,14 @@ class _ProfilePageState extends State<ProfilePage> {
   final _currentPasswordController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  String? guestToken = '';
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', false);
     prefs.remove('username'); // Remove stored username
     prefs.remove('user_id');
+    prefs.remove('guestToken');
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const SplashScreen()),
     );
@@ -39,7 +41,12 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = prefs.getString('username') ?? 'Unknown User';
     String? token = prefs.getString('jwt_token');
+    guestToken = prefs.getString('guestToken');
     // print(token);
+
+    if (guestToken != null) {
+      return {'firstname': 'Guest', 'lastname': 'User', 'email': 'anonymous'};
+    }
 
     final response = await http.get(
       Uri.parse('$getuserinfo$username'),
@@ -50,6 +57,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (isExpired) {
         // Token is expired, redirect to login page
+        print('Token Expired');
+        prefs.remove('guestToken');
         prefs.setBool('isLoggedIn', false);
         prefs.remove('username');
         prefs.remove('user_id');
@@ -61,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('Session หมดอายุ'),
-              content: const Text('Session กรุณาทำการล็อกอินใหม่'),
+              content: const Text('Session หมดอายุ กรุณาทำการเข้าสู่ระบบใหม่'),
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
@@ -76,6 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } else {
       // No token found, redirect to login page
+      print('noToken');
+      prefs.remove('guestToken');
       prefs.setBool('isLoggedIn', false);
       prefs.remove('username');
       prefs.remove('user_id');
@@ -87,7 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('พบการเข้าถึงที่ไม่ถูกต้อง'),
-            content: const Text('การเข้าถึงไม่ถูกต้อง กรุณาทำการล็อกอินใหม่'),
+            content:
+                const Text('การเข้าถึงไม่ถูกต้อง กรุณาทำการเข้าสู่ระบบใหม่'),
             actions: [
               ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -282,9 +294,27 @@ class _ProfilePageState extends State<ProfilePage> {
             Card(
               child: ListTile(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ManageUsersPage(),
-                  ));
+                  guestToken != null
+                      ? showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('ไม่สามารถแก้ไขได้'),
+                                content: const Text(
+                                    'เข้าสู่ระบบด้วย guest ไม่สามารถแก้ไขข้อมูลได้'),
+                                actions: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.white),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('ตกลง'),
+                                  )
+                                ],
+                              ))
+                      : Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ManageUsersPage(),
+                        ));
                 },
                 title: const Text('แก้ไขข้อมูลส่วนตัว'),
                 leading: const Icon(Icons.edit),
@@ -292,69 +322,90 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Card(
               child: ListTile(
-                onTap: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('แก้ไขรหัสผ่าน'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('กรุณากรอก Password ปัจจุบัน'),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _currentPasswordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'password ปัจจุบัน',
+                onTap: () => guestToken != null
+                    ? showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: const Text('ไม่สามารถแก้ไขได้'),
+                              content: const Text(
+                                  'เข้าสู่ระบบด้วย guest ไม่สามารถแก้ไขข้อมูลได้'),
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white),
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('ตกลง'),
+                                )
+                              ],
+                            ))
+                    : showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('แก้ไขรหัสผ่าน'),
+                          content: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 250,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('กรุณากรอก Password ปัจจุบัน'),
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  controller: _currentPasswordController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'password ปัจจุบัน',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text('กรุณากรอก Password ใหม่'),
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  obscureText: true,
+                                  controller: _passwordController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'password ใหม่',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  obscureText: true,
+                                  controller: _confirmPasswordController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'ยืนยัน password ใหม่',
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          actions: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white),
+                              onPressed: () {
+                                clearFields();
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('ยกเลิก'),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.green),
+                              onPressed: () async {
+                                await _editPassword();
+                              },
+                              child: const Text('บันทึก'),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        const Text('กรุณากรอก Password ใหม่'),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'password ใหม่',
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          obscureText: true,
-                          controller: _confirmPasswordController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'ยืนยัน password ใหม่',
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white),
-                        onPressed: () {
-                          clearFields();
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('ยกเลิก'),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.green),
-                        onPressed: () async {
-                          await _editPassword();
-                        },
-                        child: const Text('บันทึก'),
-                      ),
-                    ],
-                  ),
-                ),
                 title: const Text('แก้ไขรหัสผ่าน'),
                 leading: const Icon(Icons.lock_rounded),
               ),

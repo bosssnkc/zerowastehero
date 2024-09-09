@@ -143,7 +143,7 @@ class _HazardousLocationState extends State<HazardousLocation> {
                                   userLocation!.longitude,
                                 ),
                                 infoWindow: const InfoWindow(
-                                  title: 'ตำนแห่งปัจจุบันของคุณ',
+                                  title: 'ตำแหน่งปัจจุบันของคุณ',
                                 ),
                               )
                             : const Marker(

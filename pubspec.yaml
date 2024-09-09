@@ -47,6 +47,7 @@ dependencies:
   http: ^1.2.2
   jwt_decoder: ^2.0.1
   google_fonts: ^6.2.1
+  uuid: ^4.5.0
 
 dev_dependencies:
   flutter_test:
