@@ -45,7 +45,10 @@ class _RecycleLocationState extends State<RecycleLocation> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('ตกลง',style: TextStyle(fontWeight: FontWeight.bold),))
+                    child: const Text(
+                      'ตกลง',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
               ],
               title: const Text('สถานที่'),
               content: SizedBox(
@@ -58,11 +61,17 @@ class _RecycleLocationState extends State<RecycleLocation> {
                   itemBuilder: (context, index) {
                     final recyclelocation = _locations[index];
                     return Card(
-                      child: ListTile(
+                      child: ExpansionTile(
                         title: Text(recyclelocation['location_name']),
                         leading: const Icon(Icons.map),
                         subtitle: Text(
                             '${recyclelocation['location_lat']} ${recyclelocation['location_lon']}'),
+                        children: [
+                          ListTile(
+                            title: Text(recyclelocation['location_name']),
+                            subtitle: Text('test'),
+                          )
+                        ],
                       ),
                     );
                   },
@@ -140,7 +149,7 @@ class _RecycleLocationState extends State<RecycleLocation> {
               onPressed: () {
                 _getRecycleLocationList();
               },
-              icon: Icon(Icons.list))
+              icon: const Icon(Icons.list))
         ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -231,8 +240,7 @@ class _RecycleLocationState extends State<RecycleLocation> {
                                     ),
                                   )
                                 }
-                              : _markers //Text('{location_recycleshop}'),
-                          ),
+                              : _markers),
                     ),
                   ),
                 ),

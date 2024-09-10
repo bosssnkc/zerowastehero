@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisSpacing: 16.0,
               children: [
                 InkWell(
-                  child: _buildGridItem(Icons.recycling, 'ขยะ 4 ประเภท'),
+                  child: _buildGridItem(Icons.delete, 'ขยะ 4 ประเภท'),
                   onTap: () => _navigateToTrashType(
                       context, 0), //Navigate ไปยัง tab index 0,
                 ),
@@ -179,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const Image(
                       image: NetworkImage(
                           'https://www.baandinthai.com/images/data-baandin/67/67.10/67.10.06/toi09.05.jpg'),
+                      fit: BoxFit.cover,
                     ),
                     Positioned(
                         right: 0,

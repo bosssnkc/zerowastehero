@@ -269,36 +269,56 @@ class _SearchPageState extends State<SearchPage> {
                     height: 16,
                   ),
                   trashlist['trash_pic'] != null
-                      ? Stack(
-                          children: [
-                            Positioned(
-                              child: Image.memory(
-                                height: 200,
-                                width: MediaQuery.of(context).size.width,
-                                base64Decode(trashlist['trash_pic']),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    _image = null;
-
-                                    trashlist['trash_pic'] = null;
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Colors.red,
+                      ? Card(
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                child: Image.memory(
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
+                                  base64Decode(trashlist['trash_pic']),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            )
-                          ],
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      _image = null;
+
+                                      trashlist['trash_pic'] = null;
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         )
-                      : const Icon(Icons.image_not_supported),
+                      : const Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.image_not_supported,
+                                    size: 120,
+                                  ),
+                                  Text(
+                                    'ไม่มีรูปภาพ',
+                                    style: TextStyle(fontSize: 18),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -877,11 +897,14 @@ class _SearchPageState extends State<SearchPage> {
                             title: Text(trash['trash_name']),
                             subtitle: Text(trash['trash_type']),
                             leading: trash['trash_pic'] != null
-                                ? Image.memory(
-                                    height: 48,
-                                    width: 48,
-                                    base64Decode(trash['trash_pic']),
-                                    fit: BoxFit.cover,
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.memory(
+                                      height: 48,
+                                      width: 48,
+                                      base64Decode(trash['trash_pic']),
+                                      fit: BoxFit.cover,
+                                    ),
                                   )
                                 : const Icon(Icons.error),
                             trailing:
@@ -957,15 +980,38 @@ class _SearchPageState extends State<SearchPage> {
                                                       const EdgeInsets.all(8.0),
                                                   child: trash['trash_pic'] !=
                                                           null
-                                                      ? Image.memory(
-                                                          height: 300,
-                                                          width: 300,
-                                                          base64Decode(trash[
-                                                              'trash_pic']),
-                                                          fit: BoxFit.cover,
+                                                      ? ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      8.0),
+                                                          child: Image.memory(
+                                                            height: 300,
+                                                            width: 300,
+                                                            base64Decode(trash[
+                                                                'trash_pic']),
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         )
-                                                      : const Icon(Icons.image),
+                                                      : const Center(
+                                                          child: Column(
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .image_not_supported,
+                                                              size: 120,
+                                                            ),
+                                                            Text(
+                                                              'ไม่มีรูปภาพ',
+                                                              style: TextStyle(
+                                                                  fontSize: 18),
+                                                            )
+                                                          ],
+                                                        )),
                                                 ),
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
                                               ),
                                               const Text(
                                                 'รายละเอียดขยะ',

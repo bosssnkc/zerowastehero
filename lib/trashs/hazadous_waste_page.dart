@@ -400,7 +400,25 @@ class _HazadousWasteState extends State<HazadousWaste>
                             )
                           ],
                         )
-                      : const Icon(Icons.image_not_supported),
+                      : const Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.image_not_supported,
+                                    size: 120,
+                                  ),
+                                  Text(
+                                    'ไม่มีรูปภาพ',
+                                    style: TextStyle(fontSize: 18),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -733,9 +751,9 @@ class _HazadousWasteState extends State<HazadousWaste>
 
   Widget listOfHazadous() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -895,8 +913,23 @@ class _HazadousWasteState extends State<HazadousWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : const Icon(
-                                                            Icons.image),
+                                                        : const Center(
+                                                            child: Column(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons
+                                                                      .image_not_supported,
+                                                                  size: 120,
+                                                                ),
+                                                                Text(
+                                                                  'ไม่มีรูปภาพ',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
                                                   ),
                                                 ),
                                                 const Text(
@@ -944,9 +977,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                         })
                     : const Text('ไม่พบรายการขยะ')
           ],
-        ),
-      ),
-    );
+        )));
   }
 }
 

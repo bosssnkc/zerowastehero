@@ -5,6 +5,7 @@ import 'package:zerowastehero/trashs/general_waste_page.dart';
 import 'package:zerowastehero/trashs/hazadous_waste_page.dart';
 import 'package:zerowastehero/trashs/recycle_waste_page.dart';
 import 'package:zerowastehero/search_page.dart';
+import 'custom_icons_icons.dart';
 
 class TypeOfTrash extends StatefulWidget {
   final int selectedTabIndex;
@@ -231,7 +232,6 @@ class HowToSortingPage extends StatelessWidget {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-              splashColor: Colors.blue,
               onTap: () {
                 showDialog(
                     context: context,
@@ -344,12 +344,15 @@ class HowToSortingPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Stack(
-                    alignment: Alignment(1, 1),
                     children: [
-                      Text(
-                        'คลิกเพื่ออ่านต่อ...',
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 39, 73, 133)),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          'คลิกเพื่ออ่านต่อ...',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 39, 73, 133)),
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,7 +394,6 @@ class HowToSortingPage extends StatelessWidget {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-              splashColor: Colors.blue,
               onTap: () {
                 showDialog(
                     context: context,
@@ -453,12 +455,15 @@ class HowToSortingPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Stack(
-                    alignment: Alignment(1, 1),
                     children: [
-                      Text(
-                        'คลิกเพื่ออ่านต่อ...',
-                        style:
-                            TextStyle(color: Color.fromARGB(255, 39, 73, 133)),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          'คลิกเพื่ออ่านต่อ...',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 39, 73, 133)),
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -508,28 +513,32 @@ class GridWieget extends StatelessWidget {
                 return const GeneralWaste();
               }));
             },
-            child: gridItem('ขยะทั่วไป', Icons.delete, Colors.blue)),
+            child: gridItem(
+                'ขยะทั่วไป', CustomIcons.general_waste_bin, Colors.blue)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const RecycleWaste();
               }));
             },
-            child: gridItem('ขยะรีไซเคิล', Icons.recycling, Colors.amber)),
+            child: gridItem(
+                'ขยะรีไซเคิล', CustomIcons.recycle_waste_bin, Colors.amber)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const CompostableWaste();
               }));
             },
-            child: gridItem('ขยะอินทรีย์', Icons.eco, Colors.green)),
+            child: gridItem('ขยะอินทรีย์', CustomIcons.compostable_waste_bin,
+                Colors.green)),
         InkWell(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const HazadousWaste();
               }));
             },
-            child: gridItem('ขยะอันตราย', Icons.masks_rounded, Colors.red)),
+            child: gridItem(
+                'ขยะอันตราย', CustomIcons.hazadous_waste_bin, Colors.red)),
       ],
     );
   }
@@ -547,7 +556,7 @@ class GridWieget extends StatelessWidget {
           ),
           Icon(
             icon,
-            size: 60,
+            size: 100,
             color: iconCol,
           )
         ],

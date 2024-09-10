@@ -400,7 +400,25 @@ class _RecycleWasteState extends State<RecycleWaste>
                             )
                           ],
                         )
-                      : const Icon(Icons.image_not_supported),
+                      : const Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.image_not_supported,
+                                    size: 120,
+                                  ),
+                                  Text(
+                                    'ไม่มีรูปภาพ',
+                                    style: TextStyle(fontSize: 18),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
                 ],
               ),
             ),
@@ -892,8 +910,23 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                                 'trash_pic']),
                                                             fit: BoxFit.cover,
                                                           )
-                                                        : const Icon(
-                                                            Icons.image),
+                                                        : const Center(
+                                                            child: Column(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons
+                                                                      .image_not_supported,
+                                                                  size: 120,
+                                                                ),
+                                                                Text(
+                                                                  'ไม่มีรูปภาพ',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
                                                   ),
                                                 ),
                                                 const Text(
