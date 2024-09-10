@@ -239,171 +239,173 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'ลงชื่อเข้าใช้งาน',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'ลงชื่อเข้าใช้งาน',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'ชื่อผู้ใช้/อีเมล์',
-                    hintText: 'example@gmail.com',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'ชื่อผู้ใช้/อีเมล์',
+                      hintText: 'example@gmail.com',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณากรอกชื่อผู้ใช้หรืออีเมล์';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'กรุณากรอกชื่อผู้ใช้หรืออีเมล์';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'รหัสผ่าน',
-                    hintText: '**********',
-                    border: OutlineInputBorder(),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: 'รหัสผ่าน',
+                      hintText: '**********',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'กรุณากรอกรหัสผ่าน';
+                      }
+                      return null;
+                    },
                   ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'กรุณากรอกรหัสผ่าน';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      // ฟังก์ชันกู้คืนรหัสผ่าน
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('ลืมรหัสผ่าน'),
-                          content: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 200,
-                            child: Form(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: _forgotUsernameController,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Username',
-                                          hintText:
-                                              'username ที่เคยลงทะเบียนไว้'),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    TextFormField(
-                                      controller: _forgotEmailController,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Email',
-                                          hintText: 'email@example.com'),
-                                    ),
-                                  ],
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        // ฟังก์ชันกู้คืนรหัสผ่าน
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('ลืมรหัสผ่าน'),
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 200,
+                              child: Form(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: _forgotUsernameController,
+                                        decoration: const InputDecoration(
+                                            labelText: 'Username',
+                                            hintText:
+                                                'username ที่เคยลงทะเบียนไว้'),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      TextFormField(
+                                        controller: _forgotEmailController,
+                                        decoration: const InputDecoration(
+                                            labelText: 'Email',
+                                            hintText: 'email@example.com'),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          actions: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white),
-                              onPressed: () {
-                                _forgotPassword();
-                              },
-                              child: const Text(
-                                'ตกลง',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    backgroundColor: Colors.red,
+                            actions: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
                                     foregroundColor: Colors.white),
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  _forgotPassword();
                                 },
-                                child: const Text('ยกเลิก'))
-                          ],
+                                child: const Text(
+                                  'ตกลง',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('ยกเลิก'))
+                            ],
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'ลืมรหัสผ่าน?',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _login,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        child: const Text(
+                          'เข้าสู่ระบบ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          _usernameController.clear();
+                          _passwordController.clear();
+                          // ฟังก์ชันยกเลิกหรือล้างฟอร์มด้านบน
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white),
+                        child: const Text('ยกเลิก',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('ยังไม่มีบัญชีผู้ใช้?'),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
                         ),
                       );
                     },
                     child: const Text(
-                      'ลืมรหัสผ่าน?',
+                      'ลงทะเบียนตอนนี้',
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _login,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white),
-                      child: const Text(
-                        'เข้าสู่ระบบ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                  const Text('หรือ'),
+                  TextButton(
+                    onPressed: () {
+                      createGuestToken();
+                      // ฟังก์ชันการสร้างบัญชีชั่วคราว
+                    },
+                    child: const Text(
+                      'เข้าใช้งานด้วยบัญชีชั่วคราว',
+                      style: TextStyle(color: Colors.red),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _usernameController.clear();
-                        _passwordController.clear();
-                        // ฟังก์ชันยกเลิกหรือล้างฟอร์มด้านบน
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white),
-                      child: const Text('ยกเลิก',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                const Text('ยังไม่มีบัญชีผู้ใช้?'),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'ลงทะเบียนตอนนี้',
-                    style: TextStyle(color: Colors.red),
                   ),
-                ),
-                const Text('หรือ'),
-                TextButton(
-                  onPressed: () {
-                    createGuestToken();
-                    // ฟังก์ชันการสร้างบัญชีชั่วคราว
-                  },
-                  child: const Text(
-                    'เข้าใช้งานด้วยบัญชีชั่วคราว',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -174,9 +174,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: const Image(
-                  image: NetworkImage(
-                      'https://today-obs.line-scdn.net/0hLnvofk9gE0FLFgPqHlNsFnNAHzB4cAlIaSQPcm0XGnJmOgQecydAIm4RHW02c1MVayUIImhDGnlvJAARdA/w1200'),
+                child: Stack(
+                  children: [
+                    const Image(
+                      image: NetworkImage(
+                          'https://www.baandinthai.com/images/data-baandin/67/67.10/67.10.06/toi09.05.jpg'),
+                    ),
+                    Positioned(
+                        right: 0,
+                        top: 0,
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.white),
+                            onPressed: () {},
+                            child: const Text('รายละเอียดเพิ่มเติม')))
+                  ],
                 ),
               ),
             ),

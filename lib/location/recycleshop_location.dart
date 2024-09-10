@@ -33,6 +33,44 @@ class _RecycleLocationState extends State<RecycleLocation> {
     _fetchLocations();
   }
 
+  Future<void> _getRecycleLocationList() async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              actions: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('ตกลง',style: TextStyle(fontWeight: FontWeight.bold),))
+              ],
+              title: const Text('สถานที่'),
+              content: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 400,
+                child: ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _locations.length,
+                  itemBuilder: (context, index) {
+                    final recyclelocation = _locations[index];
+                    return Card(
+                      child: ListTile(
+                        title: Text(recyclelocation['location_name']),
+                        leading: const Icon(Icons.map),
+                        subtitle: Text(
+                            '${recyclelocation['location_lat']} ${recyclelocation['location_lon']}'),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ));
+  }
+
   Future<void> _fetchLocations() async {
     final response = await http.get(Uri.parse(getrecyclelocation));
     if (response.statusCode == 200) {
@@ -97,6 +135,13 @@ class _RecycleLocationState extends State<RecycleLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                _getRecycleLocationList();
+              },
+              icon: Icon(Icons.list))
+        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -194,22 +239,6 @@ class _RecycleLocationState extends State<RecycleLocation> {
                 const SizedBox(
                   height: 16,
                 ),
-                ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: _locations.length,
-                  itemBuilder: (context, index) {
-                    final recyclelocation = _locations[index];
-                    return Card(
-                      child: ListTile(
-                        title: Text(recyclelocation['location_name']),
-                        leading: const Icon(Icons.map),
-                        subtitle: Text(
-                            '${recyclelocation['location_lat']} ${recyclelocation['location_lon']}'),
-                      ),
-                    );
-                  },
-                )
               ],
             ),
           ),
