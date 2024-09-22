@@ -481,7 +481,8 @@ class _SearchPageState extends State<SearchPage> {
       final response = await http.get(
         Uri.parse('$searchtrashs?trash_type=$type'),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
+          'Content-Type': 'application/json; charset=UTF-8',
+          'App-Source': appsource
         },
       );
 
@@ -515,6 +516,7 @@ class _SearchPageState extends State<SearchPage> {
           : '$searchtrashs?trash_name=$trashnamesearch'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'App-Source': appsource
       },
     );
 
@@ -1037,6 +1039,17 @@ class _SearchPageState extends State<SearchPage> {
                                                     fontSize: 18,
                                                     fontWeight:
                                                         FontWeight.bold),
+                                              ),
+                                              Card(
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: trash['trash_how'] !=
+                                                            null
+                                                        ? Text(
+                                                            trash['trash_how'])
+                                                        : const Text('Null')),
                                               ),
                                               const SizedBox(
                                                 height: 300,

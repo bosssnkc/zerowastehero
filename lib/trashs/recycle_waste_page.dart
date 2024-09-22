@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:zerowastehero/custom_icons_icons.dart';
 
 class RecycleWaste extends StatefulWidget {
   const RecycleWaste({super.key});
@@ -59,6 +60,7 @@ class _RecycleWasteState extends State<RecycleWaste>
             : '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะรีไซเคิล'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'App-Source': appsource
         },
       );
 
@@ -955,6 +957,19 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
+                                                Card(
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child:
+                                                          trash['trash_how'] !=
+                                                                  null
+                                                              ? Text(trash[
+                                                                  'trash_how'])
+                                                              : const Text(
+                                                                  'Null')),
+                                                ),
                                                 const SizedBox(
                                                   height: 300,
                                                 ),
@@ -1007,28 +1022,60 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-                splashColor: Colors.amber,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ขยะรีไซเคิล (Recycle Waste)',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+              child: SizedBox(
+                height: 300,
+                width: 300,
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          'คลิกเพื่ออ่านต่อ',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 39, 73, 133),
                           ),
-                          Text(
-                            '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
+                        ),
                       ),
-                    ))),
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Icon(
+                                CustomIcons.recycle_waste_bin,
+                                size: 100,
+                                color: Colors.yellow,
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะรีไซเคิล (Recycle Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n')
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
           ),
           const SizedBox(
             height: 20,

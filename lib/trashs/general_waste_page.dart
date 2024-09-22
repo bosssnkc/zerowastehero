@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:zerowastehero/custom_icons_icons.dart';
 
 class GeneralWaste extends StatefulWidget {
   const GeneralWaste({super.key});
@@ -59,6 +61,7 @@ class _GenralWasteState extends State<GeneralWaste>
             : '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะทั่วไป'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'App-Source': appsource
         },
       );
 
@@ -960,6 +963,19 @@ class _GenralWasteState extends State<GeneralWaste>
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
+                                                Card(
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child:
+                                                          trash['trash_how'] !=
+                                                                  null
+                                                              ? Text(trash[
+                                                                  'trash_how'])
+                                                              : const Text(
+                                                                  'Null')),
+                                                ),
                                                 const SizedBox(
                                                   height: 300,
                                                 ),
@@ -994,6 +1010,22 @@ class DetailedGeneralWaste extends StatefulWidget {
 }
 
 class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
+  final YoutubePlayerController _playerController = YoutubePlayerController(
+    initialVideoId: 'GF9COdMuJr0', //กำหนด YouTube VideoID ให้กับ ตัวเล่น
+    flags: const YoutubePlayerFlags(
+      autoPlay: false,
+      mute: false,
+      disableDragSeek: false,
+      loop: false,
+      isLive: false,
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -1013,28 +1045,117 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-                splashColor: Colors.amber,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ขยะทั่วไป (General Waste)',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+              child: SizedBox(
+                height: 300,
+                width: 300,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          'คลิกเพื่ออ่านต่อ',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 39, 73, 133),
                           ),
-                          Text(
-                            '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
+                        ),
                       ),
-                    ))),
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Icon(
+                                CustomIcons.general_waste_bin,
+                                size: 100,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะทั่วไป (General Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน\n'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    insetPadding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                    title: const Text('ขยะทั่วไป'),
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              // textAlign: TextAlign.justify,
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ขยะทั่วไป (General Waste)\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน\n')
+                                  ]),
+                            ),
+                            YoutubePlayer(
+                              controller: _playerController,
+                              showVideoProgressIndicator: true,
+                              onReady: () {
+                                print('Player is ready.');
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          'ตกลง',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
           const SizedBox(
             height: 20,

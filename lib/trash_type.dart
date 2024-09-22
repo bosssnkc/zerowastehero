@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zerowastehero/trashs/compostable_waste_page.dart';
 import 'package:zerowastehero/trashs/general_waste_page.dart';
 import 'package:zerowastehero/trashs/hazadous_waste_page.dart';
@@ -211,8 +212,35 @@ class _FourTypeOfTrashState extends State<FourTypeOfTrash> {
   }
 }
 
-class HowToSortingPage extends StatelessWidget {
+class HowToSortingPage extends StatefulWidget {
   const HowToSortingPage({super.key});
+
+  @override
+  State<HowToSortingPage> createState() => _HowToSortingPageState();
+}
+
+class _HowToSortingPageState extends State<HowToSortingPage> {
+  final List<String> _VideoIds = [
+    'qxUWkr1_JQw', // index 0
+    'nBuLxKc7FDI', // index 1
+  ];
+
+  String _VideoId = '';
+
+  late YoutubePlayerController _playerController;
+
+  Future<void> setYouTubeController() async {
+    _playerController = YoutubePlayerController(
+      initialVideoId: _VideoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+        loop: false,
+        disableDragSeek: false,
+        isLive: false,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,119 +261,158 @@ class HowToSortingPage extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: InkWell(
               onTap: () {
+                setState(() {
+                  _VideoId = _VideoIds[0];
+                  print(_VideoId);
+                  setYouTubeController();
+                });
+                // initState();
                 showDialog(
-                    context: context,
-                    builder: (context) => StatefulBuilder(
-                        builder: (context, setState) => AlertDialog(
-                              actions: [
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('ปิด'))
-                              ],
-                              insetPadding: const EdgeInsets.all(16),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              title: const Text('วิธีคัดแยกขยะ'),
-                              content: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: 400,
-                                child: const SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อม โดยวิธีการคัดแยกขยะในเบื้องต้นมีวิธีดังนี้',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'แยกขยะตามประเภทหลัก',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ขวดน้ำแบบใช้ครั้งเดียว',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                        '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'ใช้ถังขยะแยกตามประเภท',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '    จัดเตรียมถังขยะแต่ละประเภทให้ชัดเจนด้วยสี หรือสัญลักษณ์ที่เหมาะสม',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'ทำความสะอาดขยะรีไซเคิลก่อนทิ้ง',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '    ล้างหรือทำความสะอาดบรรจุภัณฑ์และวัสดุต่าง ๆ ก่อนทิ้งลงถังรีไซเคิลเพราะอาจจะปนเปื้อนจนไม่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'ทิ้งขยะอันตรายในจุดรับขยะเฉพาะ',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '    ขยะอันตรายต้องแยกและทิ้งในสถานที่ที่กำหนดเพื่อความปลอดภัย',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                  context: context,
+                  builder: (context) => StatefulBuilder(
+                    builder: (context, setState) => AlertDialog(
+                      actions: [
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('ปิด'))
+                      ],
+                      insetPadding: const EdgeInsets.all(16),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      title: const Text('วิธีคัดแยกขยะ'),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 400,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text:
+                                          '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อม โดยวิธีการคัดแยกขยะในเบื้องต้นมีวิธีดังนี้\n',
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )));
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'แยกขยะตามประเภทหลัก\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ขวดน้ำแบบใช้ครั้งเดียว\n',
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ\n',
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้\n',
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย\n',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ใช้ถังขยะแยกตามประเภท\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    จัดเตรียมถังขยะแต่ละประเภทให้ชัดเจนด้วยสี หรือสัญลักษณ์ที่เหมาะสม\n',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ทำความสะอาดขยะรีไซเคิลก่อนทิ้ง\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ล้างหรือทำความสะอาดบรรจุภัณฑ์และวัสดุต่าง ๆ ก่อนทิ้งลงถังรีไซเคิลเพราะอาจจะปนเปื้อนจนไม่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้\n',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ทิ้งขยะอันตรายในจุดรับขยะเฉพาะ\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '    ขยะอันตรายต้องแยกและทิ้งในสถานที่ที่กำหนดเพื่อความปลอดภัย\n',
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // Video
+                              YoutubePlayer(
+                                controller: _playerController,
+                                showVideoProgressIndicator: true,
+                                onReady: () {
+                                  print('Player is ready.');
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               },
-              child: const SizedBox(
+              child: SizedBox(
                 width: 400,
                 height: 300,
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Stack(
                     children: [
-                      Positioned(
+                      const Positioned(
                         bottom: 0,
                         right: 0,
                         child: Text(
@@ -354,29 +421,69 @@ class HowToSortingPage extends StatelessWidget {
                               color: Color.fromARGB(255, 39, 73, 133)),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อม โดยวิธีการคัดแยกขยะในเบื้องต้นมีวิธีดังนี้',
-                          ),
-                          Text(
-                            'แยกขยะตามประเภทหลัก',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                              '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ขวดน้ำแบบใช้ครั้งเดียว'),
-                          Text(
-                              '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ'),
-                          Text(
-                              '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้'),
-                          Text(
-                              '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย'),
-                          Text('ใช้ถังขยะแยกตามประเภท',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(
-                              '    จัดเตรียมถังขยะแต่ละประเภทให้ชัดเจนด้วยสีหรือสัญลักษณ์ที่เหมาะสม'),
-                        ],
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const [
+                                  TextSpan(
+                                    text:
+                                        '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อม โดยวิธีการคัดแยกขยะในเบื้องต้นมีวิธีดังนี้\n',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const [
+                                  TextSpan(
+                                    text: 'แยกขยะตามประเภทหลัก\n',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ขวดน้ำแบบใช้ครั้งเดียว\n',
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ\n',
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้\n',
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย\n',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const [
+                                  TextSpan(
+                                    text: 'ใช้ถังขยะแยกตามประเภท\n',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        '    จัดเตรียมถังขยะแต่ละประเภทให้ชัดเจนด้วยสีหรือสัญลักษณ์ที่เหมาะสม\n',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -395,6 +502,11 @@ class HowToSortingPage extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: InkWell(
               onTap: () {
+                setState(() {
+                  _VideoId = _VideoIds[1];
+                  print(_VideoId);
+                  setYouTubeController();
+                });
                 showDialog(
                     context: context,
                     builder: (context) => StatefulBuilder(
@@ -415,48 +527,80 @@ class HowToSortingPage extends StatelessWidget {
                               content: SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: 400,
-                                child: const SingleChildScrollView(
+                                child: SingleChildScrollView(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว',
-                                        style: TextStyle(fontSize: 16),
+                                      RichText(
+                                        text: TextSpan(
+                                          style: DefaultTextStyle.of(context)
+                                              .style
+                                              .copyWith(fontSize: 16),
+                                          children: const [
+                                            TextSpan(
+                                              text:
+                                                  '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว\n',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 8,
+                                      RichText(
+                                        text: TextSpan(
+                                          style: DefaultTextStyle.of(context)
+                                              .style
+                                              .copyWith(fontSize: 16),
+                                          children: [
+                                            const TextSpan(
+                                              text:
+                                                  'โดยหลักการ 3R ประกอบไปด้วย\n',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            TextSpan(
+                                              style:
+                                                  DefaultTextStyle.of(context)
+                                                      .style
+                                                      .copyWith(fontSize: 16),
+                                              children: const [
+                                                TextSpan(
+                                                  text:
+                                                      '    1. Reduce (ลดการใช้) ลดการใช้วัสดุและทรัพยากรที่ไม่จำเป็น เลือกซื้อเฉพาะสิ่งที่จำเป็นและลดการซื้อสินค้าที่ใช้ครั้งเดียว เช่น หลีกเลี่ยงการใช้ถุงพลาสติก และเลือกใช้ถุงผ้าแทน\n',
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      '    2. Reuse (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว แยกขยะรีไซเคิลอย่างถูกต้อง แยกขยะที่สามารถรีไซเคิลได้ เช่น กระดาษ แก้ว พลาสติก และโลหะ ออกจากขยะอื่น ๆ และนำไปทิ้งในจุดรับขยะรีไซเคิล\n',
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      '    3. Recycle (นำกลับมาใช้ใหม่) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว ซ่อมแซมสินค้าแทนการทิ้ง หากสินค้าที่เสียหรือชำรุดสามารถซ่อมแซมได้ ให้ซ่อมและใช้งานต่อไปแทนการทิ้งและซื้อใหม่\n',
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Text(
-                                        'โดยหลักการ 3R ประกอบไปด้วย',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                      YoutubePlayer(
+                                        controller: _playerController,
+                                        showVideoProgressIndicator: true,
+                                        onReady: () {
+                                          print('Player is ready.');
+                                        },
                                       ),
-                                      Text(
-                                        '    1. Reduce (ลดการใช้) ลดการใช้วัสดุและทรัพยากรที่ไม่จำเป็น เลือกซื้อเฉพาะสิ่งที่จำเป็นและลดการซื้อสินค้าที่ใช้ครั้งเดียว เช่น หลีกเลี่ยงการใช้ถุงพลาสติก และเลือกใช้ถุงผ้าแทน',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      Text(
-                                          '    2. Recycle (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว แยกขยะรีไซเคิลอย่างถูกต้อง แยกขยะที่สามารถรีไซเคิลได้ เช่น กระดาษ แก้ว พลาสติก และโลหะ ออกจากขยะอื่น ๆ และนำไปทิ้งในจุดรับขยะรีไซเคิล',
-                                          style: TextStyle(fontSize: 16)),
-                                      Text(
-                                          '    3. Recycle (นำกลับมาใช้ใหม่) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว ซ่อมแซมสินค้าแทนการทิ้ง หากสินค้าที่เสียหรือชำรุดสามารถซ่อมแซมได้ ให้ซ่อมและใช้งานต่อไปแทนการทิ้งและซื้อใหม่',
-                                          style: TextStyle(fontSize: 16)),
                                     ],
                                   ),
                                 ),
                               ),
                             )));
               },
-              child: const SizedBox(
+              child: SizedBox(
                 width: 400,
                 height: 300,
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Stack(
                     children: [
-                      Positioned(
+                      const Positioned(
                         bottom: 0,
                         right: 0,
                         child: Text(
@@ -465,21 +609,44 @@ class HowToSortingPage extends StatelessWidget {
                               color: Color.fromARGB(255, 39, 73, 133)),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว',
-                          ),
-                          Text(
-                            'โดยหลักการ 3R ประกอบไปด้วย',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                              '    1. Reduce (ลดการใช้) ลดการใช้วัสดุและทรัพยากรที่ไม่จำเป็น เลือกซื้อเฉพาะสิ่งที่จำเป็นและลดการซื้อสินค้าที่ใช้ครั้งเดียว เช่น หลีกเลี่ยงการใช้ถุงพลาสติก และเลือกใช้ถุงผ้าแทน'),
-                          Text(
-                              '    2. Recycle (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว'),
-                        ],
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const [
+                                  TextSpan(
+                                    text:
+                                        '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว\n',
+                                  ),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const [
+                                  TextSpan(
+                                    text: 'โดยหลักการ 3R ประกอบไปด้วย\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    1. Reduce (ลดการใช้) ลดการใช้วัสดุและทรัพยากรที่ไม่จำเป็น เลือกซื้อเฉพาะสิ่งที่จำเป็นและลดการซื้อสินค้าที่ใช้ครั้งเดียว เช่น หลีกเลี่ยงการใช้ถุงพลาสติก และเลือกใช้ถุงผ้าแทน\n'),
+                                  TextSpan(
+                                      text:
+                                          '    2. Recycle (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว\n'),
+                                  TextSpan(
+                                      text:
+                                          '    3. Recycle (นำกลับมาใช้ใหม่) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว ซ่อมแซมสินค้าแทนการทิ้ง หากสินค้าที่เสียหรือชำรุดสามารถซ่อมแซมได้ ให้ซ่อมและใช้งานต่อไปแทนการทิ้งและซื้อใหม่\n')
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

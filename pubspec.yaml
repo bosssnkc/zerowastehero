@@ -48,6 +48,9 @@ dependencies:
   jwt_decoder: ^2.0.1
   google_fonts: ^6.2.1
   uuid: ^4.5.0
+  flutter_launcher_icons: ^0.13.1
+  youtube_player_flutter: ^9.0.3
+  flutter_inappwebview: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +65,9 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_icons:
+    android: true
+    image_path: "assets/image/Logo.png"
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -75,6 +80,7 @@ flutter:
   assets:
     - assets/
   #   - images/a_dot_ham.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

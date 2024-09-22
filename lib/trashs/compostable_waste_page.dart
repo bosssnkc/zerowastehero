@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:zerowastehero/custom_icons_icons.dart';
 
 class CompostableWaste extends StatefulWidget {
   const CompostableWaste({super.key});
@@ -59,6 +60,7 @@ class _CompostableWasteState extends State<CompostableWaste>
             : '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะอินทรีย์'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'App-Source': appsource
         },
       );
 
@@ -955,6 +957,19 @@ class _CompostableWasteState extends State<CompostableWaste>
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
+                                                Card(
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child:
+                                                          trash['trash_how'] !=
+                                                                  null
+                                                              ? Text(trash[
+                                                                  'trash_how'])
+                                                              : const Text(
+                                                                  'Null')),
+                                                ),
                                                 const SizedBox(
                                                   height: 300,
                                                 ),
@@ -1008,28 +1023,60 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
             Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                  splashColor: Colors.amber,
-                  onTap: () {},
-                  child: const SizedBox(
-                      height: 300,
-                      width: 300,
-                      child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'ขยะอินทรีย์ (Compostable Waste)',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                child: SizedBox(
+                  height: 300,
+                  width: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Stack(
+                      children: [
+                        const Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Text(
+                            'คลิกเพื่ออ่านต่อ',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 39, 73, 133),
                             ),
-                            Text(
-                              '    หรืออีกชื่อคือขยะเปียก คือขยะที่สามารถย่อยสลายได้ง่ายตามธรรมชาติ มีความชื้นและส่งกลิ่นเหม็น ขยะประเภทนี้สามารถนำไปทำเป็นปุ๋ยหมักชีวภาพได้ ตัวอย่างของขยะประเภทขยะเปียกเช่น เศษใบไม้ เศษอาหาร เศษเนื้อสัตว์ เปลือกผลไม้ โดยประเทศไทยจำแนกให้ขยะประเภทขยะเปียกสามารถทิ้งได้ในถังขยะที่มีสีเขียว',
-                              style: TextStyle(fontSize: 16),
-                            )
-                          ],
+                          ),
                         ),
-                      ))),
+                        SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Center(
+                                child: Icon(
+                                  CustomIcons.compostable_waste_bin,
+                                  size: 100,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ขยะอินทรีย์ (Compostable Waste)\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    หรืออีกชื่อคือขยะเปียก คือขยะที่สามารถย่อยสลายได้ง่ายตามธรรมชาติ มีความชื้นและส่งกลิ่นเหม็น ขยะประเภทนี้สามารถนำไปทำเป็นปุ๋ยหมักชีวภาพได้ ตัวอย่างของขยะประเภทขยะเปียกเช่น เศษใบไม้ เศษอาหาร เศษเนื้อสัตว์ เปลือกผลไม้ โดยประเทศไทยจำแนกให้ขยะประเภทขยะเปียกสามารถทิ้งได้ในถังขยะที่มีสีเขียว\n'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {},
+              ),
             ),
             const SizedBox(
               height: 20,

@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:zerowastehero/custom_icons_icons.dart';
 
 class HazadousWaste extends StatefulWidget {
   const HazadousWaste({super.key});
@@ -59,6 +60,7 @@ class _HazadousWasteState extends State<HazadousWaste>
             : '$searchtrashs?trash_name=$trashnamesearch&trash_type=ขยะอันตราย'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'App-Source': appsource
         },
       );
 
@@ -958,6 +960,19 @@ class _HazadousWasteState extends State<HazadousWaste>
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
+                                                Card(
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child:
+                                                          trash['trash_how'] !=
+                                                                  null
+                                                              ? Text(trash[
+                                                                  'trash_how'])
+                                                              : const Text(
+                                                                  'Null')),
+                                                ),
                                                 const SizedBox(
                                                   height: 300,
                                                 ),
@@ -1008,28 +1023,60 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-                splashColor: Colors.amber,
-                onTap: () {},
-                child: const SizedBox(
-                    height: 300,
-                    width: 300,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'ขยะอันตราย (Hazardous Waste)',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+              child: SizedBox(
+                height: 300,
+                width: 300,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Text(
+                          'คลิกเพื่ออ่านต่อ',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 39, 73, 133),
                           ),
-                          Text(
-                            '    คือขยะที่มีการปนเปื้อนสารเคมีและเป็นอันตรายต่อสิ่งแวดล้อมหรือสามารถติดไฟได้ง่าย ต้องมีการกำจัดอย่างถูกวิธีและไม่สามารถทิ้งรวมกับขยะประเภทอื่นได้ ตัวอย่างของขยะประเภทขยะอันตรายเช่น หลอดไฟ ถ่านไฟฉาย วัตถุไวไฟ ยาที่หมดอายุ สารพิษ อุปกรณ์อิเล็กทรอนิกส์ โดยประเทศไทยจำแนกให้ขยะประเภทขยะอันตรายสามารถทิ้งได้ในที่ถังขยะที่มีสีแดง',
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ],
+                        ),
                       ),
-                    ))),
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Icon(
+                                CustomIcons.hazadous_waste_bin,
+                                size: 100,
+                                color: Colors.red,
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะอันตราย (Hazardous Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะที่มีการปนเปื้อนสารเคมีและเป็นอันตรายต่อสิ่งแวดล้อมหรือสามารถติดไฟได้ง่าย ต้องมีการกำจัดอย่างถูกวิธีและไม่สามารถทิ้งรวมกับขยะประเภทอื่นได้ ตัวอย่างของขยะประเภทขยะอันตรายเช่น หลอดไฟ ถ่านไฟฉาย วัตถุไวไฟ ยาที่หมดอายุ สารพิษ อุปกรณ์อิเล็กทรอนิกส์ โดยประเทศไทยจำแนกให้ขยะประเภทขยะอันตรายสามารถทิ้งได้ในที่ถังขยะที่มีสีแดง\n'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {},
+            ),
           ),
           const SizedBox(
             height: 20,
