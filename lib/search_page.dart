@@ -33,6 +33,8 @@ class _SearchPageState extends State<SearchPage> {
   final trashdesController = TextEditingController();
   final searchController = TextEditingController();
   String? guestToken = '';
+  final trashhowController = TextEditingController();
+  final _trashHowController = TextEditingController();
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _SearchPageState extends State<SearchPage> {
       String trashname = trashnameController.text;
       String trashtype = trashtypePicker!;
       String trashdes = trashdesController.text;
+      String trashhow = trashhowController.text;
       String? base64Image = _image != null ? base64Encode(_image!) : null;
 
       // Fetch the user_id from SharedPreferences
@@ -63,6 +66,7 @@ class _SearchPageState extends State<SearchPage> {
           'trash_name': trashname,
           'trash_type': trashtype,
           'trash_des': trashdes,
+          'trash_how': trashhow,
           'trash_pic': base64Image,
           'user_id': userId,
         }),
@@ -108,6 +112,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       _trashNameController.text = trashlist['trash_name'];
       _trashDesController.text = trashlist['trash_des'];
+      _trashHowController.text = trashlist['trash_how'] ?? '';
       trashtypePicker = trashlist['trash_type'];
       _image = trashlist['trash_pic'] != null
           ? base64Decode(trashlist['trash_pic'])
@@ -121,62 +126,66 @@ class _SearchPageState extends State<SearchPage> {
           actions: [
             ElevatedButton(
               onPressed: () async {
-                // Collect updated data
-                final updatedTrash = {
-                  'trash_name': _trashNameController.text,
-                  'trash_des': _trashDesController.text,
-                  'trash_type': trashtypePicker,
-                  // If a new image was selected, add it to the updated data
-                  'trash_pic': _image != null
-                      ? base64Encode(_image!)
-                      : trashlist['trash_pic'] ?? '',
-                  'trash_id': trashlist['trash_id']
-                };
+                // ฟังก์ชันการอัพเดทรายการขยะโดยทำการตรวจสอบความถูกต้องของฟอร์มก่อน
+                if (_formValidator.currentState!.validate()) {
+                  final updatedTrash = {
+                    'trash_name': _trashNameController.text,
+                    'trash_des': _trashDesController.text,
+                    'trash_how': _trashHowController.text,
+                    'trash_type': trashtypePicker,
+                    // If a new image was selected, add it to the updated data
+                    'trash_pic': _image != null
+                        ? base64Encode(_image!)
+                        : trashlist['trash_pic'] ?? '',
+                    'trash_id': trashlist['trash_id']
+                  };
 
-                // Send the update request to the server
-                final response = await http.put(
-                  Uri.parse(updatetrash),
-                  headers: {'Content-Type': 'application/json'},
-                  body: jsonEncode(updatedTrash),
-                );
+                  // Send the update request to the server
+                  final response = await http.put(
+                    Uri.parse(updatetrash),
+                    headers: {'Content-Type': 'application/json'},
+                    body: jsonEncode(updatedTrash),
+                  );
 
-                if (response.statusCode == 200) {
-                  print('Trash updated successfully'); //Debug if failed
-                  trashlist['trash_pic'] = _image != null
-                      ? base64Encode(_image!)
-                      : trashlist['trash_pic'];
-                  Navigator.of(context).pop();
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('อัพเดทสำเร็จ'),
-                      content: const Text('อัพเดทข้อมูลสำเร็จ'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  print('Failed to update trash'); //Debug if failed
-                  String message =
-                      'Error ${response.statusCode}: ${response.reasonPhrase}';
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Error'),
-                      content: Text(message),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
+                  if (response.statusCode == 200) {
+                    print('Trash updated successfully'); //Debug if failed
+                    trashlist['trash_pic'] = _image != null
+                        ? base64Encode(_image!)
+                        : trashlist['trash_pic'];
+                    Navigator.of(context).pop();
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('อัพเดทสำเร็จ'),
+                        content: const Text('อัพเดทข้อมูลสำเร็จ'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    print('Failed to update trash'); //Debug if failed
+                    String message =
+                        'Error ${response.statusCode}: ${response.reasonPhrase}';
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Error'),
+                        content: Text(message),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 }
+
                 _loadTrash();
               },
               style: ElevatedButton.styleFrom(
@@ -201,125 +210,148 @@ class _SearchPageState extends State<SearchPage> {
           content: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 600,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    controller: _trashNameController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรอกชื่อขยะ';
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'ชื่อขยะ',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    value: trashtypePicker,
-                    items: [
-                      'ขยะทั่วไป',
-                      'ขยะอินทรีย์',
-                      'ขยะรีไซเคิล',
-                      'ขยะอันตราย'
-                    ]
-                        .map((label) => DropdownMenuItem(
-                              value: label,
-                              child: Text(label),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        trashtypePicker = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    maxLines: 7,
-                    controller: _trashDesController,
-                    decoration: const InputDecoration(
-                      labelText: 'รายละเอียดขยะ',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('รูปภาพ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await _pickImage();
-                          setState(() {
-                            if (_image != null) {
-                              trashlist['trash_pic'] = base64Encode(_image!);
-                            }
-                          });
-                        },
-                        child: const Text('อัพโหลดหรือเปลี่ยนรูปภาพ'),
+            child: Form(
+              key: _formValidator,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _trashNameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรอกชื่อขยะ';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'ชื่อขยะ',
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  trashlist['trash_pic'] != null
-                      ? Card(
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                child: Image.memory(
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  base64Decode(trashlist['trash_pic']),
-                                  fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 20),
+                    DropdownButtonFormField<String>(
+                      value: trashtypePicker,
+                      items: [
+                        'ขยะทั่วไป',
+                        'ขยะอินทรีย์',
+                        'ขยะรีไซเคิล',
+                        'ขยะอันตราย'
+                      ]
+                          .map((label) => DropdownMenuItem(
+                                value: label,
+                                child: Text(label),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          trashtypePicker = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      maxLines: 3,
+                      controller: _trashDesController,
+                      decoration: const InputDecoration(
+                        labelText: 'รายละเอียดขยะ',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรอกรายละเอียดขยะ';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      maxLines: 3,
+                      controller: _trashHowController,
+                      decoration:
+                          const InputDecoration(labelText: 'วิธีการกำจัด'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรอกวิธีการกำจัด';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('รูปภาพ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await _pickImage();
+                            setState(() {
+                              if (_image != null) {
+                                trashlist['trash_pic'] = base64Encode(_image!);
+                              }
+                            });
+                          },
+                          child: const Text('อัพโหลดหรือเปลี่ยนรูปภาพ'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    trashlist['trash_pic'] != null
+                        ? Card(
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  child: Image.memory(
+                                    height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    base64Decode(trashlist['trash_pic']),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: IconButton(
-                                  onPressed: () async {
-                                    setState(() {
-                                      _image = null;
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: IconButton(
+                                    onPressed: () async {
+                                      setState(() {
+                                        _image = null;
 
-                                      trashlist['trash_pic'] = null;
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.red,
+                                        trashlist['trash_pic'] = null;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
                                   ),
+                                )
+                              ],
+                            ),
+                          )
+                        : const Card(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.image_not_supported,
+                                      size: 120,
+                                    ),
+                                    Text(
+                                      'ไม่มีรูปภาพ',
+                                      style: TextStyle(fontSize: 18),
+                                    )
+                                  ],
                                 ),
-                              )
-                            ],
-                          ),
-                        )
-                      : const Card(
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.image_not_supported,
-                                    size: 120,
-                                  ),
-                                  Text(
-                                    'ไม่มีรูปภาพ',
-                                    style: TextStyle(fontSize: 18),
-                                  )
-                                ],
                               ),
                             ),
                           ),
-                        ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

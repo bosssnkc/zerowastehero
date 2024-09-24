@@ -126,12 +126,30 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text('ตกลง'))
                   ],
                 ));
+      } else if (response.statusCode == 301) {
+        Navigator.of(context).pop();
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('ข้อผิดพลาด ${response.statusCode}'),
+                  content: const Text('301'),
+                  actions: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('ตกลง'))
+                  ],
+                ));
       } else {
         Navigator.of(context).pop();
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: const Text('ข้อผิดพลาด'),
+                  title: Text('ข้อผิดพลาด ${response.statusCode}'),
                   content: const Text(
                       'ไม่สามารถรีเซ็ตรหัสผ่านได้ username หรือ email ไม่ถูกต้องกรุณาลองใหม่'),
                   actions: [
@@ -337,6 +355,8 @@ class _LoginPageState extends State<LoginPage> {
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white),
                                   onPressed: () {
+                                    _forgotEmailController.clear();
+                                    _forgotUsernameController.clear();
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text('ยกเลิก'))

@@ -25,15 +25,13 @@ class _EventNewsPageState extends State<EventNewsPage> {
               height: 8,
             ),
             const Card(
-              child: SizedBox(
-                height: 200,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Image(
-                      image: NetworkImage(
-                          'https://today-obs.line-scdn.net/0hLnvofk9gE0FLFgPqHlNsFnNAHzB4cAlIaSQPcm0XGnJmOgQecydAIm4RHW02c1MVayUIImhDGnlvJAARdA/w1200'),
-                    ),
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Image(
+                    image: NetworkImage(
+                        'https://www.baandinthai.com/images/data-baandin/67/67.10/67.10.06/toi09.05.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
