@@ -267,8 +267,9 @@ class _SearchPageState extends State<SearchPage> {
                     TextFormField(
                       maxLines: 3,
                       controller: _trashHowController,
-                      decoration:
-                          const InputDecoration(labelText: 'วิธีการกำจัด'),
+                      decoration: const InputDecoration(
+                          labelText: 'วิธีการกำจัด',
+                          floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรอกวิธีการกำจัด';
@@ -665,18 +666,18 @@ class _SearchPageState extends State<SearchPage> {
                                     return null;
                                   },
                                   decoration: const InputDecoration(
-                                      labelText: 'กรอกชื่อขยะ',
-                                      hintText: 'ชื่อขยะ',
-                                      border: OutlineInputBorder()),
+                                    labelText: 'ชื่อขยะ',
+                                    hintText: 'กรอกชื่อขยะ',
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 8,
                                 ),
                                 DropdownButtonFormField<String>(
                                   decoration: const InputDecoration(
-                                      labelText: 'เลือกประเภทขยะ',
-                                      hintText: 'ขยะทั่วไป',
-                                      border: OutlineInputBorder()),
+                                    labelText: 'เลือกประเภทขยะ',
+                                    hintText: 'ขยะทั่วไป',
+                                  ),
                                   value: trashtypePicker,
                                   items: [
                                     'ขยะทั่วไป',
@@ -713,9 +714,24 @@ class _SearchPageState extends State<SearchPage> {
                                     return null;
                                   },
                                   decoration: const InputDecoration(
-                                      labelText: 'กรอกรายละเอียดขยะ',
-                                      hintText: 'รายละเอียดขยะ',
+                                      labelText: 'รายละเอียดขยะ',
+                                      hintText: 'กรอกรายละเอียดขยะ',
                                       border: OutlineInputBorder()),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextFormField(
+                                  controller: trashhowController,
+                                  decoration: const InputDecoration(
+                                      labelText: 'วิธีการกำจัด',
+                                      hintText: 'กรอกวิธีการกำจัด'),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรอกวิธีการกำจัด';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 const SizedBox(
                                   height: 16,

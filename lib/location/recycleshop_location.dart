@@ -3,7 +3,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:clippy_flutter/triangle.dart';
 import 'package:zerowastehero/Routes/routes.dart';
@@ -20,7 +19,6 @@ class _RecycleLocationState extends State<RecycleLocation> {
   List _locations = [];
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
-
   Set<Marker> _markers = {};
 
   final LatLng _center = const LatLng(13.9018361, 100.6173027);
@@ -39,7 +37,13 @@ class _RecycleLocationState extends State<RecycleLocation> {
   }
 
   Future<void> _fetchLocations() async {
-    final response = await http.get(Uri.parse(getrecyclelocation));
+    final response = await http.get(
+      Uri.parse(getrecyclelocation),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'App-Source': appsource
+      },
+    );
     if (response.statusCode == 200) {
       final List locations = jsonDecode(response.body);
       setState(() {
@@ -193,7 +197,7 @@ class _RecycleLocationState extends State<RecycleLocation> {
                             subtitle:
                                 recyclelocation['location_address'] != null
                                     ? Text(recyclelocation['location_address'])
-                                    : Text('Null'),
+                                    : const Text('Null'),
                           )
                         ],
                       ),

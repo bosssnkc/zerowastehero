@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:custom_info_window/custom_info_window.dart';
+import 'package:clippy_flutter/triangle.dart';
+import 'package:zerowastehero/Routes/routes.dart';
 
 class HazardousLocation extends StatefulWidget {
   const HazardousLocation({super.key});
@@ -12,12 +17,107 @@ class HazardousLocation extends StatefulWidget {
 class _HazardousLocationState extends State<HazardousLocation> {
   late GoogleMapController mapController;
   Position? userLocation;
+  List _locations = [];
+  final CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
+  Set<Marker> _markers = {};
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getLocation();
-  // }
+  final LatLng _center = const LatLng(13.9018361, 100.6173027);
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLocations();
+  }
+
+  @override
+  void dispose() {
+    _customInfoWindowController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchLocations() async {
+    final response = await http.get(
+      Uri.parse(gethazadouslocation),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'App-Source': appsource
+      },
+    );
+    if (response.statusCode == 200) {
+      final List locations = jsonDecode(response.body);
+      setState(() {
+        _locations = locations;
+        _markers = locations.map((location) {
+          return Marker(
+            markerId: MarkerId(location['location_name']),
+            position: LatLng(
+              double.parse(location['location_lat']),
+              double.parse(location['location_lon']),
+            ),
+            onTap: () {
+              _customInfoWindowController.addInfoWindow!(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 10,
+                            offset: Offset(2, 2),
+                          )
+                        ],
+                      ),
+                      width: 200,
+                      height: 120,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                location['location_name'],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                  'พิกัด: ${location['location_lat']}, ${location['location_lon']}'),
+                              const SizedBox(height: 8),
+                              Text('ที่อยู่: ${location['location_address']}')
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Triangle.isosceles(
+                      edge: Edge.BOTTOM,
+                      child: Container(
+                        color: Colors.white,
+                        width: 20.0,
+                        height: 10.0,
+                      ),
+                    )
+                  ],
+                ),
+                LatLng(double.parse(location['location_lat']),
+                    double.parse(location['location_lon'])),
+              );
+            },
+          );
+        }).toSet();
+      });
+    } else {
+      throw Exception('Failed to load locations');
+    }
+  }
 
   Future<void> _getLocation() async {
     bool serviceEnabled;
@@ -55,12 +155,70 @@ class _HazardousLocationState extends State<HazardousLocation> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    _customInfoWindowController.googleMapController = controller;
+  }
+
+  Future<void> _getHazardLocationList() async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              actions: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'ตกลง',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+              ],
+              title: const Text('สถานที่'),
+              content: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 400,
+                child: ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _locations.length,
+                  itemBuilder: (context, index) {
+                    final recyclelocation = _locations[index];
+                    return Card(
+                      child: ExpansionTile(
+                        title: Text(recyclelocation['location_name']),
+                        leading: const Icon(Icons.map),
+                        subtitle: Text(
+                            '${recyclelocation['location_lat']} ${recyclelocation['location_lon']}'),
+                        children: [
+                          ListTile(
+                            title: Text(recyclelocation['location_name']),
+                            subtitle:
+                                recyclelocation['location_address'] != null
+                                    ? Text(recyclelocation['location_address'])
+                                    : const Text('Null'),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                _getHazardLocationList();
+              },
+              icon: const Icon(Icons.list)),
+        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -68,8 +226,6 @@ class _HazardousLocationState extends State<HazardousLocation> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight)),
         ),
-        elevation: 0,
-        backgroundColor: Colors.green[300],
         title: const Text(
           'สถานที่กำจัดขยะอันตราย',
           style: TextStyle(
@@ -79,9 +235,9 @@ class _HazardousLocationState extends State<HazardousLocation> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Card(
@@ -120,7 +276,9 @@ class _HazardousLocationState extends State<HazardousLocation> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(
+                height: 24,
+              ),
               const Center(
                 child: Text(
                   'แผนที่',
@@ -130,49 +288,32 @@ class _HazardousLocationState extends State<HazardousLocation> {
               const SizedBox(height: 8),
               Card(
                 child: SizedBox(
-                  height: 300,
-                  child: Center(
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      markers: {
-                        userLocation != null
-                            ? Marker(
-                                markerId: const MarkerId('userLocation'),
-                                position: LatLng(
-                                  userLocation!.latitude,
-                                  userLocation!.longitude,
-                                ),
-                                infoWindow: const InfoWindow(
-                                  title: 'ตำแหน่งปัจจุบันของคุณ',
-                                ),
-                              )
-                            : const Marker(
-                                markerId: MarkerId('thisLocation'),
-                                icon: BitmapDescriptor.defaultMarker,
-                                position: LatLng(13.736717, 100.523186),
-                                infoWindow: InfoWindow(title: 'ร้านขายข้าว')),
-                        const Marker(
-                            markerId: MarkerId('test2'),
-                            icon: BitmapDescriptor.defaultMarker,
-                            position: LatLng(14.736717, 100.523186))
-                      },
-                      initialCameraPosition: CameraPosition(
-                          target: userLocation != null
-                              ? LatLng(
-                                  userLocation!.latitude,
-                                  userLocation!.longitude,
-                                )
-                              : const LatLng(13.736717, 100.523186),
-                          // target: LatLng(
-                          //   userLocation!.latitude,
-                          //   userLocation!.longitude,
-                          // ),
-                          // target: LatLng(13.736717, 100.523186),
-                          zoom: 11.0),
-                    ),
+                  height: 400,
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(
+                    children: [
+                      GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        initialCameraPosition:
+                            CameraPosition(target: _center, zoom: 12.0),
+                        markers: _markers,
+                        onTap: (position) {
+                          _customInfoWindowController.hideInfoWindow!();
+                        },
+                        onCameraMove: (position) {
+                          _customInfoWindowController.onCameraMove!();
+                        },
+                      ),
+                      CustomInfoWindow(
+                        controller: _customInfoWindowController,
+                        height: 200,
+                        width: 200,
+                        offset: 0,
+                      ),
+                    ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

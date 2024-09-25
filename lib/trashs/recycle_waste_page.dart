@@ -371,8 +371,9 @@ class _RecycleWasteState extends State<RecycleWaste>
                     TextFormField(
                       maxLines: 3,
                       controller: trashhowController,
-                      decoration:
-                          const InputDecoration(labelText: 'วิธีการกำจัด'),
+                      decoration: const InputDecoration(
+                          labelText: 'วิธีการกำจัด',
+                          floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรอกวิธีการกำจัด';
@@ -640,18 +641,17 @@ class _RecycleWasteState extends State<RecycleWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                              labelText: 'กรอกชื่อขยะ',
-                                              hintText: 'ชื่อขยะ',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'กรอกชื่อขยะ',
+                                            hintText: 'ชื่อขยะ',
+                                          ),
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                              labelText: 'เลือกประเภทขยะ',
-                                              hintText: 'ขยะรีไซเคิล',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'เลือกประเภทขยะ',
+                                          ),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -676,7 +676,9 @@ class _RecycleWasteState extends State<RecycleWaste>
                                             return null;
                                           },
                                         ),
-                                        const SizedBox(height: 8),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
                                         TextFormField(
                                           controller: trashdesController,
                                           validator: (value) {
@@ -687,15 +689,16 @@ class _RecycleWasteState extends State<RecycleWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                              labelText: 'กรอกรายละเอียดขยะ',
-                                              hintText: 'รายละเอียดขยะ',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'รายละเอียดขยะ',
+                                            hintText: 'กรอกรายละเอียดขยะ',
+                                          ),
                                         ),
                                         const SizedBox(height: 8),
                                         TextFormField(
                                           controller: trashhowController,
                                           decoration: const InputDecoration(
-                                              labelText: 'วิธีการกำจัด'),
+                                              labelText: 'วิธีการกำจัด',
+                                              hintText: 'กรอกวิธีการกำจัด'),
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
@@ -902,131 +905,173 @@ class _RecycleWasteState extends State<RecycleWaste>
                                           ],
                                         )
                                       : null,
-                              onTap: () => showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                        insetPadding: const EdgeInsets.all(16),
-                                        title: const Text(
-                                          'รายละเอียดขยะ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        content: SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          height: 600,
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'ชื่อขยะ ',
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                      trash['trash_name'],
-                                                      style: const TextStyle(
-                                                          fontSize: 18),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                Card(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: trash['trash_pic'] !=
-                                                            null
-                                                        ? Image.memory(
-                                                            height: 300,
-                                                            width: 300,
-                                                            base64Decode(trash[
-                                                                'trash_pic']),
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                        : const Center(
-                                                            child: Column(
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .image_not_supported,
-                                                                  size: 120,
-                                                                ),
-                                                                Text(
-                                                                  'ไม่มีรูปภาพ',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          18),
-                                                                )
-                                                              ],
+                              onTap: () {
+                                print(trash);
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          insetPadding:
+                                              const EdgeInsets.all(16),
+                                          title: const Text(
+                                            'รายละเอียดขยะ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 600,
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      const Text(
+                                                        'ชื่อขยะ ',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        trash['trash_name'],
+                                                        style: const TextStyle(
+                                                            fontSize: 18),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  trash['trash_price'] != null
+                                                      ? Row(
+                                                          children: [
+                                                            const Text(
+                                                              'ราคา ',
+                                                              style: const TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
                                                             ),
-                                                          ),
+                                                            Text(
+                                                              trash['trash_price']
+                                                                  .toString(),
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 18,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )
+                                                      : const Text(
+                                                          'ไม่มีราคา',
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                  const SizedBox(
+                                                    height: 16,
                                                   ),
-                                                ),
-                                                const Text(
-                                                  'รายละเอียดขยะ',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Card(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                        trash['trash_des']),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                const Text(
-                                                  'วิธีการกำจัด',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Card(
-                                                  child: Padding(
+                                                  Card(
+                                                    child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
                                                               8.0),
                                                       child:
-                                                          trash['trash_how'] !=
+                                                          trash['trash_pic'] !=
                                                                   null
-                                                              ? Text(trash[
-                                                                  'trash_how'])
-                                                              : const Text(
-                                                                  'Null')),
-                                                ),
-                                                const SizedBox(
-                                                  height: 300,
-                                                ),
-                                              ],
+                                                              ? Image.memory(
+                                                                  height: 300,
+                                                                  width: 300,
+                                                                  base64Decode(
+                                                                      trash[
+                                                                          'trash_pic']),
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                )
+                                                              : const Center(
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .image_not_supported,
+                                                                        size:
+                                                                            120,
+                                                                      ),
+                                                                      Text(
+                                                                        'ไม่มีรูปภาพ',
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                18),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    'รายละเอียดขยะ',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Card(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                          trash['trash_des']),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 16,
+                                                  ),
+                                                  const Text(
+                                                    'วิธีการกำจัด',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Card(
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                8.0),
+                                                        child:
+                                                            trash['trash_how'] !=
+                                                                    null
+                                                                ? Text(trash[
+                                                                    'trash_how'])
+                                                                : const Text(
+                                                                    'Null')),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 300,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        actions: [
-                                          ElevatedButton(
-                                              onPressed:
-                                                  Navigator.of(context).pop,
-                                              child: const Text('ปิด'))
-                                        ],
-                                      )),
+                                          actions: [
+                                            ElevatedButton(
+                                                onPressed:
+                                                    Navigator.of(context).pop,
+                                                child: const Text('ปิด'))
+                                          ],
+                                        ));
+                              },
                             ),
                           );
                         })

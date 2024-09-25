@@ -371,8 +371,9 @@ class _HazadousWasteState extends State<HazadousWaste>
                     TextFormField(
                       maxLines: 3,
                       controller: trashhowController,
-                      decoration:
-                          const InputDecoration(labelText: 'วิธีการกำจัด'),
+                      decoration: const InputDecoration(
+                          labelText: 'วิธีการกำจัด',
+                          floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรอกวิธีการกำจัด';
@@ -643,18 +644,17 @@ class _HazadousWasteState extends State<HazadousWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                              labelText: 'กรอกชื่อขยะ',
-                                              hintText: 'ชื่อขยะ',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'กรอกชื่อขยะ',
+                                            hintText: 'ชื่อขยะ',
+                                          ),
                                         ),
                                         const SizedBox(
                                           height: 8,
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                              labelText: 'เลือกประเภทขยะ',
-                                              hintText: 'ขยะอันตราย',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'เลือกประเภทขยะ',
+                                          ),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -692,9 +692,23 @@ class _HazadousWasteState extends State<HazadousWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                              labelText: 'กรอกรายละเอียดขยะ',
-                                              hintText: 'รายละเอียดขยะ',
-                                              border: OutlineInputBorder()),
+                                            labelText: 'รายละเอียดขยะ',
+                                            hintText: 'กรอกรายละเอียดขยะ',
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        TextFormField(
+                                          controller: trashhowController,
+                                          decoration: const InputDecoration(
+                                              labelText: 'วิธีการกำจัด',
+                                              hintText: 'กรอกวิธีการกำจัด'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'กรอกวิธีการกำจัด';
+                                            }
+                                            return null;
+                                          },
                                         ),
                                         const SizedBox(
                                           height: 16,
