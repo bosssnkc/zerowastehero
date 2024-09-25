@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -1140,18 +1141,28 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
             child: InkWell(
                 splashColor: Colors.blue,
                 onTap: () {},
-                child: const SizedBox(
-                    height: 300,
+                child: SizedBox(
+                    // height: 300,
                     width: 300,
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง วิธีการปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย',
-                            style: TextStyle(fontSize: 16),
-                          )
+                          RichText(
+                            text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                      text:
+                                          '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง วิธีการปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย\n'),
+                                          TextSpan(text: '    ในพื้นที่จังหวัดกรุงเทพมหานคร สามารถทิ้งขยะอันตรายได้ที่สำนักงานเขต ทั้ง 50 เขต และในโรงพยาบาล\n' ),
+                                          TextSpan(text: '    ขยะอันตรายประเภท ถ่านไฟฉาย และขยะจำพวกอิเล็กทรอนิกส์สามารถทิ้งได้ตามศูนย์บริการ Dtac, True หรือตามห้างสรรพสินค้าที่เข้าร่วม')
+                                ]),
+                          ),
+                          
                         ],
                       ),
                     ))),

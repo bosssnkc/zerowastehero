@@ -961,8 +961,8 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                                           .bold),
                                                             ),
                                                             Text(
-                                                              trash['trash_price']
-                                                                  .toString(),
+                                                              '${trash['trash_price']
+                                                                  .toString()} บาท/กก.',
                                                               style:
                                                                   const TextStyle(
                                                                 fontSize: 18,
@@ -1182,7 +1182,7 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                 splashColor: Colors.blue,
                 onTap: () {},
                 child: const SizedBox(
-                    height: 300,
+                    // height: 300,
                     width: 300,
                     child: Padding(
                       padding: EdgeInsets.all(16),

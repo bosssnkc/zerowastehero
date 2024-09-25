@@ -1142,7 +1142,7 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                   splashColor: Colors.blue,
                   onTap: () {},
                   child: const SizedBox(
-                      height: 300,
+                      // height: 300,
                       width: 300,
                       child: Padding(
                         padding: EdgeInsets.all(16),

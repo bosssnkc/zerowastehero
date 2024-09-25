@@ -1173,13 +1173,13 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                                             '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน\n')
                                   ]),
                             ),
-                            YoutubePlayer(
-                              controller: _playerController,
-                              showVideoProgressIndicator: true,
-                              onReady: () {
-                                print('Player is ready.');
-                              },
-                            ),
+                            // YoutubePlayer(
+                            //   controller: _playerController,
+                            //   showVideoProgressIndicator: true,
+                            //   onReady: () {
+                            //     print('Player is ready.');
+                            //   },
+                            // ),
                           ],
                         ),
                       ),
@@ -1220,7 +1220,7 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                 splashColor: Colors.blue,
                 onTap: () {},
                 child: const SizedBox(
-                    height: 300,
+                    // height: 300,
                     width: 300,
                     child: Padding(
                       padding: EdgeInsets.all(16),

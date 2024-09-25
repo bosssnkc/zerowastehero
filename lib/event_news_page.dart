@@ -53,7 +53,7 @@ class _EventNewsPageState extends State<EventNewsPage> {
                   onTap: () {},
                   splashColor: Colors.cyan[50],
                   child: const Center(
-                    child: Text('ภาพ2'),
+                    child: Text('ข่าวสารอัพเดท'),
                   ),
                 ),
               ),

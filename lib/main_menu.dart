@@ -208,10 +208,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: const Image(
-                  image: NetworkImage(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-                )),
+                child: Text('ข่าวสารอัพเดท'),
+                // const Image(
+                //   image: NetworkImage(
+                //       'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                // ),
+                ),
             const SizedBox(height: 16),
           ],
         ),
