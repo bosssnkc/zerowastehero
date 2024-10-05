@@ -961,8 +961,7 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                                           .bold),
                                                             ),
                                                             Text(
-                                                              '${trash['trash_price']
-                                                                  .toString()} บาท/กก.',
+                                                              '${trash['trash_price'].toString()} บาท/กก.',
                                                               style:
                                                                   const TextStyle(
                                                                 fontSize: 18,
@@ -1181,18 +1180,25 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
             child: InkWell(
                 splashColor: Colors.blue,
                 onTap: () {},
-                child: const SizedBox(
+                child: SizedBox(
                     // height: 300,
                     width: 300,
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '    ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้',
-                            style: TextStyle(fontSize: 16),
-                          )
+                          RichText(
+                            text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                      text:
+                                          '    ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้')
+                                ]),
+                          ),
                         ],
                       ),
                     ))),
