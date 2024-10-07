@@ -54,6 +54,9 @@ dependencies:
   url_launcher: ^6.3.0
   custom_info_window: ^1.0.1
   clippy_flutter: ^2.0.0-nullsafety.1
+  url_launcher_android: ^6.3.12
+  url_launcher_platform_interface: ^2.3.2
+  url_launcher_ios: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +85,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/image/
+    - assets/image/blue_trash.png
+    - assets/image/red_trash.png
+    - assets/image/yellow_trash.png
+    - assets/image/green_trash.png
+    - assets/image/zwh_bg.png
   #   - images/a_dot_ham.jpeg
 
 

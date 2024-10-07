@@ -2,40 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeClass {
-  static ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.green.shade50,
-    cardTheme: const CardTheme(color: Colors.white, shadowColor: Colors.grey),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.black,
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
-      labelStyle: TextStyle(color: Colors.black),
-      hintFadeDuration: Duration(seconds: 1),
-      border: OutlineInputBorder(),
-      focusedBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Colors.green)),
-    ),
-    tabBarTheme: TabBarTheme(
-      indicatorSize: TabBarIndicatorSize.tab,
-      dividerColor: Colors.transparent,
-      indicatorColor: const Color(0xff1d976c),
-      labelColor: Colors.black,
-      unselectedLabelColor: Colors.black54,
-      labelStyle: GoogleFonts.prompt(),
-      unselectedLabelStyle: GoogleFonts.kanit(),
-    ),
-    // primarySwatch: Colors.green,
-    textTheme: GoogleFonts.kanitTextTheme(),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(foregroundColor: Colors.black),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(foregroundColor: Colors.black),
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.green, foregroundColor: Colors.white),
-  );
+  static ThemeData lightTheme(String fontFamily) {
+    return ThemeData(
+      scaffoldBackgroundColor: Colors.green.shade50,
+      cardTheme: const CardTheme(color: Colors.white, shadowColor: Colors.grey),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.black,
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        labelStyle: TextStyle(color: Colors.black),
+        hintFadeDuration: Duration(seconds: 1),
+        border: OutlineInputBorder(),
+        focusedBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.green)),
+      ),
+      tabBarTheme: TabBarTheme(
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        indicatorColor: const Color(0xff1d976c),
+        labelColor: Colors.black,
+        unselectedLabelColor: Colors.black54,
+        labelStyle: GoogleFonts.getFont(fontFamily), // ฟอนต์ที่เลือก
+        unselectedLabelStyle: GoogleFonts.getFont(fontFamily), // ฟอนต์ที่เลือก
+      ),
+      textTheme: GoogleFonts.getTextTheme(fontFamily), // ฟอนต์ที่เลือก
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(foregroundColor: Colors.black),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: Colors.black),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.green, foregroundColor: Colors.white),
+    );
+  }
+
   static ThemeData darkTheme = ThemeData.dark().copyWith(
     appBarTheme: const AppBarTheme(
         iconTheme: IconThemeData(color: Colors.purple),

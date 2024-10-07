@@ -174,127 +174,157 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text(
-              'บัญชีผู้ใช้งาน',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            // FutureBuilder<Map<String, dynamic>>(
-            //   future: _getUserInfo(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Card(
-            //         child: ListTile(
-            //           title: Text(
-            //             'Loading...',
-            //             style: TextStyle(fontWeight: FontWeight.bold),
-            //           ),
-            //           contentPadding: EdgeInsets.all(16),
-            //           leading: Icon(Icons.person),
-            //         ),
-            //       );
-            //     } else if (snapshot.hasError) {
-            //       return const Card(
-            //         child: ListTile(
-            //           title: Text(
-            //             'Error loading user info',
-            //             style: TextStyle(fontWeight: FontWeight.bold),
-            //           ),
-            //           contentPadding: EdgeInsets.all(16),
-            //           leading: Icon(Icons.error),
-            //         ),
-            //       );
-            //     } else {
-            //       final userInfo = snapshot.data!;
-            //       return Card(
-            //         child: ListTile(
-            //           title: Text(
-            //             '${userInfo['fullname']!} ${userInfo['lastname']!}',
-            //             style: const TextStyle(fontWeight: FontWeight.bold),
-            //           ),
-            //           subtitle: Text(userInfo['email']!),
-            //           contentPadding: const EdgeInsets.all(16),
-            //           leading: const Icon(
-            //             Icons.person,
-            //             size: 50,
-            //           ),
-            //         ),
-            //       );
-            //     }
-            //   },
-            // ),
-            FutureBuilder<Map<String, dynamic>>(
-              future: _getUserInfo(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Card(
-                    child: ListTile(
-                      title: Text(
-                        'Loading...',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Text(
+                'บัญชีผู้ใช้งาน',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              // FutureBuilder<Map<String, dynamic>>(
+              //   future: _getUserInfo(),
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return const Card(
+              //         child: ListTile(
+              //           title: Text(
+              //             'Loading...',
+              //             style: TextStyle(fontWeight: FontWeight.bold),
+              //           ),
+              //           contentPadding: EdgeInsets.all(16),
+              //           leading: Icon(Icons.person),
+              //         ),
+              //       );
+              //     } else if (snapshot.hasError) {
+              //       return const Card(
+              //         child: ListTile(
+              //           title: Text(
+              //             'Error loading user info',
+              //             style: TextStyle(fontWeight: FontWeight.bold),
+              //           ),
+              //           contentPadding: EdgeInsets.all(16),
+              //           leading: Icon(Icons.error),
+              //         ),
+              //       );
+              //     } else {
+              //       final userInfo = snapshot.data!;
+              //       return Card(
+              //         child: ListTile(
+              //           title: Text(
+              //             '${userInfo['fullname']!} ${userInfo['lastname']!}',
+              //             style: const TextStyle(fontWeight: FontWeight.bold),
+              //           ),
+              //           subtitle: Text(userInfo['email']!),
+              //           contentPadding: const EdgeInsets.all(16),
+              //           leading: const Icon(
+              //             Icons.person,
+              //             size: 50,
+              //           ),
+              //         ),
+              //       );
+              //     }
+              //   },
+              // ),
+              FutureBuilder<Map<String, dynamic>>(
+                future: _getUserInfo(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Card(
+                      child: ListTile(
+                        title: Text(
+                          'Loading...',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        leading: Icon(Icons.person),
                       ),
-                      contentPadding: EdgeInsets.all(16),
-                      leading: Icon(Icons.person),
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return const Card(
-                    child: ListTile(
-                      title: Text(
-                        'Error loading user info',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Card(
+                      child: ListTile(
+                        title: Text(
+                          'Error loading user info',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        leading: Icon(Icons.error),
                       ),
-                      contentPadding: EdgeInsets.all(16),
-                      leading: Icon(Icons.error),
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  final userInfo = snapshot.data!;
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                        '${userInfo['firstname']} ${userInfo['lastname']}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  } else if (snapshot.hasData) {
+                    final userInfo = snapshot.data!;
+                    return Card(
+                      child: ListTile(
+                        title: Text(
+                          '${userInfo['firstname']} ${userInfo['lastname']}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(userInfo['email']!),
+                        contentPadding: const EdgeInsets.all(16),
+                        leading: const Icon(
+                          Icons.person,
+                          size: 50,
+                        ),
                       ),
-                      subtitle: Text(userInfo['email']!),
-                      contentPadding: const EdgeInsets.all(16),
-                      leading: const Icon(
-                        Icons.person,
-                        size: 50,
+                    );
+                  } else {
+                    return const Card(
+                      child: ListTile(
+                        title: Text(
+                          'User not found',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        contentPadding: EdgeInsets.all(16),
+                        leading: Icon(Icons.error),
                       ),
-                    ),
-                  );
-                } else {
-                  return const Card(
-                    child: ListTile(
-                      title: Text(
-                        'User not found',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      contentPadding: EdgeInsets.all(16),
-                      leading: Icon(Icons.error),
-                    ),
-                  );
-                }
-              },
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'ตั้งค่าผู้ใช้งาน',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Card(
-              child: ListTile(
-                onTap: () {
-                  guestToken != null
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'ตั้งค่าผู้ใช้งาน',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Card(
+                child: ListTile(
+                  onTap: () {
+                    guestToken != null
+                        ? showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('ไม่สามารถแก้ไขได้'),
+                                  content: const Text(
+                                      'เข้าสู่ระบบด้วย guest ไม่สามารถแก้ไขข้อมูลได้'),
+                                  actions: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.white),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: const Text('ตกลง'),
+                                    )
+                                  ],
+                                ))
+                        : Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ManageUsersPage(),
+                          ));
+                  },
+                  title: const Text('แก้ไขข้อมูลส่วนตัว'),
+                  leading: const Icon(Icons.edit),
+                ),
+              ),
+              Card(
+                child: ListTile(
+                  onTap: () => guestToken != null
                       ? showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -312,121 +342,109 @@ class _ProfilePageState extends State<ProfilePage> {
                                   )
                                 ],
                               ))
-                      : Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ManageUsersPage(),
-                        ));
-                },
-                title: const Text('แก้ไขข้อมูลส่วนตัว'),
-                leading: const Icon(Icons.edit),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                onTap: () => guestToken != null
-                    ? showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: const Text('ไม่สามารถแก้ไขได้'),
-                              content: const Text(
-                                  'เข้าสู่ระบบด้วย guest ไม่สามารถแก้ไขข้อมูลได้'),
-                              actions: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      foregroundColor: Colors.white),
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('ตกลง'),
-                                )
-                              ],
-                            ))
-                    : showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('แก้ไขรหัสผ่าน'),
-                          content: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 250,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('กรุณากรอก Password ปัจจุบัน'),
-                                const SizedBox(height: 8),
-                                TextFormField(
-                                  controller: _currentPasswordController,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'password ปัจจุบัน',
+                      : showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('แก้ไขรหัสผ่าน'),
+                            content: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 250,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('กรุณากรอก Password ปัจจุบัน'),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    controller: _currentPasswordController,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'password ปัจจุบัน',
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                const Text('กรุณากรอก Password ใหม่'),
-                                const SizedBox(height: 8),
-                                TextFormField(
-                                  obscureText: true,
-                                  controller: _passwordController,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'password ใหม่',
+                                  const SizedBox(height: 8),
+                                  const Text('กรุณากรอก Password ใหม่'),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    obscureText: true,
+                                    controller: _passwordController,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'password ใหม่',
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                TextFormField(
-                                  obscureText: true,
-                                  controller: _confirmPasswordController,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: 'ยืนยัน password ใหม่',
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    obscureText: true,
+                                    controller: _confirmPasswordController,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'ยืนยัน password ใหม่',
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            actions: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white),
+                                onPressed: () {
+                                  clearFields();
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('ยกเลิก'),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.green),
+                                onPressed: () async {
+                                  await _editPassword();
+                                },
+                                child: const Text('บันทึก'),
+                              ),
+                            ],
                           ),
-                          actions: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  foregroundColor: Colors.white),
-                              onPressed: () {
-                                clearFields();
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('ยกเลิก'),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.green),
-                              onPressed: () async {
-                                await _editPassword();
-                              },
-                              child: const Text('บันทึก'),
-                            ),
-                          ],
                         ),
-                      ),
-                title: const Text('แก้ไขรหัสผ่าน'),
-                leading: const Icon(Icons.lock_rounded),
+                  title: const Text('แก้ไขรหัสผ่าน'),
+                  leading: const Icon(Icons.lock_rounded),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                const Icon(Icons.logout),
-                TextButton(
-                  style: TextButton.styleFrom(backgroundColor: Colors.red),
-                  onPressed: () => _logout(context),
-                  child: const Text(
-                    'Logout',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.red,
+                ),
+                child: InkWell(
+                  onTap: () => _logout(context),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                        ),
+                        TextButton(
+                            onPressed: () => _logout(context),
+                            child: const Text(
+                              'Logout',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 16),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

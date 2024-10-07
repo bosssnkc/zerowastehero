@@ -1154,25 +1154,47 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                       height: 400,
                       child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             RichText(
                               // textAlign: TextAlign.justify,
                               text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะทั่วไป (General Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงินดังภาพต่อไปนี้\n'),
+                                ],
+                              ),
+                            ),
+                            Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: const Image(
+                                image:
+                                    AssetImage('assets/image/blue_trash.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                            const Text(
+                              'ที่มา: hospitalitythailand.com',
+                              textAlign: TextAlign.center,
+                            ),
+                            RichText(
+                              text: TextSpan(
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .copyWith(fontSize: 16),
-                                  children: const [
-                                    TextSpan(
-                                      text: 'ขยะทั่วไป (General Waste)\n',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                        text:
-                                            '    คือขยะประเภทที่ย่อยสลายได้ยากไม่สามารถนำกลับมาใช้ใหม่ได้ เป็นขยะที่ไม่คุ้มค่าต่อการนำไปเข้าสู่กระบวนการรีไซเคิล ตัวอย่างของขยะประเภททั่วไปเช่น กระดาษ เศษไม้ แก้ว ยาง กล่องอาหาร ซองขนมพลาสติก กล่องโฟม พลาสติกห่ออาหาร โดยประเทศไทยจำแนกให้ขยะประเภทนี้สามารถทิ้งได้ที่ถังขยะที่มีสีน้ำเงิน\n')
-                                  ]),
-                            ),
+                                  children: const [TextSpan(text: 'TEST\n')]),
+                            )
                             // YoutubePlayer(
                             //   controller: _playerController,
                             //   showVideoProgressIndicator: true,

@@ -1122,7 +1122,86 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      insetPadding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                      title: const Text('ขยะอินทรีย์'),
+                      content: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 400,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              RichText(
+                                // textAlign: TextAlign.justify,
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                      text: 'ขยะอินทรีย์ (Compostable Waste)\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    หรืออีกชื่อคือขยะเปียก คือขยะที่สามารถย่อยสลายได้ง่ายตามธรรมชาติ มีความชื้นและส่งกลิ่นเหม็น ขยะประเภทนี้สามารถนำไปทำเป็นปุ๋ยหมักชีวภาพได้ ตัวอย่างของขยะประเภทขยะเปียกเช่น เศษใบไม้ เศษอาหาร เศษเนื้อสัตว์ เปลือกผลไม้ โดยประเทศไทยจำแนกให้ขยะประเภทขยะเปียกสามารถทิ้งได้ในถังขยะที่มีสีเขียวดังรูปภาพดังนี้\n'),
+                                  ],
+                                ),
+                              ),
+                              Center(
+                                  child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 300,
+                                child: const Image(
+                                  image: AssetImage(
+                                      'assets/image/green_trash.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                              const Text(
+                                'ที่มา: hospitalitythailand.com',
+                                textAlign: TextAlign.center,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                    style: DefaultTextStyle.of(context)
+                                        .style
+                                        .copyWith(fontSize: 16),
+                                    children: const [TextSpan(text: 'TEST\n')]),
+                              )
+                              // YoutubePlayer(
+                              //   controller: _playerController,
+                              //   showVideoProgressIndicator: true,
+                              //   onReady: () {
+                              //     print('Player is ready.');
+                              //   },
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'ตกลง',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(

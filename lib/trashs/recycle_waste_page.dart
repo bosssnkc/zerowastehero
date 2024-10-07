@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:clippy_flutter/triangle.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -1161,7 +1162,86 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                   ),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    insetPadding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                    title: const Text('ขยะรีไซเคิล'),
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            RichText(
+                              // textAlign: TextAlign.justify,
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะรีไซเคิล (Recycle Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n'),
+                                ],
+                              ),
+                            ),
+                            Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: const Image(
+                                image:
+                                    AssetImage('assets/image/yellow_trash.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                            const Text(
+                              'ที่มา: hospitalitythailand.com',
+                              textAlign: TextAlign.center,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [TextSpan(text: 'TEST\n')]),
+                            )
+                            // YoutubePlayer(
+                            //   controller: _playerController,
+                            //   showVideoProgressIndicator: true,
+                            //   onReady: () {
+                            //     print('Player is ready.');
+                            //   },
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          'ตกลง',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
@@ -1189,6 +1269,7 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RichText(
+                            textAlign: TextAlign.start,
                             text: TextSpan(
                                 style: DefaultTextStyle.of(context)
                                     .style
@@ -1196,7 +1277,7 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                                 children: const [
                                   TextSpan(
                                       text:
-                                          '    ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้')
+                                          '  ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้')
                                 ]),
                           ),
                         ],

@@ -1122,7 +1122,85 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                   ),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    insetPadding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                    title: const Text('ขยะอันตราย'),
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            RichText(
+                              // textAlign: TextAlign.justify,
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'ขยะอันตราย (Hazardous Waste)\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    คือขยะที่มีการปนเปื้อนสารเคมีและเป็นอันตรายต่อสิ่งแวดล้อมหรือสามารถติดไฟได้ง่าย ต้องมีการกำจัดอย่างถูกวิธีและไม่สามารถทิ้งรวมกับขยะประเภทอื่นได้ ตัวอย่างของขยะประเภทขยะอันตรายเช่น หลอดไฟ ถ่านไฟฉาย วัตถุไวไฟ ยาที่หมดอายุ สารพิษ อุปกรณ์อิเล็กทรอนิกส์ โดยประเทศไทยจำแนกให้ขยะประเภทขยะอันตรายสามารถทิ้งได้ในที่ถังขยะที่มีสีแดง\n'),
+                                ],
+                              ),
+                            ),
+                            Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: const Image(
+                                image: AssetImage('assets/image/red_trash.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                            const Text(
+                              'ที่มา: hospitalitythailand.com',
+                              textAlign: TextAlign.center,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [TextSpan(text: 'TEST\n')]),
+                            )
+                            // YoutubePlayer(
+                            //   controller: _playerController,
+                            //   showVideoProgressIndicator: true,
+                            //   onReady: () {
+                            //     print('Player is ready.');
+                            //   },
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            foregroundColor: Colors.white),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          'ตกลง',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
@@ -1158,11 +1236,14 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                                   TextSpan(
                                       text:
                                           '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง วิธีการปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย\n'),
-                                          TextSpan(text: '    ในพื้นที่จังหวัดกรุงเทพมหานคร สามารถทิ้งขยะอันตรายได้ที่สำนักงานเขต ทั้ง 50 เขต และในโรงพยาบาล\n' ),
-                                          TextSpan(text: '    ขยะอันตรายประเภท ถ่านไฟฉาย และขยะจำพวกอิเล็กทรอนิกส์สามารถทิ้งได้ตามศูนย์บริการ Dtac, True หรือตามห้างสรรพสินค้าที่เข้าร่วม')
+                                  TextSpan(
+                                      text:
+                                          '    ในพื้นที่จังหวัดกรุงเทพมหานคร สามารถทิ้งขยะอันตรายได้ที่สำนักงานเขต ทั้ง 50 เขต และในโรงพยาบาล\n'),
+                                  TextSpan(
+                                      text:
+                                          '    ขยะอันตรายประเภท ถ่านไฟฉาย และขยะจำพวกอิเล็กทรอนิกส์สามารถทิ้งได้ตามศูนย์บริการ Dtac, True หรือตามห้างสรรพสินค้าที่เข้าร่วม')
                                 ]),
                           ),
-                          
                         ],
                       ),
                     ))),
