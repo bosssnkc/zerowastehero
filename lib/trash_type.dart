@@ -84,7 +84,13 @@ class _TypeOfTrashState extends State<TypeOfTrash>
                 ],
               ),
             ),
-            body: SafeArea(
+            body: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/image/zwh_bg.png'),
+                  fit: BoxFit.cover
+                ),
+              ),
               child: Column(
                 children: [
                   Expanded(
