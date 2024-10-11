@@ -597,12 +597,20 @@ class _CompostableWasteState extends State<CompostableWaste>
               ),
             ]),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              const DetailedCompostableWaste(),
-              listOfCompostable(),
-            ],
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/image/zwh_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                const DetailedCompostableWaste(),
+                listOfCompostable(),
+              ],
+            ),
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1172,8 +1180,32 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                                     style: DefaultTextStyle.of(context)
                                         .style
                                         .copyWith(fontSize: 16),
-                                    children: const [TextSpan(text: 'TEST\n')]),
-                              )
+                                    children: const [
+                                      TextSpan(
+                                          text: 'ปัญหาของขยะอินทรีย์\n',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text:
+                                              '    แม้ว่าขยะอินทรีย์จะสามารถย่อยสลายได้ แต่หากไม่มีการจัดการที่เหมาะสม เช่น การนำไปฝังกลบในหลุมขยะทั่วไป ขยะอินทรีย์จะปล่อยก๊าซมีเทน (Methane) ซึ่งเป็นก๊าซเรือนกระจกที่มีความรุนแรงมากกว่าคาร์บอนไดออกไซด์ ดังนั้นการจัดการขยะอินทรีย์ด้วยวิธีที่เหมาะสม เช่น การทำปุ๋ยหมัก จะช่วยลดการปล่อยก๊าซเรือนกระจกและใช้ประโยชน์จากขยะอินทรีย์ได้อย่างมีประสิทธิภาพ\n\n'),
+                                      TextSpan(
+                                        text: 'วิธีการจัดการขยะอินทรีย์\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                          text:
+                                              '    1. การทำปุ๋ยหมัก (Composting): ขยะอินทรีย์สามารถนำมาทำปุ๋ยหมัก ซึ่งเป็นกระบวนการย่อยสลายตามธรรมชาติ และได้สารอาหารที่มีประโยชน์สำหรับดิน โดยกระบวนการนี้ช่วยลดปริมาณขยะที่จะต้องนำไปฝังกลบ\n'),
+                                      TextSpan(
+                                          text:
+                                              '    2. การผลิตก๊าซชีวภาพ (Biogas): ขยะอินทรีย์ที่มีสารอินทรีย์สูง เช่น เศษอาหาร สามารถนำไปใช้ผลิตก๊าซชีวภาพ ซึ่งเป็นพลังงานสะอาดที่สามารถใช้ทดแทนพลังงานจากฟอสซิลได้\n'),
+                                      TextSpan(
+                                          text:
+                                              '    3. การคัดแยกขยะอินทรีย์: การแยกขยะอินทรีย์ออกจากขยะทั่วไปตั้งแต่ต้นทาง เช่น ที่บ้านเรือนหรือร้านอาหาร จะช่วยเพิ่มประสิทธิภาพในการจัดการขยะและลดการปนเปื้อนกับขยะที่ย่อยสลายไม่ได้\n'),
+                                    ]),
+                              ),
+                              const Text(
+                                  'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย')
                               // YoutubePlayer(
                               //   controller: _playerController,
                               //   showVideoProgressIndicator: true,

@@ -28,67 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return validCharacters.hasMatch(username);
   }
 
-  // Future<void> _register() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     String username = _usernameController.text;
-  //     String password = _hashPassword(_passwordController.text);
-  //     String email = _emailController.text;
-  //     String fullname = _fullnameController.text;
-  //     String lastname = _lastnameController.text;
-  //     String gender = _gender!;
-  //     String birthdate = DateFormat('yyyy-MM-dd').format(_selectedDate!);
-
-  //     if (!await _isUsernameTaken(username)) {
-  //       if (_isValidUsername(username)) {
-  //         final dbHelper = DatabaseHelper();
-  //         await dbHelper.insertUser(
-  //             username,
-  //             password,
-  //             DateTime.now().toIso8601String(),
-  //             email,
-  //             fullname,
-  //             lastname,
-  //             gender,
-  //             birthdate);
-
-  //         Navigator.of(context).pop();
-  //       } else {
-  //         // แสดง Error เมื่อผู้ใช้งานใส่รูปแบบตัวอักษรไม่ถูกต้อง
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) => AlertDialog(
-  //             title: Text('Invalid Username'),
-  //             content: Text(
-  //                 'ชื่อผู้ใช้สามารถใช้ได้แค่ตัวอักษร ภาษาอังกฤษ a-Z, 0-9 เท่านั้น'),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () => Navigator.of(context).pop(),
-  //                 child: Text('OK'),
-  //               ),
-  //             ],
-  //           ),
-  //         );
-  //       }
-  //     } else {
-  //       // แสดง Error เมื่อมี username นี้อยู่ในระบบอยู่แล้ว
-  //       showDialog(
-  //         context: context,
-  //         builder: (context) => AlertDialog(
-  //           title: Text('Username Taken'),
-  //           content: Text(
-  //               'This username is already taken. Please choose another one.'),
-  //           actions: [
-  //             TextButton(
-  //               onPressed: () => Navigator.of(context).pop(),
-  //               child: Text('OK'),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     }
-  //   }
-  // }
-
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text;
@@ -222,209 +161,218 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            autovalidateMode: AutovalidateMode.always,
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'ลงทะเบียนบัญชีใหม่',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/image/zwh_bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              autovalidateMode: AutovalidateMode.always,
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'ลงทะเบียนบัญชีใหม่',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'ชื่อผู้ใช้',
-                      hintText: 'username',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'ชื่อผู้ใช้',
+                        hintText: 'username',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกชื่อผู้ใช้';
+                        } else if (!value.contains(RegExp(r'^[a-zA-Z0-9]+$'))) {
+                          return 'ชื่อผู้ใช้ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลขเท่านั้น';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกชื่อผู้ใช้';
-                      } else if (!value.contains(RegExp(r'^[a-zA-Z0-9]+$'))) {
-                        return 'ชื่อผู้ใช้ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลขเท่านั้น';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'รหัสผ่าน',
-                      hintText: '**********',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'รหัสผ่าน',
+                        hintText: '**********',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกรหัสผ่าน';
+                        } else if (!value
+                            .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
+                          return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
+                        }
+                        return null;
+                      },
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกรหัสผ่าน';
-                      } else if (!value
-                          .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
-                        return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    decoration: const InputDecoration(
-                      labelText: 'ยืนยันรหัสผ่าน',
-                      hintText: '**********',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      decoration: const InputDecoration(
+                        labelText: 'ยืนยันรหัสผ่าน',
+                        hintText: '**********',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณายืนยันรหัสผ่าน';
+                        } else if (!value
+                            .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
+                          return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'รหัสผ่านไม่ตรงกัน';
+                        }
+                        return null;
+                      },
                     ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณายืนยันรหัสผ่าน';
-                      } else if (!value
-                          .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
-                        return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
-                      }
-                      if (value != _passwordController.text) {
-                        return 'รหัสผ่านไม่ตรงกัน';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'อีเมล์',
-                      hintText: 'example@gmail.com',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'อีเมล์',
+                        hintText: 'example@gmail.com',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกอีเมล์';
+                        } else if (!value.contains('@') ||
+                            !value.contains('.')) {
+                          return 'รูปแบบ email ไม่ถูกต้อง';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกอีเมล์';
-                      } else if (!value.contains('@') || !value.contains('.')) {
-                        return 'รูปแบบ email ไม่ถูกต้อง';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _fullnameController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'ชื่อจริง',
-                      hintText: 'ชื่อจริง',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _fullnameController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'ชื่อจริง',
+                        hintText: 'ชื่อจริง',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกชื่อจริง';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกชื่อจริง';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: _lastnameController,
-                    decoration: const InputDecoration(
-                      labelText: 'นามสกุล',
-                      hintText: 'นามสกุล',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _lastnameController,
+                      decoration: const InputDecoration(
+                        labelText: 'นามสกุล',
+                        hintText: 'นามสกุล',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'กรุณากรอกนามสกุล';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกนามสกุล';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    value: _gender,
-                    decoration: const InputDecoration(
-                      labelText: 'เพศ',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 20),
+                    DropdownButtonFormField<String>(
+                      value: _gender,
+                      decoration: const InputDecoration(
+                        labelText: 'เพศ',
+                        border: OutlineInputBorder(),
+                      ),
+                      items: ['ชาย', 'หญิง']
+                          .map((label) => DropdownMenuItem(
+                                value: label,
+                                child: Text(label),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _gender = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null) {
+                          return 'กรุณาเลือกเพศ';
+                        }
+                        return null;
+                      },
                     ),
-                    items: ['ชาย', 'หญิง']
-                        .map((label) => DropdownMenuItem(
-                              value: label,
-                              child: Text(label),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _gender = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'กรุณาเลือกเพศ';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: TextEditingController(
-                            text: _selectedDate == null
-                                ? ''
-                                : DateFormat('dd/MM/yyyy')
-                                    .format(_selectedDate!),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: TextEditingController(
+                              text: _selectedDate == null
+                                  ? ''
+                                  : DateFormat('dd/MM/yyyy')
+                                      .format(_selectedDate!),
+                            ),
+                            decoration: const InputDecoration(
+                              labelText: 'วันเกิด',
+                              hintText: 'วัน/เดือน/ปี พ.ศ.',
+                              border: OutlineInputBorder(),
+                            ),
+                            readOnly: true,
+                            onTap: () => _selectDate(context),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'กรุณาเลือกวันเกิด';
+                              }
+                              return null;
+                            },
                           ),
-                          decoration: const InputDecoration(
-                            labelText: 'วันเกิด',
-                            hintText: 'วัน/เดือน/ปี พ.ศ.',
-                            border: OutlineInputBorder(),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          onPressed: () => _selectDate(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: _register,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
                           ),
-                          readOnly: true,
-                          onTap: () => _selectDate(context),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'กรุณาเลือกวันเกิด';
-                            }
-                            return null;
+                          child: const Text('ลงทะเบียน'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text('ยกเลิก'),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.calendar_today),
-                        onPressed: () => _selectDate(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: _register,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                        ),
-                        child: const Text('ลงทะเบียน'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                        ),
-                        child: const Text('ยกเลิก'),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -601,12 +601,20 @@ class _HazadousWasteState extends State<HazadousWaste>
               ],
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              const DetailedHazadousWaste(),
-              listOfHazadous(),
-            ],
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/image/zwh_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                const DetailedHazadousWaste(),
+                listOfHazadous(),
+              ],
+            ),
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1171,8 +1179,31 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .copyWith(fontSize: 16),
-                                  children: const [TextSpan(text: 'TEST\n')]),
-                            )
+                                  children: const [
+                                    TextSpan(
+                                        text: 'ปัญหาของขยะอันตราย\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะอันตรายไม่สามารถกำจัดด้วยวิธีการทั่วไป เช่น การฝังกลบหรือการเผา เนื่องจากอาจก่อให้เกิดมลพิษทางอากาศ น้ำ และดิน รวมถึงเป็นอันตรายต่อสุขภาพของมนุษย์ สารพิษในขยะอันตรายสามารถทำให้เกิดโรคภัยต่างๆ และสร้างความเสียหายให้กับสิ่งแวดล้อมในระยะยาว\n\n'),
+                                    TextSpan(
+                                      text: 'วิธีการจัดการขยะอันตราย\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    1. การคัดแยกขยะอันตราย: ขยะอันตรายต้องได้รับการแยกออกจากขยะทั่วไปตั้งแต่ต้นทาง เช่น ที่บ้านเรือนหรือโรงงาน เพื่อป้องกันการปนเปื้อน\n'),
+                                    TextSpan(
+                                        text:
+                                            '    2. การกำจัดอย่างถูกวิธี: ขยะอันตรายที่ไม่สามารถรีไซเคิลได้ต้องถูกส่งไปยังสถานที่กำจัดที่มีมาตรฐาน เพื่อป้องกันการรั่วไหลของสารเคมีที่เป็นอันตราย\n'),
+                                  ]),
+                            ),
+                            const Text(
+                                'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย'),
+                            const Text(
+                                'กระทรวงสาธารณสุข. (2563). คู่มือการจัดการขยะอันตราย')
                             // YoutubePlayer(
                             //   controller: _playerController,
                             //   showVideoProgressIndicator: true,

@@ -87,9 +87,8 @@ class _TypeOfTrashState extends State<TypeOfTrash>
             body: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/image/zwh_bg.png'),
-                  fit: BoxFit.cover
-                ),
+                    image: AssetImage('assets/image/zwh_bg.png'),
+                    fit: BoxFit.cover),
               ),
               child: Column(
                 children: [
@@ -389,10 +388,31 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                     ),
                                     TextSpan(
                                       text:
-                                          '    ขยะอันตรายต้องแยกและทิ้งในสถานที่ที่กำหนดเพื่อความปลอดภัย\n',
+                                          '    ขยะอันตรายต้องแยกและทิ้งในสถานที่ที่กำหนดเพื่อความปลอดภัย\n\n',
                                     ),
+                                    TextSpan(
+                                        text: 'ข้อดีของการคัดแยกขยะ\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    1. ลดปริมาณขยะที่ต้องกำจัด\n'),
+                                    TextSpan(
+                                        text:
+                                            '    2. เพิ่มประสิทธิภาพในกระบวนการรีไซเคิล\n'),
+                                    TextSpan(
+                                        text:
+                                            '    3. ลดมลพิษและป้องกันการแพร่กระจายของสารเคมีอันตราย\n'),
+                                    TextSpan(
+                                        text:
+                                            '    4. ช่วยประหยัดพลังงานและทรัพยากรธรรมชาติ\n'),
                                   ],
                                 ),
+                              ),
+                              const Text(
+                                  'กรมควบคุมมลพิษ. (2564). คู่มือการคัดแยกขยะและการรีไซเคิล'),
+                              const SizedBox(
+                                height: 16,
                               ),
 
                               // Video
@@ -403,6 +423,10 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                   print('Player is ready.');
                                 },
                               ),
+                              const Center(
+                                child: Text(
+                                    'Youtube: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
+                              )
                             ],
                           ),
                         ),
@@ -579,12 +603,33 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      '    3. Recycle (นำกลับมาใช้ใหม่) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว ซ่อมแซมสินค้าแทนการทิ้ง หากสินค้าที่เสียหรือชำรุดสามารถซ่อมแซมได้ ให้ซ่อมและใช้งานต่อไปแทนการทิ้งและซื้อใหม่\n',
+                                                      '    3. Recycle (นำกลับมาใช้ใหม่) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว ซ่อมแซมสินค้าแทนการทิ้ง หากสินค้าที่เสียหรือชำรุดสามารถซ่อมแซมได้ ให้ซ่อมและใช้งานต่อไปแทนการทิ้งและซื้อใหม่\n\n',
                                                 ),
+                                                TextSpan(
+                                                  text:
+                                                      'ประโยชน์ของหลักการ 3R\n',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                TextSpan(
+                                                    text:
+                                                        '    1. ลดการใช้ทรัพยากรธรรมชาติและพลังงาน\n'),
+                                                TextSpan(
+                                                    text:
+                                                        '    2. ลดปริมาณขยะที่ต้องกำจัด\n'),
+                                                TextSpan(
+                                                    text:
+                                                        '    3. ช่วยลดมลพิษทางสิ่งแวดล้อมและลดการปล่อยก๊าซเรือนกระจก\n'),
                                               ],
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      const Text(
+                                          'ที่มา: กรมควบคุมมลพิษ. (2564). การจัดการขยะด้วยหลัก 3R'),
+                                      const SizedBox(
+                                        height: 8,
                                       ),
                                       YoutubePlayer(
                                         controller: _playerController,
@@ -593,6 +638,10 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                           print('Player is ready.');
                                         },
                                       ),
+                                      const Center(
+                                        child: Text(
+                                            'ที่มา: YouTube สถาบันวิทยาการพลังงาน'),
+                                      )
                                     ],
                                   ),
                                 ),

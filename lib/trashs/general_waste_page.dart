@@ -604,12 +604,20 @@ class _GenralWasteState extends State<GeneralWaste>
               ],
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              const DetailedGeneralWaste(),
-              listOfGeneral(),
-            ],
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/image/zwh_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                const DetailedGeneralWaste(),
+                listOfGeneral(),
+              ],
+            ),
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1188,13 +1196,39 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                               'ที่มา: hospitalitythailand.com',
                               textAlign: TextAlign.center,
                             ),
+                            SizedBox(
+                              height: 8,
+                            ),
                             RichText(
                               text: TextSpan(
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .copyWith(fontSize: 16),
-                                  children: const [TextSpan(text: 'TEST\n')]),
-                            )
+                                  children: const [
+                                    TextSpan(
+                                        text: 'ปัญหาขยะทั่วไป\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะทั่วไปมักถูกทิ้งรวมกันโดยไม่มีการคัดแยกที่เหมาะสม ทำให้ยากต่อการจัดการและรีไซเคิล ส่งผลให้ขยะจำนวนมากถูกนำไปฝังกลบหรือนำไปเผา ซึ่งสร้างผลกระทบต่อสิ่งแวดล้อม เช่น การปล่อยก๊าซเรือนกระจกจากการเผาขยะ และการปล่อยมลพิษจากการฝังกลบ\n\n'),
+                                    TextSpan(
+                                        text: 'วิธีการจัดการขยะทั่วไป\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    1. การลดการใช้: ลดการใช้วัสดุที่สร้างขยะ เช่น ถุงพลาสติก, บรรจุภัณฑ์ที่ไม่จำเป็น\n'),
+                                    TextSpan(
+                                        text:
+                                            '    2. การนำกลับมาใช้ใหม่: การเลือกใช้วัสดุที่สามารถนำกลับมาใช้ใหม่ได้ เช่น ถุงผ้า, ขวดแก้ว\n'),
+                                    TextSpan(
+                                        text:
+                                            '    3. การรีไซเคิล: แยกขยะที่สามารถรีไซเคิลได้ เช่น กระดาษ, พลาสติก และโลหะ\n'),
+                                  ]),
+                            ),
+                            const Text(
+                                'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย')
                             // YoutubePlayer(
                             //   controller: _playerController,
                             //   showVideoProgressIndicator: true,

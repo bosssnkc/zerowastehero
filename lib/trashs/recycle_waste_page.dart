@@ -598,12 +598,20 @@ class _RecycleWasteState extends State<RecycleWaste>
               ),
             ]),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              const DetailedRecycleWaste(),
-              listOfRecycles(),
-            ],
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/image/zwh_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                const DetailedRecycleWaste(),
+                listOfRecycles(),
+              ],
+            ),
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1207,13 +1215,41 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                               'ที่มา: hospitalitythailand.com',
                               textAlign: TextAlign.center,
                             ),
+                            const SizedBox(
+                              height: 8,
+                            ),
                             RichText(
                               text: TextSpan(
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .copyWith(fontSize: 16),
-                                  children: const [TextSpan(text: 'TEST\n')]),
-                            )
+                                  children: const [
+                                    TextSpan(
+                                        text:
+                                            'ปัญหาและความสำคัญของขยะรีไซเคิล\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    การรีไซเคิลขยะมีความสำคัญอย่างยิ่งในการช่วยลดปริมาณขยะที่ต้องนำไปฝังกลบหรือเผา นอกจากนี้ยังช่วยลดการใช้ทรัพยากรธรรมชาติ เช่น การลดการใช้ปิโตรเลียมในการผลิตพลาสติกใหม่ และการลดการใช้ไม้ในอุตสาหกรรมกระดาษ การรีไซเคิลยังช่วยประหยัดพลังงานและลดการปล่อยก๊าซเรือนกระจกที่เกิดจากกระบวนการผลิตใหม่\n\n'),
+                                    TextSpan(
+                                      text: 'วิธีการจัดการขยะรีไซเคิล\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    1. การคัดแยก: การแยกขยะรีไซเคิลออกจากขยะประเภทอื่น เช่น ขยะอินทรีย์ เพื่อให้ง่ายต่อการนำไปแปรรูป\n'),
+                                    TextSpan(
+                                        text:
+                                            '    2. การนำไปขาย: ขยะรีไซเคิลสามารถนำไปขายยังสถานที่รับซื้อขยะ เช่น ร้านรับซื้อของเก่า หรือจุดรับซื้อในชุมชน\n'),
+                                    TextSpan(
+                                        text:
+                                            '    3. การแปรรูป: ขยะที่ได้รับการคัดแยกแล้วจะถูกนำไปยังโรงงานแปรรูปเพื่อนำวัสดุต่าง ๆ กลับมาใช้ใหม่\n'),
+                                  ]),
+                            ),
+                            const Text(
+                                'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย')
                             // YoutubePlayer(
                             //   controller: _playerController,
                             //   showVideoProgressIndicator: true,

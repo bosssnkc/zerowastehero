@@ -235,88 +235,109 @@ class _HazardousLocationState extends State<HazardousLocation> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        size: 50,
-                      ),
-                      const SizedBox(
-                        width: 50,
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'ตำแหน่งปัจจุบันของคุณ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            userLocation != null
-                                ? Text(
-                                    'Lat: ${userLocation!.latitude} Lon: ${userLocation!.longitude}')
-                                : const Text('ไม่พบตำแหน่งปัจจุบัน'),
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                                onPressed: _getLocation,
-                                child: const Text('Get Location'))
-                          ],
-                        ),
-                      ), //Column inside location_now
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              const Center(
-                child: Text(
-                  'แผนที่',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                child: SizedBox(
-                  height: 400,
-                  width: MediaQuery.of(context).size.width,
-                  child: Stack(
-                    children: [
-                      GoogleMap(
-                        onMapCreated: _onMapCreated,
-                        initialCameraPosition:
-                            CameraPosition(target: _center, zoom: 12.0),
-                        markers: _markers,
-                        onTap: (position) {
-                          _customInfoWindowController.hideInfoWindow!();
-                        },
-                        onCameraMove: (position) {
-                          _customInfoWindowController.onCameraMove!();
-                        },
-                      ),
-                      CustomInfoWindow(
-                        controller: _customInfoWindowController,
-                        height: 200,
-                        width: 200,
-                        offset: 0,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/image/zwh_bg.png'),
+            fit: BoxFit.cover,
           ),
         ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 64, 16, 16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 50,
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'ตำแหน่งปัจจุบันของคุณ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              userLocation != null
+                                  ? Text(
+                                      'Lat: ${userLocation!.latitude} Lon: ${userLocation!.longitude}')
+                                  : const Text('ไม่พบตำแหน่งปัจจุบัน'),
+                              const SizedBox(height: 10),
+                              ElevatedButton(
+                                  onPressed: _getLocation,
+                                  child: const Text('Get Location'))
+                            ],
+                          ),
+                        ), //Column inside location_now
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Center(
+                  child: Text(
+                    'แผนที่',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Card(
+                  child: SizedBox(
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          onMapCreated: _onMapCreated,
+                          initialCameraPosition:
+                              CameraPosition(target: _center, zoom: 12.0),
+                          markers: _markers,
+                          onTap: (position) {
+                            _customInfoWindowController.hideInfoWindow!();
+                          },
+                          onCameraMove: (position) {
+                            _customInfoWindowController.onCameraMove!();
+                          },
+                        ),
+                        CustomInfoWindow(
+                          controller: _customInfoWindowController,
+                          height: 200,
+                          width: 200,
+                          offset: 0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'แผนที่'),
+        ],
+        currentIndex: 1,
+        onTap: (value) {
+          if (value == 0) {
+            Navigator.of(context).pop();
+          }
+        },
       ),
     );
   }

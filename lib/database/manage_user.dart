@@ -100,65 +100,77 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                   end: Alignment.bottomRight)),
         ),
         backgroundColor: Colors.green[300],
-        title: const Text('Manage Users'),
+        title: const Text(
+          'จัดการบัญชีผู้ใช้งาน',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text('แก้ไขข้อมูลผู้ใช้'),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _firstnameController,
-              maxLength: 30,
-              decoration: const InputDecoration(
-                labelText: 'ชื่อจริง / Firstname',
-                border: OutlineInputBorder(),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/image/zwh_bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const Text('แก้ไขข้อมูลผู้ใช้'),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _firstnameController,
+                maxLength: 30,
+                decoration: const InputDecoration(
+                  labelText: 'ชื่อจริง / Firstname',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'กรอกชื่อจริง';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรอกชื่อจริง';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _lastnameController,
-              maxLength: 30,
-              decoration: const InputDecoration(
-                labelText: 'นามสกุล / Lastname',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _lastnameController,
+                maxLength: 30,
+                decoration: const InputDecoration(
+                  labelText: 'นามสกุล / Lastname',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'กรอกนามสกุล';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรอกนามสกุล';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'อีเมล / Email',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 20),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'อีเมล / Email',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'กรอกอีเมล';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรอกอีเมล';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateUserInfo,
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, foregroundColor: Colors.white),
-              child: const Text('อัพเดทข้อมูล'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _updateUserInfo,
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white),
+                child: const Text('อัพเดทข้อมูล'),
+              ),
+            ],
+          ),
         ),
       ),
     );

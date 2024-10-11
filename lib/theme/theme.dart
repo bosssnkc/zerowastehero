@@ -11,6 +11,8 @@ class ThemeClass {
         unselectedItemColor: Colors.black,
       ),
       inputDecorationTheme: const InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white,
         labelStyle: TextStyle(color: Colors.black),
         hintFadeDuration: Duration(seconds: 1),
         border: OutlineInputBorder(),
