@@ -136,7 +136,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'Zero Waste Hero',
+          'Yaek and Ting',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,
@@ -196,19 +196,24 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> activities = [
     {
+      'title': 'กิจกรรมเก็บขยะ ปล่อยหอย ปล่อยปู หาดตะวันรอน จ.ชลบุรี รอบ 16',
       'image':
           'https://upload-storage.jitarsabank.com/jbank-storage/202409/jobs-header-9cc6b7e1bcca9ec857d7e662533c5d7f.jpg',
       'url': 'https://www.jitarsabank.com/job/detail/10134'
     },
     {
+      'title': 'กิจกรรมพายเรือเก็บขยะ อนุรักษ์คลองบางกอบัว คุ้งบางกระเจ้า รุ่น 25',
       'image':
           'https://upload-storage.jitarsabank.com/jbank-storage/202410/jobs-header-c9977a60d23b6854c28c5f9fb49c9ca1.jpeg',
       'url': 'https://www.jitarsabank.com/job/detail/10206'
     },
     {
+      'title':
+          'รุ่น 10 ปี 67 วันอาทิตย์ 17 พฤศจิกายน 2567 อาสาพิทักษ์ชายฝั่งทะเล ( ทำความสะอาดบ้านเต่าทะเล + ทำความสะอาดชายหาด ) อ.สัตหีบ จ.ชลบุรี',
       'image':
-          'https://upload-storage.jitarsabank.com/jbank-storage/202410/jobs-header-78d1bb401319690e6fe695a527794de7.jpeg',
-      'url': 'https://www.jitarsabank.com/job/detail/10207'
+          'https://www.baandinthai.com/images/data-baandin/67/67.11/67.11.17/toi10.05.jpg',
+      'url':
+          'https://www.volunteerspirit.org/รุ่น-10-ปี-67-วันอาทิตย์-17-พฤศจ/48754/'
     },
   ];
 
@@ -216,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'กทม. ชวนผู้ประกอบการร้านอาหารที่ ‘สมัครใจแยกขยะ’',
       'image':
-          'https://scontent.fbkk22-1.fna.fbcdn.net/v/t39.30808-6/461928643_867909578850526_6266896552636537459_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEEvqE2Ing8gtDGOcyelANGa0Mh9123reZrQyH3Xbet5n8BxkspI_dWwvqZLT47HxfhV0fxRtVJpC8vGq-tenZF&_nc_ohc=rkGPGFRFOLUQ7kNvgEt7XBR&_nc_ht=scontent.fbkk22-1.fna&_nc_gid=AjCNHySP55mn0JFT48MQVxD&oh=00_AYCi2fvRobm2u6vr9rWip_Z0NDLtAwitUtoxfnmKfRcGZA&oe=670A0FEC',
+          'assets/image/mai.jpg',
       'url':
           'https://www.facebook.com/photo/?fbid=867909575517193&set=a.249425947365562'
     },
@@ -298,32 +303,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: 220,
+                  height: 250,
                   child: PageView.builder(
                       itemCount: activities.length,
                       itemBuilder: (context, index) {
                         final event = activities[index];
-                        return Stack(
-                          children: [
-                            Image(
-                              image: NetworkImage('${event['image']}'),
-                              fit: BoxFit.cover,
+                        return SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'หัวเรื่อง: ${event['title']}',maxLines: 2,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 16,
+                                      backgroundColor: Colors.white),
+                                ),
+                                Stack(
+                                  children: [
+                                    Image(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 200,
+                                      image: NetworkImage('${event['image']}'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: ElevatedButton(
+                                          onPressed: () async {
+                                            final Uri urllink =
+                                                Uri.parse(event['url'] ?? '');
+                                            if (await canLaunchUrl(urllink)) {
+                                              await launchUrl(urllink);
+                                            }
+                                          },
+                                          child:
+                                              const Text('รายละเอียดเพิ่มเติม')),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: ElevatedButton(
-                                  onPressed: () async {
-                                    final Uri urllink =
-                                        Uri.parse(event['url'] ?? '');
-                                    if (await canLaunchUrl(urllink)) {
-                                      await launchUrl(urllink);
-                                    }
-                                  },
-                                  child: const Text('รายละเอียดเพิ่มเติม')),
-                            )
-                          ],
-                        );
+                          );
                       }),
                 ),
               ),
@@ -353,10 +375,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Stack(
                                 children: [
+                                  newss['image']!.startsWith('http') ?
                                   Image(
                                     width: MediaQuery.of(context).size.width,
                                     height: 200,
                                     image: NetworkImage('${newss['image']}'),
+                                    fit: BoxFit.cover,
+                                  ) : Image(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 200,
+                                    image: AssetImage('${newss['image']}'),
                                     fit: BoxFit.cover,
                                   ),
                                   Positioned(

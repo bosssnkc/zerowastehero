@@ -148,6 +148,15 @@ class _HazardousLocationState extends State<HazardousLocation> {
       userLocation = position;
     });
 
+    _markers.add(
+      Marker(
+        markerId: MarkerId('current Position'),
+        position: LatLng(userLocation!.latitude, userLocation!.longitude),
+        infoWindow: InfoWindow(title: 'ตำแหน่งปัจจุบันของคุณ'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange)
+      ),
+    );
+
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(userLocation!.latitude, userLocation!.longitude),
         zoom: 15.0)));

@@ -54,14 +54,7 @@ class _OptionSettingState extends State<OptionSetting> {
     );
   }
 
-  Future<void> _getValueSwitch(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('lightswitch', value);
-    // print(prefs.getBool('lightswitch'));
-    setState(() {
-      lightswitch = prefs.getBool('lightswitch')!;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -79,70 +72,7 @@ class _OptionSettingState extends State<OptionSetting> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            // Card(
-            //   child: ListTile(
-            //     onTap: () {
-            //       showDialog(
-            //         context: context,
-            //         builder: (context) => StatefulBuilder(
-            //           builder: (context, setState) => AlertDialog(
-            //             title: const Text('เลือกตัวอักษร / Fonts'),
-            //             content: SizedBox(
-            //               width: MediaQuery.of(context).size.width,
-            //               height: 300,
-            //               child: Column(
-            //                 mainAxisAlignment: MainAxisAlignment.start,
-            //                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                 children: [
-            //                   ListTile(
-            //                     onTap: () {
-            //                       _setFont('Pridi');
-            //                       Navigator.pop(context);
-            //                     },
-            //                     title: const Text('Pridi'),
-            //                     subtitle: Text(
-            //                       'ทดสอบข้อความ',
-            //                       style: GoogleFonts.pridi(),
-            //                     ),
-            //                   ),
-            //                   ListTile(
-            //                     onTap: () {
-            //                       _setFont('Kanit');
-            //                       Navigator.pop(context);
-            //                     },
-            //                     title: const Text('Kanit'),
-            //                     subtitle: Text(
-            //                       'ทดสอบข้อความ',
-            //                       style: GoogleFonts.kanit(),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //             actions: [
-            //               ElevatedButton(
-            //                   style: ElevatedButton.styleFrom(
-            //                     backgroundColor: Colors.green,
-            //                     foregroundColor: Colors.white,
-            //                   ),
-            //                   onPressed: () {
-            //                     Navigator.of(context).pop(selectedFont);
-            //                   },
-            //                   child: const Text('ตกลง'))
-            //             ],
-            //           ),
-            //         ),
-            //       ).then((value) {
-            //         if (value != null) {
-            //           _setFont(value);
-            //         }
-            //       });
-            //     },
-            //     title: const Text('ตั้งค่าตัวอักษร'),
-            //     subtitle: Text('Font ปัจจุบัน : $selectedFont'),
-            //     leading: const Icon(Icons.font_download),
-            //   ),
-            // ),
+            
             Card(
               child: ExpansionTile(
                 shape: const Border(),
@@ -182,20 +112,6 @@ class _OptionSettingState extends State<OptionSetting> {
                     ),
                   ),
                 ],
-              ),
-            ),
-            Card(
-              child: SwitchListTile(
-                title: const Text('โหมดไฟ'),
-                subtitle: const Text('แสบตา?'),
-                value: lightswitch,
-                onChanged: (bool value) {
-                  setState(() {
-                    lightswitch = value;
-                    _getValueSwitch(value);
-                  });
-                },
-                secondary: const Icon(Icons.light_mode),
               ),
             ),
             const SizedBox(height: 16),

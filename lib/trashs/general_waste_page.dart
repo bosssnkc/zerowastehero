@@ -32,6 +32,7 @@ class _GenralWasteState extends State<GeneralWaste>
   Uint8List? _image;
   bool _isLoading = true;
   String? guestToken = '';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _GenralWasteState extends State<GeneralWaste>
     _loadTrashs();
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
-      setState(() {}); // Update the UI when the tab changes
+      setState(() {
+        _selectedIndex = _getTabIndex(_tabController!.index);
+      }); // Update the UI when the tab changes
     });
   }
 
@@ -47,6 +50,27 @@ class _GenralWasteState extends State<GeneralWaste>
   void dispose() {
     _tabController!.dispose();
     super.dispose();
+  }
+
+  int _getTabIndex(int index) {
+    if (index == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
+  }
+
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0 || index == 2) {
+        _tabController!.animateTo(
+            index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
+      } else if (index == 1) {
+        Navigator.of(context).popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
+      }
+    });
   }
 
   Future<void> _loadTrashs() async {
@@ -618,6 +642,16 @@ class _GenralWasteState extends State<GeneralWaste>
                 listOfGeneral(),
               ],
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(CustomIcons.general_waste_bin), label: 'ข้อมูลขยะทั่วไป'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+              BottomNavigationBarItem(icon: Icon(Icons.list), label: 'รายการขยะทั่วไป'),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null

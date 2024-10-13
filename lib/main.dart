@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       key: key,
-      title: 'Zero Waste Hero',
+      title: 'Yaek and Ting',
       theme: ThemeClass.lightTheme(selectedFont),
       home: const SplashScreen(),
       // เข้าสู่หน้า SplashScreen เพื่อทำการตรวจสอบการล็อกอิน

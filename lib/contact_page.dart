@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
@@ -99,40 +100,75 @@ class _MyWidgetState extends State<ContactUs> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'เขียนอะไรสักอย่าง';
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'เขียนคำติชมหรือให้คำแนะนำเรา',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.green),
-                              onPressed: () {},
-                              child: const Text('Confirm')),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: Colors.red),
-                              onPressed: () {},
-                              child: const Text('Cancel')),
-                        ],
-                      ),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white),
+                          onPressed: () async {
+                            final Uri urllink = Uri.parse(
+                                'https://docs.google.com/forms/d/e/1FAIpQLSfNi8DbQOVmhQsceyH6LtvSODuW7BW8Qg7daEuOUlsINua14A/viewform');
+                            if (await canLaunchUrl(urllink)) {
+                              await launchUrl(urllink);
+                            }
+                          },
+                          child: const Text(
+                            'แบบประเมินความพึงพอใจ และเขียนข้อเสนอแนะ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )),
+                      Text('หรือ'),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white),
+                          onPressed: () async {
+                            final Uri urllink = Uri.parse(
+                                'https://docs.google.com/forms/d/e/1FAIpQLSd-oZa26nvR-7zQILlX1WTxzTOtj8t3gd5eXhsN_fpcQMqffg/viewform');
+                            if (await canLaunchUrl(urllink)) {
+                              await launchUrl(urllink);
+                            }
+                          },
+                          child: const Text(
+                            'เขียนข้อเสนอแนะและคำแนะนำ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          )),
+                      // TextFormField(
+                      //   validator: (value) {
+                      //     if (value == null || value.isEmpty) {
+                      //       return 'เขียนอะไรสักอย่าง';
+                      //     }
+                      //     return null;
+                      //   },
+                      //   decoration: const InputDecoration(
+                      //     border: InputBorder.none,
+                      //     hintText: 'เขียนคำติชมหรือให้คำแนะนำเรา',
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     ElevatedButton(
+                      //         style: ElevatedButton.styleFrom(
+                      //             foregroundColor: Colors.white,
+                      //             backgroundColor: Colors.green),
+                      //         onPressed: () {},
+                      //         child: const Text('Confirm')),
+                      //     const SizedBox(
+                      //       width: 20,
+                      //     ),
+                      //     TextButton(
+                      //         style: TextButton.styleFrom(
+                      //             foregroundColor: Colors.white,
+                      //             backgroundColor: Colors.red),
+                      //         onPressed: () {},
+                      //         child: const Text('Cancel')),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
@@ -143,7 +179,7 @@ class _MyWidgetState extends State<ContactUs> {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'Zero Waste Hero version 1.0.1-dev',
+                  'Yaek and Ting version 1.0.1-dev',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               )

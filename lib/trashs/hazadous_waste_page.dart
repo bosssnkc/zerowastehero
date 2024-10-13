@@ -32,6 +32,7 @@ class _HazadousWasteState extends State<HazadousWaste>
   Uint8List? _image;
   bool _isLoading = true;
   String? guestToken = '';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _HazadousWasteState extends State<HazadousWaste>
     _loadTrashs();
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
-      setState(() {}); // Update the UI when the tab changes
+      setState(() {
+        _selectedIndex = _getTabIndex(_tabController!.index);
+      }); // Update the UI when the tab changes
     });
   }
 
@@ -47,6 +50,27 @@ class _HazadousWasteState extends State<HazadousWaste>
   void dispose() {
     _tabController!.dispose();
     super.dispose();
+  }
+
+  int _getTabIndex(int index) {
+    if (index == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0 || index == 2) {
+        _tabController!.animateTo(
+            index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
+      } else if (index == 1) {
+        Navigator.of(context)
+            .popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
+      }
+    });
   }
 
   Future<void> _loadTrashs() async {
@@ -615,6 +639,18 @@ class _HazadousWasteState extends State<HazadousWaste>
                 listOfHazadous(),
               ],
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(CustomIcons.hazadous_waste_bin),
+                  label: 'ข้อมูลขยะอันตราย'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'รายการขยะอันตราย'),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1188,7 +1224,7 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
                                         text:
                                             '    ขยะอันตรายไม่สามารถกำจัดด้วยวิธีการทั่วไป เช่น การฝังกลบหรือการเผา เนื่องจากอาจก่อให้เกิดมลพิษทางอากาศ น้ำ และดิน รวมถึงเป็นอันตรายต่อสุขภาพของมนุษย์ สารพิษในขยะอันตรายสามารถทำให้เกิดโรคภัยต่างๆ และสร้างความเสียหายให้กับสิ่งแวดล้อมในระยะยาว\n\n'),
                                     TextSpan(
-                                      text: 'วิธีการจัดการขยะอันตราย\n',
+                                      text: 'วิธีการกำจัดขยะอันตราย\n',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),

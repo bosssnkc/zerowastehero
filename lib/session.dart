@@ -244,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'Zero Waste Hero',
+          'Yaek and Ting',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,

@@ -32,6 +32,7 @@ class _RecycleWasteState extends State<RecycleWaste>
   Uint8List? _image;
   bool _isLoading = true;
   String? guestToken = '';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _RecycleWasteState extends State<RecycleWaste>
     _loadTrashs();
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
-      setState(() {}); // Update the UI when the tab changes
+      setState(() {
+        _selectedIndex = _getTabIndex(_tabController!.index);
+      }); // Update the UI when the tab changes
     });
   }
 
@@ -47,6 +50,27 @@ class _RecycleWasteState extends State<RecycleWaste>
   void dispose() {
     _tabController!.dispose();
     super.dispose();
+  }
+
+  int _getTabIndex(int index) {
+    if (index == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0 || index == 2) {
+        _tabController!.animateTo(
+            index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
+      } else if (index == 1) {
+        Navigator.of(context)
+            .popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
+      }
+    });
   }
 
   Future<void> _loadTrashs() async {
@@ -612,6 +636,18 @@ class _RecycleWasteState extends State<RecycleWaste>
                 listOfRecycles(),
               ],
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(CustomIcons.recycle_waste_bin),
+                  label: 'ข้อมูลขยะรีไซเคิล'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'รายการขยะรีไซเคิล'),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1184,7 +1220,8 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             RichText(
-                              // textAlign: TextAlign.justify,
+                              // textAlign: TextAlign.start,
+                              // overflow: TextOverflow.fade,
                               text: TextSpan(
                                 style: DefaultTextStyle.of(context)
                                     .style
@@ -1196,8 +1233,9 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   TextSpan(
-                                      text:
-                                          '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n'),
+                                    text:
+                                        '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n',
+                                  ),
                                 ],
                               ),
                             ),

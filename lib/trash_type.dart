@@ -20,19 +20,23 @@ class _TypeOfTrashState extends State<TypeOfTrash>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String name;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(
         length: 2, vsync: this, initialIndex: widget.selectedTabIndex);
     _tabController.addListener(_handleTabSelection);
     name = _getTabName(_tabController.index);
+    _selectedIndex = _getTabIndex(_tabController.index);
   }
 
   void _handleTabSelection() {
     setState(() {
       name = _getTabName(_tabController.index);
+      _selectedIndex = _getTabIndex(_tabController.index);
     });
   }
 
@@ -44,66 +48,97 @@ class _TypeOfTrashState extends State<TypeOfTrash>
     }
   }
 
+  int _getTabIndex(int index) {
+    if (index == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0 || index == 2) {
+        _tabController.animateTo(
+            index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
+      } else if (index == 1) {
+        Navigator.of(context).pop(); // กลับไปยังหน้าแรก
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         initialIndex: widget.selectedTabIndex,
         length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              flexibleSpace: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.green, Colors.lightGreen.shade300],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight)),
-              ),
-              backgroundColor: Colors.green[300],
-              elevation: 0,
-              title: Text(
-                name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              bottom: TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(
-                    child: Text(
-                      'ขยะทั้ง 4 ประเภท',
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      'วิธีคัดแยกขยะ',
-                    ),
-                  ),
-                ],
+          appBar: AppBar(
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.green, Colors.lightGreen.shade300],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight)),
+            ),
+            backgroundColor: Colors.green[300],
+            elevation: 0,
+            title: Text(
+              name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            body: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/image/zwh_bg.png'),
-                    fit: BoxFit.cover),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: const <Widget>[
-                        FourTypeOfTrash(),
-                        HowToSortingPage(),
-                      ],
-                    ),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(
+                  child: Text(
+                    'ขยะทั้ง 4 ประเภท',
                   ),
-                ],
-              ),
-            )));
+                ),
+                Tab(
+                  child: Text(
+                    'วิธีคัดแยกขยะ',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/image/zwh_bg.png'),
+                  fit: BoxFit.cover),
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: const <Widget>[
+                      FourTypeOfTrash(),
+                      HowToSortingPage(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.delete), label: 'ขยะทั้ง 4 ประเภท'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+              BottomNavigationBarItem(icon: Icon(Icons.question_mark_rounded), label: 'วิธีคัดแยกขยะ'),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
+        ));
   }
 }
 
@@ -382,7 +417,8 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                       .copyWith(fontSize: 16),
                                   children: const [
                                     TextSpan(
-                                      text: 'ทิ้งขยะอันตรายในจุดรับขยะเฉพาะ\n',
+                                      text:
+                                          'ทิ้งขยะอันตรายในจุดทิ้งขยะอันตรายโดยเฉพาะ\n',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),

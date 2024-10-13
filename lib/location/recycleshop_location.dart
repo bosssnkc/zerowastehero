@@ -148,6 +148,15 @@ class _RecycleLocationState extends State<RecycleLocation> {
       userLocation = position;
     });
 
+    _markers.add(
+      Marker(
+        markerId: MarkerId('current Position'),
+        position: LatLng(userLocation!.latitude, userLocation!.longitude),
+        infoWindow: InfoWindow(title: 'ตำแหน่งปัจจุบันของคุณ'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange)
+      ),
+    );
+
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: LatLng(userLocation!.latitude, userLocation!.longitude),
         zoom: 15.0)));
@@ -275,8 +284,10 @@ class _RecycleLocationState extends State<RecycleLocation> {
                                   : const Text('ไม่พบตำแหน่งปัจจุบัน'),
                               const SizedBox(height: 10),
                               ElevatedButton(
-                                  onPressed: _getLocation,
-                                  child: const Text('Get Location'))
+                                  onPressed: () {
+                                    _getLocation();
+                                  },
+                                  child: const Text('Get Location')),
                             ],
                           ),
                         ), //Column inside location_now

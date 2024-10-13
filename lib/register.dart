@@ -153,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'Zero Waste Hero',
+          'Yaek and Ting',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,

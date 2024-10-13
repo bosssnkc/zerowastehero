@@ -31,6 +31,7 @@ class _CompostableWasteState extends State<CompostableWaste>
   Uint8List? _image;
   bool _isLoading = true;
   String? guestToken = '';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -38,7 +39,9 @@ class _CompostableWasteState extends State<CompostableWaste>
     _loadTrashs();
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
-      setState(() {}); // Update the UI when the tab changes
+      setState(() {
+        _selectedIndex = _getTabIndex(_tabController!.index);
+      }); // Update the UI when the tab changes
     });
   }
 
@@ -46,6 +49,27 @@ class _CompostableWasteState extends State<CompostableWaste>
   void dispose() {
     _tabController!.dispose();
     super.dispose();
+  }
+
+  int _getTabIndex(int index) {
+    if (index == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      if (index == 0 || index == 2) {
+        _tabController!.animateTo(
+            index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
+      } else if (index == 1) {
+        Navigator.of(context)
+            .popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
+      }
+    });
   }
 
   Future<void> _loadTrashs() async {
@@ -611,6 +635,18 @@ class _CompostableWasteState extends State<CompostableWaste>
                 listOfCompostable(),
               ],
             ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(CustomIcons.compostable_waste_bin),
+                  label: 'ข้อมูลขยะอินทรีย์'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'รายการขยะอินทรีย์'),
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
               ? guestToken != null
@@ -1189,7 +1225,7 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                                           text:
                                               '    แม้ว่าขยะอินทรีย์จะสามารถย่อยสลายได้ แต่หากไม่มีการจัดการที่เหมาะสม เช่น การนำไปฝังกลบในหลุมขยะทั่วไป ขยะอินทรีย์จะปล่อยก๊าซมีเทน (Methane) ซึ่งเป็นก๊าซเรือนกระจกที่มีความรุนแรงมากกว่าคาร์บอนไดออกไซด์ ดังนั้นการจัดการขยะอินทรีย์ด้วยวิธีที่เหมาะสม เช่น การทำปุ๋ยหมัก จะช่วยลดการปล่อยก๊าซเรือนกระจกและใช้ประโยชน์จากขยะอินทรีย์ได้อย่างมีประสิทธิภาพ\n\n'),
                                       TextSpan(
-                                        text: 'วิธีการจัดการขยะอินทรีย์\n',
+                                        text: 'วิธีการกำจัดขยะอินทรีย์\n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
