@@ -122,12 +122,12 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                 controller: _firstnameController,
                 maxLength: 30,
                 decoration: const InputDecoration(
-                  labelText: 'ชื่อจริง / Firstname',
+                  labelText: 'ชื่อ',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'กรอกชื่อจริง';
+                    return 'กรอกชื่อ';
                   }
                   return null;
                 },
@@ -137,7 +137,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                 controller: _lastnameController,
                 maxLength: 30,
                 decoration: const InputDecoration(
-                  labelText: 'นามสกุล / Lastname',
+                  labelText: 'นามสกุล',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -151,7 +151,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'อีเมล / Email',
+                  labelText: 'อีเมล',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {

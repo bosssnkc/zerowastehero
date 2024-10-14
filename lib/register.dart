@@ -214,8 +214,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรุณากรอกรหัสผ่าน';
-                        } else if (!value
-                            .contains(RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'))) {
+                        } else if (value.length < 8) {
+                          return 'รหัสผ่านควรมีความยาวอย่างน้อย 8 ตัว';
+                        } else if (!value.contains(
+                          RegExp(r'^[a-zA-Z0-9!@#.%^&*]+$'),
+                        )) {
                           return 'รหัสผ่านควรเป็นภาษาอังกฤษ ตัวอักษรพิเศษ หรือตัวเลขเท่านั้น';
                         }
                         return null;
@@ -266,13 +269,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _fullnameController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
-                        labelText: 'ชื่อจริง',
-                        hintText: 'ชื่อจริง',
+                        labelText: 'ชื่อ',
+                        hintText: 'ชื่อ',
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'กรุณากรอกชื่อจริง';
+                          return 'กรุณากรอกชื่อ';
                         }
                         return null;
                       },

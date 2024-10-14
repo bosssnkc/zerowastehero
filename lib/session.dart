@@ -272,13 +272,13 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _usernameController,
                     decoration: const InputDecoration(
-                      labelText: 'ชื่อผู้ใช้/อีเมล์',
-                      hintText: 'example@gmail.com',
+                      labelText: 'ชื่อผู้ใช้',
+                      hintText: 'username',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'กรุณากรอกชื่อผู้ใช้หรืออีเมล์';
+                        return 'กรุณากรอกชื่อผู้ใช้';
                       }
                       return null;
                     },

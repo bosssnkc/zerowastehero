@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/main.dart';
+import 'package:zerowastehero/manual.dart';
 
 class OptionSetting extends StatefulWidget {
   const OptionSetting({Key? key}) : super(key: key);
@@ -54,8 +55,6 @@ class _OptionSettingState extends State<OptionSetting> {
     );
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -72,7 +71,6 @@ class _OptionSettingState extends State<OptionSetting> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            
             Card(
               child: ExpansionTile(
                 shape: const Border(),
@@ -122,7 +120,10 @@ class _OptionSettingState extends State<OptionSetting> {
             const SizedBox(height: 16),
             Card(
               child: ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const ManualPage()));
+                },
                 title: const Text('วิธีการใช้งาน'),
                 subtitle: const Text('คู่มือแนะนำการใช้งาน'),
                 leading: const Icon(Icons.help),

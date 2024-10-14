@@ -75,7 +75,20 @@ class _SearchPageState extends State<SearchPage> {
       if (response.statusCode == 201) {
         // Load trash items if necessary
         await _loadTrash();
-        Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('เพิ่มรายการขยะเรียบร้อย'),
+            content: Text('เพิ่มรายการขยะเรียบร้อย'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        // Navigator.of(context).pop();
         _textFieldClear();
       } else {
         // Handle error

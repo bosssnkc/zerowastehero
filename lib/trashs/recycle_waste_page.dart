@@ -161,7 +161,20 @@ class _RecycleWasteState extends State<RecycleWaste>
       if (response.statusCode == 201) {
         // Load trash items if necessary
         await _loadTrashs();
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('เพิ่มรายการขยะเรียบร้อย'),
+            content: Text('เพิ่มรายการขยะเรียบร้อย'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
         _textFieldClear();
       } else {
         // Handle error
