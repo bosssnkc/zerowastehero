@@ -244,6 +244,10 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'ประเภทขยะ',
+                        hintText: 'ระบุประเภทขยะ',
+                      ),
                       value: trashtypePicker,
                       items: [
                         'ขยะทั่วไป',
@@ -688,8 +692,8 @@ class _SearchPageState extends State<SearchPage> {
                                 ),
                                 DropdownButtonFormField<String>(
                                   decoration: const InputDecoration(
-                                    labelText: 'เลือกประเภทขยะ',
-                                    hintText: 'ขยะทั่วไป',
+                                    labelText: 'ประเภทขยะ',
+                                    hintText: 'ระบุประเภทขยะ',
                                   ),
                                   value: trashtypePicker,
                                   items: [
@@ -710,7 +714,7 @@ class _SearchPageState extends State<SearchPage> {
                                   },
                                   validator: (value) {
                                     if (value == null) {
-                                      return 'กรุณาเลือกชนิดของขยะ';
+                                      return 'กรุณาเลือกประเภทของขยะ';
                                     }
                                     return null;
                                   },
@@ -913,6 +917,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                     ),
+                    //
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,

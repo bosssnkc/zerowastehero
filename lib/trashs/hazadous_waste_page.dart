@@ -360,6 +360,10 @@ class _HazadousWasteState extends State<HazadousWaste>
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
+                      decoration:  const InputDecoration(
+                        labelText: 'ประเภทขยะ',
+                        hintText: 'ระบุประเภทขยะ',
+                      ),
                       value: trashtypePicker,
                       items: [
                         'ขยะทั่วไป',
@@ -689,8 +693,8 @@ class _HazadousWasteState extends State<HazadousWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                            labelText: 'กรอกชื่อขยะ',
-                                            hintText: 'ชื่อขยะ',
+                                            labelText: 'ชื่อขยะ',
+                                            hintText: 'กรอกชื่อขยะ',
                                           ),
                                         ),
                                         const SizedBox(
@@ -698,7 +702,8 @@ class _HazadousWasteState extends State<HazadousWaste>
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                            labelText: 'เลือกประเภทขยะ',
+                                            labelText: 'ประเภทขยะ',
+                                            hintText: 'ระบุประเภทขยะ'
                                           ),
                                           value: trashtypePicker,
                                           items: [
@@ -719,7 +724,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                                           },
                                           validator: (value) {
                                             if (value == null) {
-                                              return 'กรุณาเลือกชนิดของขยะ';
+                                              return 'กรุณาเลือกประเภทของขยะ';
                                             }
                                             return null;
                                           },

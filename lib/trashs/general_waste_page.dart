@@ -60,7 +60,6 @@ class _GenralWasteState extends State<GeneralWaste>
     }
   }
 
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -68,7 +67,8 @@ class _GenralWasteState extends State<GeneralWaste>
         _tabController!.animateTo(
             index == 0 ? 0 : 1); // อัปเดต Tab ตามการเลือก BottomNavigationBar
       } else if (index == 1) {
-        Navigator.of(context).popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
+        Navigator.of(context)
+            .popUntil((route) => route.isFirst); // กลับไปยังหน้าแรก
       }
     });
   }
@@ -367,6 +367,10 @@ class _GenralWasteState extends State<GeneralWaste>
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'ประเภทขยะ',
+                        hintText: 'ระบุประเภทขยะ',
+                      ),
                       value: trashtypePicker,
                       items: [
                         'ขยะทั่วไป',
@@ -646,9 +650,11 @@ class _GenralWasteState extends State<GeneralWaste>
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                  icon: Icon(CustomIcons.general_waste_bin), label: 'ข้อมูลขยะทั่วไป'),
+                  icon: Icon(CustomIcons.general_waste_bin),
+                  label: 'ข้อมูลขยะทั่วไป'),
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
-              BottomNavigationBarItem(icon: Icon(Icons.list), label: 'รายการขยะทั่วไป'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'รายการขยะทั่วไป'),
             ],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
@@ -690,8 +696,8 @@ class _GenralWasteState extends State<GeneralWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                            labelText: 'กรอกชื่อขยะ',
-                                            hintText: 'ชื่อขยะ',
+                                            labelText: 'ชื่อขยะ',
+                                            hintText: 'กรอกชื่อขยะ',
                                           ),
                                         ),
                                         const SizedBox(
@@ -699,8 +705,8 @@ class _GenralWasteState extends State<GeneralWaste>
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                            labelText: 'เลือกประเภทขยะ',
-                                          ),
+                                              labelText: 'ประเภทขยะ',
+                                              hintText: 'ระบุประเภทขยะ'),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -720,7 +726,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                           },
                                           validator: (value) {
                                             if (value == null) {
-                                              return 'กรุณาเลือกชนิดของขยะ';
+                                              return 'กรุณาเลือกประเภทของขยะ';
                                             }
                                             return null;
                                           },

@@ -15,6 +15,7 @@ class ThemeClass {
         fillColor: Colors.white,
         labelStyle: TextStyle(color: Colors.black),
         hintFadeDuration: Duration(seconds: 1),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
         border: OutlineInputBorder(),
         focusedBorder:
             OutlineInputBorder(borderSide: BorderSide(color: Colors.green)),

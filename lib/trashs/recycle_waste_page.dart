@@ -373,6 +373,10 @@ class _RecycleWasteState extends State<RecycleWaste>
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'ประเภทขยะ',
+                        hintText: 'ระบุประเภทขยะ',
+                      ),
                       value: trashtypePicker,
                       items: [
                         'ขยะทั่วไป',
@@ -699,8 +703,8 @@ class _RecycleWasteState extends State<RecycleWaste>
                                             return null;
                                           },
                                           decoration: const InputDecoration(
-                                            labelText: 'กรอกชื่อขยะ',
-                                            hintText: 'ชื่อขยะ',
+                                            labelText: 'ชื่อขยะ',
+                                            hintText: 'กรอกชื่อขยะ',
                                           ),
                                         ),
                                         const SizedBox(
@@ -708,8 +712,8 @@ class _RecycleWasteState extends State<RecycleWaste>
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                            labelText: 'เลือกประเภทขยะ',
-                                          ),
+                                              labelText: 'ประเภทขยะ',
+                                              hintText: 'ระบุประเภทขยะ'),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -729,7 +733,7 @@ class _RecycleWasteState extends State<RecycleWaste>
                                           },
                                           validator: (value) {
                                             if (value == null) {
-                                              return 'กรุณาเลือกชนิดของขยะ';
+                                              return 'กรุณาเลือกประเภทของขยะ';
                                             }
                                             return null;
                                           },

@@ -191,6 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'ชื่อผู้ใช้',
                         hintText: 'username',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -208,6 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'รหัสผ่าน',
                         hintText: '**********',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       obscureText: true,
@@ -230,6 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'ยืนยันรหัสผ่าน',
                         hintText: '**********',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       obscureText: true,
@@ -250,13 +253,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
-                        labelText: 'อีเมล์',
+                        labelText: 'อีเมล',
                         hintText: 'example@gmail.com',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'กรุณากรอกอีเมล์';
+                          return 'กรุณากรอกอีเมล';
                         } else if (!value.contains('@') ||
                             !value.contains('.')) {
                           return 'รูปแบบ email ไม่ถูกต้อง';
@@ -271,6 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'ชื่อ',
                         hintText: 'ชื่อ',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -286,6 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'นามสกุล',
                         hintText: 'นามสกุล',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -300,6 +306,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       value: _gender,
                       decoration: const InputDecoration(
                         labelText: 'เพศ',
+                        hintText: 'ระบุเพศ',
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(),
                       ),
                       items: ['ชาย', 'หญิง']
@@ -334,6 +342,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             decoration: const InputDecoration(
                               labelText: 'วันเกิด',
                               hintText: 'วัน/เดือน/ปี พ.ศ.',
+                              floatingLabelBehavior: FloatingLabelBehavior.always,
                               border: OutlineInputBorder(),
                             ),
                             readOnly: true,

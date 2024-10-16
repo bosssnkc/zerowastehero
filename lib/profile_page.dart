@@ -353,25 +353,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('กรุณากรอก Password ปัจจุบัน'),
+                                  const Text('กรุณากรอกรหัสผ่านปัจจุบัน'),
                                   const SizedBox(height: 8),
                                   TextFormField(
                                     controller: _currentPasswordController,
                                     obscureText: true,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: 'password ปัจจุบัน',
+                                      labelText: 'รหัสผ่านปัจจุบัน',
+                                      hintText: 'กรอกรหัสผ่านปัจจุบัน'
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  const Text('กรุณากรอก Password ใหม่'),
+                                  const Text('กรุณากรอกรหัสผ่านใหม่'),
                                   const SizedBox(height: 8),
                                   TextFormField(
                                     obscureText: true,
                                     controller: _passwordController,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: 'password ใหม่',
+                                      labelText: 'รหัสผ่านใหม่',
+                                      hintText: 'กรอกรหัสผ่านใหม่'
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -380,7 +382,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     controller: _confirmPasswordController,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: 'ยืนยัน password ใหม่',
+                                      labelText: 'ยืนยันรหัสผ่านใหม่',
+                                      hintText: 'ยืนยันรหัสผ่านใหม่อีก 1 ครั้ง'
                                     ),
                                   ),
                                 ],

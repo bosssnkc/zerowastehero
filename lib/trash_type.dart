@@ -133,7 +133,9 @@ class _TypeOfTrashState extends State<TypeOfTrash>
               BottomNavigationBarItem(
                   icon: Icon(Icons.delete), label: 'ขยะทั้ง 4 ประเภท'),
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
-              BottomNavigationBarItem(icon: Icon(Icons.question_mark_rounded), label: 'วิธีคัดแยกขยะ'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.question_mark_rounded),
+                  label: 'วิธีคัดแยกขยะ'),
             ],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
@@ -344,6 +346,20 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                   ],
                                 ),
                               ),
+                              YoutubePlayer(
+                                controller: _playerController,
+                                showVideoProgressIndicator: true,
+                                onReady: () {
+                                  print('Player is ready.');
+                                },
+                              ),
+                              const Center(
+                                child: Text(
+                                    'Youtube: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
                               RichText(
                                 text: TextSpan(
                                   style: DefaultTextStyle.of(context)
@@ -450,19 +466,6 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                               const SizedBox(
                                 height: 16,
                               ),
-
-                              // Video
-                              YoutubePlayer(
-                                controller: _playerController,
-                                showVideoProgressIndicator: true,
-                                onReady: () {
-                                  print('Player is ready.');
-                                },
-                              ),
-                              const Center(
-                                child: Text(
-                                    'Youtube: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
-                              )
                             ],
                           ),
                         ),
@@ -611,6 +614,20 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                           ],
                                         ),
                                       ),
+                                      YoutubePlayer(
+                                        controller: _playerController,
+                                        showVideoProgressIndicator: true,
+                                        onReady: () {
+                                          print('Player is ready.');
+                                        },
+                                      ),
+                                      const Center(
+                                        child: Text(
+                                            'ที่มา: YouTube สถาบันวิทยาการพลังงาน'),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
                                       RichText(
                                         text: TextSpan(
                                           style: DefaultTextStyle.of(context)
@@ -667,17 +684,6 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      YoutubePlayer(
-                                        controller: _playerController,
-                                        showVideoProgressIndicator: true,
-                                        onReady: () {
-                                          print('Player is ready.');
-                                        },
-                                      ),
-                                      const Center(
-                                        child: Text(
-                                            'ที่มา: YouTube สถาบันวิทยาการพลังงาน'),
-                                      )
                                     ],
                                   ),
                                 ),
