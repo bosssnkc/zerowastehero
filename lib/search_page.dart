@@ -35,6 +35,7 @@ class _SearchPageState extends State<SearchPage> {
   String? guestToken = '';
   final trashhowController = TextEditingController();
   final _trashHowController = TextEditingController();
+  int? _userRole;
 
   @override
   void initState() {
@@ -75,6 +76,7 @@ class _SearchPageState extends State<SearchPage> {
       if (response.statusCode == 201) {
         // Load trash items if necessary
         await _loadTrash();
+        Navigator.of(context).pop();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -88,7 +90,6 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         );
-        // Navigator.of(context).pop();
         _textFieldClear();
       } else {
         // Handle error
@@ -554,6 +555,7 @@ class _SearchPageState extends State<SearchPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userData = prefs.getString('user_id');
     guestToken = prefs.getString('guestToken');
+    _userRole = prefs.getInt('role');
   }
 
   Future<void> _loadTrash() async {
@@ -929,7 +931,7 @@ class _SearchPageState extends State<SearchPage> {
                                               (_userData ==
                                                       _trash['user_id']
                                                           .toString() ||
-                                                  _userData == '1')),
+                                                  _userRole == 1)),
                                     )
                                     .length <
                                 _itemsToShow
@@ -941,7 +943,7 @@ class _SearchPageState extends State<SearchPage> {
                                           (_userData ==
                                                   _trash['user_id']
                                                       .toString() ||
-                                              _userData == '1')),
+                                              _userRole == 1)),
                                 )
                                 .length
                             : _itemsToShow,
@@ -953,7 +955,7 @@ class _SearchPageState extends State<SearchPage> {
                                     (_trash['status'] == 2 &&
                                         (_userData ==
                                                 _trash['user_id'].toString() ||
-                                            _userData == '1')),
+                                            _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -985,7 +987,7 @@ class _SearchPageState extends State<SearchPage> {
                                   : const Icon(Icons.error),
                               trailing:
                                   _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
+                                          _userRole == 1
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -1104,7 +1106,10 @@ class _SearchPageState extends State<SearchPage> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                        trash['trash_des']),
+                                                      trash['trash_des'],
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -1125,20 +1130,28 @@ class _SearchPageState extends State<SearchPage> {
                                                       child:
                                                           trash['trash_how'] !=
                                                                   null
-                                                              ? Text(trash[
-                                                                  'trash_how'])
+                                                              ? Text(
+                                                                  trash[
+                                                                      'trash_how'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                )
                                                               : const Text(
                                                                   'Null')),
                                                 ),
-                                                const SizedBox(
-                                                  height: 300,
-                                                ),
+                                                // const SizedBox(
+                                                //   height: 300,
+                                                // ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         actions: [
                                           ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
                                               onPressed:
                                                   Navigator.of(context).pop,
                                               child: const Text('ปิด'))

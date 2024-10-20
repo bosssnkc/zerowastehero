@@ -26,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     prefs.remove('username'); // Remove stored username
     prefs.remove('user_id');
     prefs.remove('guestToken');
+    prefs.remove('role');
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const SplashScreen()),
     );

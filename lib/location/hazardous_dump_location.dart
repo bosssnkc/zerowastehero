@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:clippy_flutter/triangle.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HazardousLocation extends StatefulWidget {
   const HazardousLocation({super.key});
@@ -150,11 +151,11 @@ class _HazardousLocationState extends State<HazardousLocation> {
 
     _markers.add(
       Marker(
-        markerId: MarkerId('current Position'),
-        position: LatLng(userLocation!.latitude, userLocation!.longitude),
-        infoWindow: InfoWindow(title: 'ตำแหน่งปัจจุบันของคุณ'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange)
-      ),
+          markerId: MarkerId('current Position'),
+          position: LatLng(userLocation!.latitude, userLocation!.longitude),
+          infoWindow: InfoWindow(title: 'ตำแหน่งปัจจุบันของคุณ'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueOrange)),
     );
 
     mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -207,6 +208,20 @@ class _HazardousLocationState extends State<HazardousLocation> {
                                 recyclelocation['location_address'] != null
                                     ? Text(recyclelocation['location_address'])
                                     : const Text('Null'),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blueAccent,
+                                      foregroundColor: Colors.white),
+                                  onPressed: () {
+                                    _openGoogleMaps(
+                                        recyclelocation['location_name']);
+                                  },
+                                  child: const Text('นำทาง'))
+                            ],
                           )
                         ],
                       ),
@@ -215,6 +230,18 @@ class _HazardousLocationState extends State<HazardousLocation> {
                 ),
               ),
             ));
+  }
+
+  Future<void> _openGoogleMaps(String location) async {
+    final query = Uri.encodeComponent(location);
+    final googleMapsUrl =
+        Uri.parse('https://www.google.com/maps/search/?api=1&query=$query');
+
+    if (await canLaunchUrl(googleMapsUrl)) {
+      await launchUrl(googleMapsUrl);
+    } else {
+      throw 'Could not launch';
+    }
   }
 
   @override

@@ -189,6 +189,8 @@ class _LoginPageState extends State<LoginPage> {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username);
+        await prefs.setInt('role', responseData['role']);
+        print('Your Role is ${prefs.getInt('role')}');
         await prefs.setString('user_id', responseData['user_id'].toString());
         // await prefs.setString('jwt_token', responseData['token']);
         await prefs.setString('jwt_token', token!);
@@ -427,7 +429,7 @@ class _LoginPageState extends State<LoginPage> {
                     // ฟังก์ชันการสร้างบัญชีชั่วคราว
                   },
                   child: const Text(
-                    'เข้าใช้งานด้วยบัญชีชั่วคราว',
+                    'เข้าใช้งานโดยไม่ใช้บัญชี',
                     style: TextStyle(color: Colors.red),
                   ),
                 ),

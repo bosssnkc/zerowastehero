@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 import 'package:zerowastehero/custom_icons_icons.dart';
 
@@ -32,6 +33,7 @@ class _CompostableWasteState extends State<CompostableWaste>
   bool _isLoading = true;
   String? guestToken = '';
   int _selectedIndex = 0;
+  int? _userRole;
 
   @override
   void initState() {
@@ -77,6 +79,7 @@ class _CompostableWasteState extends State<CompostableWaste>
     String trashnamesearch = searchController.text;
     _userData = prefs.getString('user_id');
     guestToken = prefs.getString('guestToken');
+    _userRole = prefs.getInt('role');
 
     try {
       final response = await http.get(
@@ -161,6 +164,19 @@ class _CompostableWasteState extends State<CompostableWaste>
         // Load trash items if necessary
         await _loadTrashs();
         Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('เพิ่มรายการขยะเรียบร้อย'),
+            content: Text('เพิ่มรายการขยะเรียบร้อย'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
         _textFieldClear();
       } else {
         // Handle error
@@ -698,9 +714,8 @@ class _CompostableWasteState extends State<CompostableWaste>
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                            labelText: 'ประเภทขยะ',
-                                            hintText: 'ระบุประเภทขยะ'
-                                          ),
+                                              labelText: 'ประเภทขยะ',
+                                              hintText: 'ระบุประเภทขยะ'),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -903,7 +918,7 @@ class _CompostableWasteState extends State<CompostableWaste>
                                   (_trash['status'] == 2 &&
                                       (_userData ==
                                               _trash['user_id'].toString() ||
-                                          _userData == '1')),
+                                          _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -914,7 +929,7 @@ class _CompostableWasteState extends State<CompostableWaste>
                                     (_trash['status'] == 2 &&
                                         (_userData ==
                                                 _trash['user_id'].toString() ||
-                                            _userData == '1')),
+                                            _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -936,7 +951,7 @@ class _CompostableWasteState extends State<CompostableWaste>
                                   : const Icon(Icons.error),
                               trailing:
                                   _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
+                                          _userRole == 1
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -1027,6 +1042,9 @@ class _CompostableWasteState extends State<CompostableWaste>
                                                           ),
                                                   ),
                                                 ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
                                                 const Text(
                                                   'รายละเอียดขยะ',
                                                   style: TextStyle(
@@ -1040,7 +1058,10 @@ class _CompostableWasteState extends State<CompostableWaste>
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                        trash['trash_des']),
+                                                      trash['trash_des'],
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -1061,20 +1082,28 @@ class _CompostableWasteState extends State<CompostableWaste>
                                                       child:
                                                           trash['trash_how'] !=
                                                                   null
-                                                              ? Text(trash[
-                                                                  'trash_how'])
+                                                              ? Text(
+                                                                  trash[
+                                                                      'trash_how'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                )
                                                               : const Text(
                                                                   'Null')),
                                                 ),
-                                                const SizedBox(
-                                                  height: 300,
-                                                ),
+                                                // const SizedBox(
+                                                //   height: 300,
+                                                // ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         actions: [
                                           ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
                                               onPressed:
                                                   Navigator.of(context).pop,
                                               child: const Text('ปิด'))
@@ -1100,6 +1129,16 @@ class DetailedCompostableWaste extends StatefulWidget {
 }
 
 class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
+  final YoutubePlayerController _playerController = YoutubePlayerController(
+    initialVideoId: 'LHevSNtyvU4', //กำหนด YouTube VideoID ให้กับ ตัวเล่น
+    flags: const YoutubePlayerFlags(
+      autoPlay: false,
+      mute: false,
+      disableDragSeek: false,
+      loop: false,
+      isLive: false,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -1228,32 +1267,45 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
                                               fontWeight: FontWeight.bold)),
                                       TextSpan(
                                           text:
-                                              '    แม้ว่าขยะอินทรีย์จะสามารถย่อยสลายได้ แต่หากไม่มีการจัดการที่เหมาะสม เช่น การนำไปฝังกลบในหลุมขยะทั่วไป ขยะอินทรีย์จะปล่อยก๊าซมีเทน (Methane) ซึ่งเป็นก๊าซเรือนกระจกที่มีความรุนแรงมากกว่าคาร์บอนไดออกไซด์ ดังนั้นการจัดการขยะอินทรีย์ด้วยวิธีที่เหมาะสม เช่น การทำปุ๋ยหมัก จะช่วยลดการปล่อยก๊าซเรือนกระจกและใช้ประโยชน์จากขยะอินทรีย์ได้อย่างมีประสิทธิภาพ\n\n'),
-                                      TextSpan(
-                                        text: 'วิธีการกำจัดขยะอินทรีย์\n',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(
-                                          text:
-                                              '    1. การทำปุ๋ยหมัก (Composting): ขยะอินทรีย์สามารถนำมาทำปุ๋ยหมัก ซึ่งเป็นกระบวนการย่อยสลายตามธรรมชาติ และได้สารอาหารที่มีประโยชน์สำหรับดิน โดยกระบวนการนี้ช่วยลดปริมาณขยะที่จะต้องนำไปฝังกลบ\n'),
-                                      TextSpan(
-                                          text:
-                                              '    2. การผลิตก๊าซชีวภาพ (Biogas): ขยะอินทรีย์ที่มีสารอินทรีย์สูง เช่น เศษอาหาร สามารถนำไปใช้ผลิตก๊าซชีวภาพ ซึ่งเป็นพลังงานสะอาดที่สามารถใช้ทดแทนพลังงานจากฟอสซิลได้\n'),
-                                      TextSpan(
-                                          text:
-                                              '    3. การคัดแยกขยะอินทรีย์: การแยกขยะอินทรีย์ออกจากขยะทั่วไปตั้งแต่ต้นทาง เช่น ที่บ้านเรือนหรือร้านอาหาร จะช่วยเพิ่มประสิทธิภาพในการจัดการขยะและลดการปนเปื้อนกับขยะที่ย่อยสลายไม่ได้\n'),
+                                              '    แม้ว่าขยะอินทรีย์จะสามารถย่อยสลายได้ แต่หากไม่มีการจัดการที่เหมาะสม เช่น การนำไปฝังกลบในหลุมขยะทั่วไป ขยะอินทรีย์จะปล่อยก๊าซมีเทน (Methane) ซึ่งเป็นก๊าซเรือนกระจกที่มีความรุนแรงมากกว่าคาร์บอนไดออกไซด์ ดังนั้นการจัดการขยะอินทรีย์ด้วยวิธีที่เหมาะสม เช่น การทำปุ๋ยหมักด้วยถังหมัก เป็นวิธีการที่ช่วยลดปริมาณขยะที่จะนำไปทิ้งและสามารถนำปุ๋ยหมักไปใช้ประโยชน์ในทางการเกษตรและผักสวนครัวหลังบ้านได้\n'),
                                     ]),
                               ),
+                              YoutubePlayer(
+                                controller: _playerController,
+                                showVideoProgressIndicator: true,
+                                onReady: () {
+                                  print('Player is ready.');
+                                },
+                              ),
+                              const Text(
+                                  textAlign: TextAlign.center,
+                                  'ที่มา: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              RichText(
+                                  text: TextSpan(
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .copyWith(fontSize: 16),
+                                      children: const [
+                                    TextSpan(
+                                      text: 'วิธีการกำจัดขยะอินทรีย์\n',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                        text:
+                                            '    1. การทำปุ๋ยหมัก (Composting): ขยะอินทรีย์สามารถนำมาทำปุ๋ยหมัก ซึ่งเป็นกระบวนการย่อยสลายตามธรรมชาติ และได้สารอาหารที่มีประโยชน์สำหรับดิน โดยกระบวนการนี้ช่วยลดปริมาณขยะที่จะต้องนำไปฝังกลบ\n'),
+                                    TextSpan(
+                                        text:
+                                            '    2. การผลิตก๊าซชีวภาพ (Biogas): ขยะอินทรีย์ที่มีสารอินทรีย์สูง เช่น เศษอาหาร สามารถนำไปใช้ผลิตก๊าซชีวภาพ ซึ่งเป็นพลังงานสะอาดที่สามารถใช้ทดแทนพลังงานจากฟอสซิลได้\n'),
+                                    TextSpan(
+                                        text:
+                                            '    3. การคัดแยกขยะอินทรีย์: การแยกขยะอินทรีย์ออกจากขยะทั่วไปตั้งแต่ต้นทาง เช่น ที่บ้านเรือนหรือร้านอาหาร จะช่วยเพิ่มประสิทธิภาพในการจัดการขยะและลดการปนเปื้อนกับขยะที่ย่อยสลายไม่ได้\n'),
+                                  ])),
                               const Text(
                                   'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย')
-                              // YoutubePlayer(
-                              //   controller: _playerController,
-                              //   showVideoProgressIndicator: true,
-                              //   onReady: () {
-                              //     print('Player is ready.');
-                              //   },
-                              // ),
                             ],
                           ),
                         ),
@@ -1291,21 +1343,47 @@ class _DetailedCompostableWasteState extends State<DetailedCompostableWaste> {
             Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                  splashColor: Colors.blue,
+                  splashColor: Colors.green,
                   onTap: () {},
-                  child: const SizedBox(
-                      // height: 300,
+                  child: SizedBox(
+                      height: 250,
                       width: 300,
                       child: Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '    ขยะอินทรีย์เป็นขยะประเภทสามารถย่อยสลายได้ง่ายส่วนมากมักนิยมนำเป็นหมักเป็นปุ๋ย และปุ๋ยชีวภาพได้',
-                              style: TextStyle(fontSize: 16),
-                            )
-                          ],
+                        padding: const EdgeInsets.all(16),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                  text: TextSpan(
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .copyWith(fontSize: 16),
+                                      children: const [
+                                    TextSpan(
+                                        text: 'การคัดแยกขยะอันทรีย์\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ทำการคัดแยกขยะอินทรีย์เช่นเศษอาหารออกจากขยะทั่วไปเพราะเศษอาหารนั้นสามารถย่อยสลายได้อาจทำให้ส่งกลิ่นไม่พึงประสงค์ภายในถังขยะหากทำการทิ้งรวม\n\n'),
+                                    TextSpan(
+                                        text: 'การนำไปหมักปุ๋ย\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะอินทรีย์สามารถย่อยสลายได้ตามธรรมชาติและสามารถนำไปใช้ประโยชน์ทางการเกษตรได้\n\n'),
+                                    TextSpan(
+                                        text: 'การนำไปทิ้ง\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    หากจำเป็นต้องทำการทิ้งลงถังขยะจริงๆควรทิ้งใส่ถุงและปิดปากให้สนิทเพราะอาจส่งกลิ่นไม่พึงประสงค์ได้ โดยสามารถทิ้งได้ที่ถังขยะสีเขียว')
+                                  ])),
+                            ],
+                          ),
                         ),
                       ))),
             ),

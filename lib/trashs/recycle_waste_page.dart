@@ -33,6 +33,7 @@ class _RecycleWasteState extends State<RecycleWaste>
   bool _isLoading = true;
   String? guestToken = '';
   int _selectedIndex = 0;
+  int? _userRole;
 
   @override
   void initState() {
@@ -78,6 +79,7 @@ class _RecycleWasteState extends State<RecycleWaste>
     String trashnamesearch = searchController.text;
     _userData = prefs.getString('user_id');
     guestToken = prefs.getString('guestToken');
+    _userRole = prefs.getInt('role');
 
     try {
       final response = await http.get(
@@ -161,7 +163,7 @@ class _RecycleWasteState extends State<RecycleWaste>
       if (response.statusCode == 201) {
         // Load trash items if necessary
         await _loadTrashs();
-        // Navigator.of(context).pop();
+        Navigator.of(context).pop();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -915,7 +917,7 @@ class _RecycleWasteState extends State<RecycleWaste>
                                   (_trash['status'] == 2 &&
                                       (_userData ==
                                               _trash['user_id'].toString() ||
-                                          _userData == '1')),
+                                          _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -926,7 +928,7 @@ class _RecycleWasteState extends State<RecycleWaste>
                                     (_trash['status'] == 2 &&
                                         (_userData ==
                                                 _trash['user_id'].toString() ||
-                                            _userData == '1')),
+                                            _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -948,7 +950,7 @@ class _RecycleWasteState extends State<RecycleWaste>
                                   : const Icon(Icons.error),
                               trailing:
                                   _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
+                                          _userRole == 1
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -1079,6 +1081,9 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                                 ),
                                                     ),
                                                   ),
+                                                  const SizedBox(
+                                                    height: 16,
+                                                  ),
                                                   const Text(
                                                     'รายละเอียดขยะ',
                                                     style: TextStyle(
@@ -1092,7 +1097,10 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                           const EdgeInsets.all(
                                                               8.0),
                                                       child: Text(
-                                                          trash['trash_des']),
+                                                        trash['trash_des'],
+                                                        style: const TextStyle(
+                                                            fontSize: 16),
+                                                      ),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -1108,25 +1116,35 @@ class _RecycleWasteState extends State<RecycleWaste>
                                                   Card(
                                                     child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child:
                                                             trash['trash_how'] !=
                                                                     null
-                                                                ? Text(trash[
-                                                                    'trash_how'])
+                                                                ? Text(
+                                                                    trash[
+                                                                        'trash_how'],
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                                  )
                                                                 : const Text(
                                                                     'Null')),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 300,
-                                                  ),
+                                                  // const SizedBox(
+                                                  //   height: 300,
+                                                  // ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           actions: [
                                             ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        Colors.red),
                                                 onPressed:
                                                     Navigator.of(context).pop,
                                                 child: const Text('ปิด'))
@@ -1349,29 +1367,50 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-                splashColor: Colors.blue,
+                splashColor: Colors.yellow,
                 onTap: () {},
                 child: SizedBox(
-                    // height: 300,
+                    height: 250,
                     width: 300,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            textAlign: TextAlign.start,
-                            text: TextSpan(
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .copyWith(fontSize: 16),
-                                children: const [
-                                  TextSpan(
-                                      text:
-                                          '  ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้')
-                                ]),
-                          ),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              textAlign: TextAlign.start,
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                        text: 'รวบรวมและคัดแยกขยะรีไซเคิล\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '   ทำการคัดแยกขยะรีไซเคิลในเบื้องต้นเพื่อป้องกันการปนเปื้อน\n\n'),
+                                    TextSpan(
+                                        text:
+                                            'ทำความสะอาดก่อนนำไปทิ้งหรือก่อนนำไปขาย\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะรีไซเคิลที่สามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้ และต้องสะอาดและไม่มีการปนเปื้อนเศษอาหารหรือสารเคมีที่มีอันตราย จึงสามารถนำไปเข้าสู่กระบวนการรีไซเคิลได้\n\n'),
+                                    TextSpan(
+                                        text: 'การนำไปทิ้ง/การนำไปขาย\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    สามารถทิ้งที่ได้ที่ถังขยะสีเหลือง หรือสามารถนำไปขายได้ตามสถานที่รับซื้อขยะรีไซเคิลต่างๆ')
+                                  ]),
+                            ),
+                          ],
+                        ),
                       ),
                     ))),
           ),

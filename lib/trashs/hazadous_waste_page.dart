@@ -33,6 +33,7 @@ class _HazadousWasteState extends State<HazadousWaste>
   bool _isLoading = true;
   String? guestToken = '';
   int _selectedIndex = 0;
+  int? _userRole;
 
   @override
   void initState() {
@@ -78,6 +79,7 @@ class _HazadousWasteState extends State<HazadousWaste>
     String trashnamesearch = searchController.text;
     _userData = prefs.getString('user_id');
     guestToken = prefs.getString('guestToken');
+    _userRole = prefs.getInt('role');
 
     try {
       final response = await http.get(
@@ -162,6 +164,19 @@ class _HazadousWasteState extends State<HazadousWaste>
         // Load trash items if necessary
         await _loadTrashs();
         Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('เพิ่มรายการขยะเรียบร้อย'),
+            content: Text('เพิ่มรายการขยะเรียบร้อย'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
         _textFieldClear();
       } else {
         // Handle error
@@ -360,7 +375,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                     ),
                     const SizedBox(height: 20),
                     DropdownButtonFormField<String>(
-                      decoration:  const InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'ประเภทขยะ',
                         hintText: 'ระบุประเภทขยะ',
                       ),
@@ -702,9 +717,8 @@ class _HazadousWasteState extends State<HazadousWaste>
                                         ),
                                         DropdownButtonFormField<String>(
                                           decoration: const InputDecoration(
-                                            labelText: 'ประเภทขยะ',
-                                            hintText: 'ระบุประเภทขยะ'
-                                          ),
+                                              labelText: 'ประเภทขยะ',
+                                              hintText: 'ระบุประเภทขยะ'),
                                           value: trashtypePicker,
                                           items: [
                                             'ขยะทั่วไป',
@@ -906,7 +920,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                                   (_trash['status'] == 2 &&
                                       (_userData ==
                                               _trash['user_id'].toString() ||
-                                          _userData == '1')),
+                                          _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -917,7 +931,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                                     (_trash['status'] == 2 &&
                                         (_userData ==
                                                 _trash['user_id'].toString() ||
-                                            _userData == '1')),
+                                            _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -939,7 +953,7 @@ class _HazadousWasteState extends State<HazadousWaste>
                                   : const Icon(Icons.error),
                               trailing:
                                   _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
+                                          _userRole == 1
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -1030,6 +1044,9 @@ class _HazadousWasteState extends State<HazadousWaste>
                                                           ),
                                                   ),
                                                 ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
                                                 const Text(
                                                   'รายละเอียดขยะ',
                                                   style: TextStyle(
@@ -1043,7 +1060,10 @@ class _HazadousWasteState extends State<HazadousWaste>
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                        trash['trash_des']),
+                                                      trash['trash_des'],
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -1064,20 +1084,28 @@ class _HazadousWasteState extends State<HazadousWaste>
                                                       child:
                                                           trash['trash_how'] !=
                                                                   null
-                                                              ? Text(trash[
-                                                                  'trash_how'])
+                                                              ? Text(
+                                                                  trash[
+                                                                      'trash_how'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                )
                                                               : const Text(
                                                                   'Null')),
                                                 ),
-                                                const SizedBox(
-                                                  height: 300,
-                                                ),
+                                                // const SizedBox(
+                                                //   height: 300,
+                                                // ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         actions: [
                                           ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
                                               onPressed:
                                                   Navigator.of(context).pop,
                                               child: const Text('ปิด'))
@@ -1289,34 +1317,44 @@ class _DetailedHazadousWasteState extends State<DetailedHazadousWaste> {
           Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-                splashColor: Colors.blue,
+                splashColor: Colors.redAccent,
                 onTap: () {},
                 child: SizedBox(
-                    // height: 300,
+                    height: 250,
                     width: 300,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                                style: DefaultTextStyle.of(context)
-                                    .style
-                                    .copyWith(fontSize: 16),
-                                children: const [
-                                  TextSpan(
-                                      text:
-                                          '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง วิธีการปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย\n'),
-                                  TextSpan(
-                                      text:
-                                          '    ในพื้นที่จังหวัดกรุงเทพมหานคร สามารถทิ้งขยะอันตรายได้ที่สำนักงานเขต ทั้ง 50 เขต และในโรงพยาบาล\n'),
-                                  TextSpan(
-                                      text:
-                                          '    ขยะอันตรายประเภท ถ่านไฟฉาย และขยะจำพวกอิเล็กทรอนิกส์สามารถทิ้งได้ตามศูนย์บริการ Dtac, True หรือตามห้างสรรพสินค้าที่เข้าร่วม')
-                                ]),
-                          ),
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .copyWith(fontSize: 16),
+                                  children: const [
+                                    TextSpan(
+                                        text: 'แยกก่อนทิ้ง\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะอันตรายส่วนใหญ่มักจะมีผลกระทบต่อสุขภาพต่อผู้เก็บขยะได้ จึงต้องระวังเป็นอย่างมากในการนำไปทิ้ง\n'),
+                                    TextSpan(
+                                        text:
+                                            '    ขยะอันตรายประเภท ขยะจำพวกอิเล็กทรอนิกส์สามารถทิ้งได้ตามศูนย์บริการ Dtac, True หรือตามห้างสรรพสินค้าที่เข้าร่วม\n\n'),
+                                    TextSpan(
+                                        text: 'สถานที่ทิ้ง\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text:
+                                            '    ในพื้นที่จังหวัดกรุงเทพมหานคร สามารถทิ้งขยะอันตรายได้ที่สำนักงานเขต ทั้ง 50 เขต และในโรงพยาบาล สามารถทิ้งได้ที่ถังขยะสีแดงก่อนทิ้งโดยปิดถุงที่มีขยะให้มิดชิดและเขียนกำกับบนถุงไว้ว่าเป็นขยะอันตราย'),
+                                  ]),
+                            ),
+                          ],
+                        ),
                       ),
                     ))),
           ),

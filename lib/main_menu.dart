@@ -231,11 +231,11 @@ class _HomeScreenState extends State<HomeScreen> {
           'https://static.thairath.co.th/media/dFQROr7oWzulq5Fa6rBj3pZaODqlZ8tEox1FUhQX12JKr0I1MLDRRFHd5WDnaruXdNW.webp',
       'url': 'https://www.thairath.co.th/news/local/2818486'
     },
-    // {
-    //   'title': '',
-    //   'image': '',
-    //   'url': ''
-    // },
+    {
+      'title': 'โครงการ “Green University ทิ้ง เทิร์น ให้โลกจำ upvel2”',
+      'image': 'assets/image/event1.jpg',
+      'url': 'https://www.facebook.com/NatureAndEnvironmentConservationClub/posts/979532804216515'
+    },
   ];
 
   void _navigateToTrashType(BuildContext context, int tabIndex) {

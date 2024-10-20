@@ -87,6 +87,13 @@ class _ManualPageState extends State<ManualPage> {
                 ),
                 WidgetZoom(
                   heroAnimationTag: 'tag',
+                  zoomWidget: Image(image: AssetImage('assets/image/5_1.jpg')),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                WidgetZoom(
+                  heroAnimationTag: 'tag',
                   zoomWidget: Image(image: AssetImage('assets/image/5_2.jpg')),
                 ),
                 SizedBox(

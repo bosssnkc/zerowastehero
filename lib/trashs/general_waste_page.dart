@@ -33,6 +33,7 @@ class _GenralWasteState extends State<GeneralWaste>
   bool _isLoading = true;
   String? guestToken = '';
   int _selectedIndex = 0;
+  int? _userRole;
 
   @override
   void initState() {
@@ -78,6 +79,7 @@ class _GenralWasteState extends State<GeneralWaste>
     String trashnamesearch = searchController.text;
     _userData = prefs.getString('user_id');
     guestToken = prefs.getString('guestToken');
+    _userRole = prefs.getInt('role');
 
     try {
       final response = await http.get(
@@ -162,6 +164,19 @@ class _GenralWasteState extends State<GeneralWaste>
         // Load trash items if necessary
         await _loadTrashs();
         Navigator.of(context).pop();
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('เพิ่มรายการขยะเรียบร้อย'),
+            content: Text('เพิ่มรายการขยะเรียบร้อย'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
         _textFieldClear();
       } else {
         // Handle error
@@ -907,7 +922,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                   (_trash['status'] == 2 &&
                                       (_userData ==
                                               _trash['user_id'].toString() ||
-                                          _userData == '1')),
+                                          _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -918,7 +933,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                     (_trash['status'] == 2 &&
                                         (_userData ==
                                                 _trash['user_id'].toString() ||
-                                            _userData == '1')),
+                                            _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -940,7 +955,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                   : const Icon(Icons.error),
                               trailing:
                                   _userData == trash['user_id'].toString() ||
-                                          _userData == '1'
+                                          _userRole == 1
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -1031,6 +1046,7 @@ class _GenralWasteState extends State<GeneralWaste>
                                                           ),
                                                   ),
                                                 ),
+                                                const SizedBox(height: 16,),
                                                 const Text(
                                                   'รายละเอียดขยะ',
                                                   style: TextStyle(
@@ -1044,7 +1060,10 @@ class _GenralWasteState extends State<GeneralWaste>
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                        trash['trash_des']),
+                                                      trash['trash_des'],
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -1065,20 +1084,28 @@ class _GenralWasteState extends State<GeneralWaste>
                                                       child:
                                                           trash['trash_how'] !=
                                                                   null
-                                                              ? Text(trash[
-                                                                  'trash_how'])
+                                                              ? Text(
+                                                                  trash[
+                                                                      'trash_how'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                                )
                                                               : const Text(
                                                                   'Null')),
                                                 ),
-                                                const SizedBox(
-                                                  height: 300,
-                                                ),
+                                                // const SizedBox(
+                                                //   height: 300,
+                                                // ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         actions: [
                                           ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
                                               onPressed:
                                                   Navigator.of(context).pop,
                                               child: const Text('ปิด'))
@@ -1261,10 +1288,10 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                                             '    1. การลดการใช้: ลดการใช้วัสดุที่สร้างขยะ เช่น ถุงพลาสติก, บรรจุภัณฑ์ที่ไม่จำเป็น\n'),
                                     TextSpan(
                                         text:
-                                            '    2. การนำกลับมาใช้ใหม่: การเลือกใช้วัสดุที่สามารถนำกลับมาใช้ใหม่ได้ เช่น ถุงผ้า, ขวดแก้ว\n'),
+                                            '    2. การนำกลับมาใช้ซ้ำ: การเลือกใช้วัสดุที่สามารถนำกลับมาใช้ซ้ำได้ เช่น ถุงผ้า, ขวดแก้ว เพื่อลดปริมาณขยะที่เกิดขึ้น\n'),
                                     TextSpan(
                                         text:
-                                            '    3. การรีไซเคิล: แยกขยะที่สามารถรีไซเคิลได้ เช่น กระดาษ, พลาสติก และโลหะ\n'),
+                                            '    3. การแยกขยะรีไซเคิล: แยกขยะที่สามารถรีไซเคิลได้ เช่น กระดาษ, พลาสติก และโลหะ\n'),
                                   ]),
                             ),
                             const Text(
@@ -1323,6 +1350,23 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text(
+                            'แยกก่อนทิ้ง',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '    ควรแยกขยะประเภทอื่นๆออกจากขยะประเภททั่วไปก่อนนำไปทิ้ง',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            'การนำไปทิ้ง',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                           Text(
                             '    สามารถทิ้งได้ตามถังขยะทั่วไปที่มีถังสีน้ำเงินหรือสังเกตุได้จากข้อความที่เขียนบ่งบอกว่าขยะทั่วไป',
                             style: TextStyle(fontSize: 16),
