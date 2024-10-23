@@ -270,6 +270,15 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
   String _VideoId = '';
 
   late YoutubePlayerController _playerController;
+  final _playerController2 = YoutubePlayerController(
+      initialVideoId: 'O3K4Me7IOxU',
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+        loop: false,
+        disableDragSeek: false,
+        isLive: false,
+      ));
 
   Future<void> setYouTubeController() async {
     _playerController = YoutubePlayerController(
@@ -335,19 +344,36 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                             children: [
                               RichText(
                                 text: TextSpan(
-                                  style: DefaultTextStyle.of(context)
-                                      .style
-                                      .copyWith(fontSize: 16),
-                                  children: const [
-                                    TextSpan(
-                                      text:
-                                          '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อม โดยวิธีการคัดแยกขยะในเบื้องต้นมีวิธีดังนี้\n',
-                                    ),
-                                  ],
-                                ),
+                                    style: DefaultTextStyle.of(context)
+                                        .style
+                                        .copyWith(fontSize: 16),
+                                    children: const [
+                                      TextSpan(
+                                        text: 'ทำไมถึงต้องคัดแยกขยะ?\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้องและลดผลกระทบต่อสิ่งแวดล้อมและผู้อื่น ช่วยเพิ่มประสิทธิภาพในกระบวนการกำจัดขยะที่ปลายทาง\n\n',
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            'จะเกิดอะไรขึ้นหากเราไม่คัดแยกขยะก่อนนำไปทิ้ง?\n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            '    การไม่คัดแยกขยะก่อนทำการทิ้งลงถังทำให้เกิดผลเสียในกระบวนการจัดการขยะที่ปลายทาง ทำให้เกิดปัญหาขยะที่ไม่สามารถนำไปเข้าสู่กระบวนการในการจัดการขยะอื่นได้นอกจากการฝังกลบ\n',
+                                      ),
+                                      TextSpan(
+                                          text:
+                                              '\t\t\t\tอีกทั้งยังส่งผลกระทบต่อสุขภาพกับผู้คนที่ทำงานที่เกี่ยวข้องกับการกำจัดขยะที่ปลายทางโดยตรง อันเนื่องมาจากการทิ้งขยะที่ผิดวิธีเช่นการทิ้งขยะอันตรายหรือขยะติดเชื้อรวมกับขยะประเภททั่วไป\n')
+                                    ]),
                               ),
                               YoutubePlayer(
-                                controller: _playerController,
+                                controller: _playerController2,
                                 showVideoProgressIndicator: true,
                                 onReady: () {
                                   print('Player is ready.');
@@ -355,17 +381,21 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                               ),
                               const Center(
                                 child: Text(
-                                    'Youtube: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
+                                    'Youtube: Pepsi Thailand'),
                               ),
                               const SizedBox(
                                 height: 8,
                               ),
+                             
                               RichText(
                                 text: TextSpan(
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .copyWith(fontSize: 16),
                                   children: const [
+                                    TextSpan(
+                                      text: '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้อง โดยมีวิธีการคัดแยกขยะในเบื้องต้นดังนี้\n\n',
+                                    ),
                                     TextSpan(
                                       text: 'แยกขยะตามประเภทหลัก\n',
                                       style: TextStyle(
@@ -460,6 +490,20 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                             '    4. ช่วยประหยัดพลังงานและทรัพยากรธรรมชาติ\n'),
                                   ],
                                 ),
+                              ),
+                               YoutubePlayer(
+                                controller: _playerController,
+                                showVideoProgressIndicator: true,
+                                onReady: () {
+                                  print('Player is ready.');
+                                },
+                              ),
+                              const Center(
+                                child: Text(
+                                    'Youtube: กรมการเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม'),
+                              ),
+                              const SizedBox(
+                                height: 8,
                               ),
                               const Text(
                                   'กรมควบคุมมลพิษ. (2564). คู่มือการคัดแยกขยะและการรีไซเคิล'),
