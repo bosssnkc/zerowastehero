@@ -1046,7 +1046,9 @@ class _GenralWasteState extends State<GeneralWaste>
                                                           ),
                                                   ),
                                                 ),
-                                                const SizedBox(height: 16,),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
                                                 const Text(
                                                   'รายละเอียดขยะ',
                                                   style: TextStyle(
@@ -1263,7 +1265,7 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
                               'ที่มา: hospitalitythailand.com',
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             RichText(
@@ -1342,35 +1344,39 @@ class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
             child: InkWell(
                 splashColor: Colors.blue,
                 onTap: () {},
-                child: const SizedBox(
-                    // height: 300,
+                child: SizedBox(
+                    height: 250,
                     width: 300,
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'แยกก่อนทิ้ง',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                          RichText(
+                            text: TextSpan(
+                                style: DefaultTextStyle.of(context)
+                                    .style
+                                    .copyWith(fontSize: 16),
+                                children: const [
+                                  TextSpan(
+                                    text: 'แยกก่อนทิ้ง\n',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    ควรแยกขยะประเภทอื่นๆออกจากขยะประเภททั่วไปก่อนนำไปทิ้ง\n\n'),
+                                  TextSpan(
+                                    text: 'การนำไปทิ้ง\n',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                      text:
+                                          '    สามารถทิ้งได้ตามถังขยะทั่วไปที่มีถังสีน้ำเงินหรือสังเกตุได้จากข้อความที่เขียนบ่งบอกว่าขยะทั่วไป\n')
+                                ]),
                           ),
-                          Text(
-                            '    ควรแยกขยะประเภทอื่นๆออกจากขยะประเภททั่วไปก่อนนำไปทิ้ง',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            'การนำไปทิ้ง',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '    สามารถทิ้งได้ตามถังขยะทั่วไปที่มีถังสีน้ำเงินหรือสังเกตุได้จากข้อความที่เขียนบ่งบอกว่าขยะทั่วไป',
-                            style: TextStyle(fontSize: 16),
-                          )
                         ],
                       ),
                     ))),

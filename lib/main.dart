@@ -33,15 +33,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> _setFont(String font) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'selectedFont', font); // บันทึกฟอนต์ใน SharedPreferences
-    setState(() {
-      selectedFont = font; // อัปเดตฟอนต์และรีบิลด์แอป
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

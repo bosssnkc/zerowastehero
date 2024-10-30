@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
+import 'package:zerowastehero/fix_icons_icons.dart';
 import 'package:zerowastehero/location/hazardous_dump_location.dart';
 import 'package:zerowastehero/session.dart';
 import 'package:zerowastehero/setting_page.dart';
@@ -111,8 +112,8 @@ class _MainPageState extends State<MainPage> {
         const ProfilePage(), //เข้าสู่หน้าจัดการโปรไฟล์ผู้ใช้งาน
         const EventNewsPage(), //เข้าสู่หน้ากิจกรรมและข่าวสาร
         const HomeScreen(), //หน้าหลัก
-        const OptionSetting(), //เข้าสู่หน้าตั้งค่า
         const ContactUs(), //เข้าสู่หน้าติดต่อผู้พัฒนาและให้คำแนะนำติชม
+        const OptionSetting(), //เข้าสู่หน้าตั้งค่า
       ];
 
   void _onItemTapped(int index) {
@@ -168,13 +169,13 @@ class _MainPageState extends State<MainPage> {
             label: 'หน้าแรก',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'ตั้งค่า',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.contact_mail),
             label: 'ติดต่อเรา',
             tooltip: "ให้คำแนะนำเรา",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'ตั้งค่า',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -269,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context, 0), //Navigate ไปยัง tab index 0,
                 ),
                 InkWell(
-                  child: _buildGridItem(Icons.help, 'วิธีคัดแยกขยะ'),
+                  child: _buildGridItem(FixIcons.how_to_sorting, 'วิธีคัดแยกขยะ'),
                   onTap: () => _navigateToTrashType(
                       context, 1), //Navigate ไปยัง tab index 1,
                 ),
@@ -285,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 InkWell(
                   child: _buildGridItem(
-                      Icons.local_hospital, 'สถานที่กำจัดขยะอันตราย'),
+                      FixIcons.hazadous_dump_location, 'สถานที่กำจัดขยะอันตราย'),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -369,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text(
                                 'หัวเรื่อง: ${newss['title']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16,
                                     backgroundColor: Colors.white),
                               ),
@@ -428,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 60),
+            Icon(icon, size: 80),
             const SizedBox(height: 8.0),
             Text(
               label,

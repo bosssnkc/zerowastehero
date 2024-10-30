@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:widget_zoom/widget_zoom.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 import 'package:zerowastehero/custom_icons_icons.dart';
 
@@ -1210,13 +1211,13 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Center(
-                              child: Icon(
-                                CustomIcons.recycle_waste_bin,
-                                size: 100,
-                                color: Colors.yellow,
-                              ),
-                            ),
+                            // const Center(
+                            //   child: Icon(
+                            //     CustomIcons.recycle_waste_bin,
+                            //     size: 100,
+                            //     color: Colors.yellow,
+                            //   ),
+                            // ),
                             RichText(
                               text: TextSpan(
                                 style: DefaultTextStyle.of(context)
@@ -1228,12 +1229,13 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  TextSpan(
-                                      text:
-                                          '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n')
+                                  // TextSpan(
+                                  //     text:
+                                  //         '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n')
                                 ],
                               ),
                             ),
+                            Image.asset('assets/image/RecycleType.png')
                           ],
                         ),
                       ),
@@ -1267,12 +1269,17 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  TextSpan(
-                                    text:
-                                        '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n',
-                                  ),
+                                  // TextSpan(
+                                  //   text:
+                                  //       '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n',
+                                  // ),
                                 ],
                               ),
+                            ),
+                            WidgetZoom(
+                              heroAnimationTag: 'recycleinfo',
+                              zoomWidget:
+                                  Image.asset('assets/image/RecycleType.png'),
                             ),
                             Center(
                                 child: SizedBox(

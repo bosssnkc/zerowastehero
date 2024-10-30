@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:widget_zoom/widget_zoom.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zerowastehero/trashs/compostable_waste_page.dart';
 import 'package:zerowastehero/trashs/general_waste_page.dart';
@@ -380,13 +381,11 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                 },
                               ),
                               const Center(
-                                child: Text(
-                                    'Youtube: Pepsi Thailand'),
+                                child: Text('Youtube: Pepsi Thailand'),
                               ),
                               const SizedBox(
                                 height: 8,
                               ),
-                             
                               RichText(
                                 text: TextSpan(
                                   style: DefaultTextStyle.of(context)
@@ -394,31 +393,37 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                       .copyWith(fontSize: 16),
                                   children: const [
                                     TextSpan(
-                                      text: '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้อง โดยมีวิธีการคัดแยกขยะในเบื้องต้นดังนี้\n\n',
-                                    ),
-                                    TextSpan(
-                                      text: 'แยกขยะตามประเภทหลัก\n',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
                                       text:
-                                          '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ไม้เสียบลูกชิ้น\n',
+                                          '    การแยกขยะเบื้องต้นเป็นวิธีการสำคัญในการจัดการขยะอย่างถูกต้อง โดยมีวิธีการคัดแยกขยะในเบื้องต้นดังนี้\n\n',
                                     ),
-                                    TextSpan(
-                                      text:
-                                          '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ แก้ว\n',
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้\n',
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย\n',
-                                    ),
+                                    // TextSpan(
+                                    //   text: 'แยกขยะตามประเภทหลัก\n',
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
+                                    // TextSpan(
+                                    //   text:
+                                    //       '    ขยะทั่วไป: เช่น ถุงพลาสติก หลอด ไม้เสียบลูกชิ้น\n',
+                                    // ),
+                                    // TextSpan(
+                                    //   text:
+                                    //       '    ขยะรีไซเคิล: เช่น ขวดพลาสติก กระป๋องโลหะ กระดาษ แก้ว\n',
+                                    // ),
+                                    // TextSpan(
+                                    //   text:
+                                    //       '    ขยะอินทรีย์: เช่น เศษอาหาร เปลือกผลไม้ ใบไม้\n',
+                                    // ),
+                                    // TextSpan(
+                                    //   text:
+                                    //       '    ขยะอันตราย: เช่น แบตเตอรี่ หลอดไฟ ถ่านไฟฉาย\n',
+                                    // ),
                                   ],
                                 ),
+                              ),
+                              WidgetZoom(
+                                heroAnimationTag: 'htsorting',
+                                zoomWidget: Image.asset(
+                                    'assets/image/HowToSorting.png'),
                               ),
                               RichText(
                                 text: TextSpan(
@@ -491,7 +496,7 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                   ],
                                 ),
                               ),
-                               YoutubePlayer(
+                              YoutubePlayer(
                                 controller: _playerController,
                                 showVideoProgressIndicator: true,
                                 onReady: () {
@@ -519,8 +524,8 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                 );
               },
               child: SizedBox(
-                width: 400,
-                height: 300,
+                width: MediaQuery.of(context).size.width,
+                height: 400,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Stack(
@@ -549,6 +554,7 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                 ],
                               ),
                             ),
+                            Image.asset('assets/image/HowToSorting.png'),
                             RichText(
                               text: TextSpan(
                                 style: DefaultTextStyle.of(context).style,
@@ -652,10 +658,18 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                           children: const [
                                             TextSpan(
                                               text:
-                                                  '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว\n',
+                                                  '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ\n',
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      WidgetZoom(
+                                        heroAnimationTag: '3R',
+                                        zoomWidget:
+                                            Image.asset('assets/image/3R.png'),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
                                       ),
                                       YoutubePlayer(
                                         controller: _playerController,
@@ -734,8 +748,8 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                             )));
               },
               child: SizedBox(
-                width: 400,
-                height: 300,
+                width: MediaQuery.of(context).size.width,
+                height: 400,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Stack(
@@ -759,11 +773,12 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                 children: const [
                                   TextSpan(
                                     text:
-                                        '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ การปฏิบัติตามหลักการ 3R ช่วยลดปริมาณขยะ ลดการใช้ทรัพยากรธรรมชาติ และสนับสนุนการรักษาสิ่งแวดล้อมในระยะยาว\n',
+                                        '    หลักการ 3R หรือลดใช้ ใช้ซ้ำ นำกลับมาใช้ใหม่ เป็นแนวทางในการลดขยะและใช้ทรัพยากรอย่างมีประสิทธิภาพ \n',
                                   ),
                                 ],
                               ),
                             ),
+                            Image.asset('assets/image/3R.png'),
                             RichText(
                               text: TextSpan(
                                 style: DefaultTextStyle.of(context).style,
@@ -778,7 +793,7 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                           '    1. Reduce (ลดการใช้) ลดการใช้วัสดุและทรัพยากรที่ไม่จำเป็น เลือกซื้อเฉพาะสิ่งที่จำเป็นและลดการซื้อสินค้าที่ใช้ครั้งเดียว เช่น หลีกเลี่ยงการใช้ถุงพลาสติก และเลือกใช้ถุงผ้าแทน\n'),
                                   TextSpan(
                                       text:
-                                          '    2. Recycle (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว\n'),
+                                          '    2. Reuse (ใช้ซ้ำ) ใช้ซ้ำสินค้าที่สามารถนำกลับมาใช้ได้ เช่น ใช้ถุงผ้าในการช้อปปิ้ง ใช้ขวดน้ำที่เติมได้แทนขวดน้ำแบบใช้ครั้งเดียว\n'),
                                   TextSpan(
                                       text:
                                           '    3. Recycle (นำกลับมาใช้ใหม่) นำสินค้าที่สามารถนำกลับมาใช้ใหม่ได้ เช่น การนำกล่องพัสดุมาใช้ในการเก็บของหรือใช้กล่องเดิมเพื่อส่งพัสดุอีกครั้งแทนการทิ้ง หากตัววัสดุนั้นยังสามารถใช้งานได้ดีอยู่\n')
