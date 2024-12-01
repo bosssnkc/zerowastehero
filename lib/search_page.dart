@@ -652,7 +652,7 @@ class _SearchPageState extends State<SearchPage> {
               icon: Icon(_isSearchClicked ? Icons.close : Icons.search))
         ],
       ),
-      floatingActionButton: guestToken != null
+      floatingActionButton: _userRole != 1
           ? null
           : FloatingActionButton(
               shape: RoundedRectangleBorder(
@@ -927,10 +927,8 @@ class _SearchPageState extends State<SearchPage> {
                                     .where(
                                       (_trash) =>
                                           _trash['status'] == 1 ||
-                                          (_trash['status'] == 2 &&
-                                              (_userData ==
-                                                      _trash['user_id']
-                                                          .toString() ||
+                                          (_trash['status'] != 1 &&
+                                              (_userData == '1' ||
                                                   _userRole == 1)),
                                     )
                                     .length <
@@ -939,11 +937,8 @@ class _SearchPageState extends State<SearchPage> {
                                 .where(
                                   (_trash) =>
                                       _trash['status'] == 1 ||
-                                      (_trash['status'] == 2 &&
-                                          (_userData ==
-                                                  _trash['user_id']
-                                                      .toString() ||
-                                              _userRole == 1)),
+                                      (_trash['status'] != 1 &&
+                                          (_userData == '1' || _userRole == 1)),
                                 )
                                 .length
                             : _itemsToShow,
@@ -952,15 +947,13 @@ class _SearchPageState extends State<SearchPage> {
                               .where(
                                 (_trash) =>
                                     _trash['status'] == 1 ||
-                                    (_trash['status'] == 2 &&
-                                        (_userData ==
-                                                _trash['user_id'].toString() ||
-                                            _userRole == 1)),
+                                    (_trash['status'] != 1 &&
+                                        (_userData == '1' || _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
                             // status = 1 ผ่านการตรวจสอบและสามารถแสดงให้ดูได้
-                            // status = 2 กำลังตรวจสอบ user_id ผู้เพิ่มหรือ admin จะสามารถมองเห็นได้เท่านั้น
+                            // status = 2 กำลังตรวจสอบ admin จะสามารถมองเห็นได้เท่านั้น
                             // status = 3 ถูกลบจะไม่สามารถมองเห็นได้
                             // เมื่อ trash column status มีค่าเป็น 2 (กำลังตรวจสอบ) พื้นหลังจะเปลี่ยนสีเป็นสีเหลือง
                             color: trash['status'] == 2
@@ -986,8 +979,7 @@ class _SearchPageState extends State<SearchPage> {
                                     )
                                   : const Icon(Icons.error),
                               trailing:
-                                  _userData == trash['user_id'].toString() ||
-                                          _userRole == 1
+                                  _userRole == 1 && _userData == '1'
                                       ? Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [

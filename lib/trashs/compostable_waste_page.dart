@@ -669,7 +669,7 @@ class _CompostableWasteState extends State<CompostableWaste>
             onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
-              ? guestToken != null
+              ? _userRole != 1
                   ? null
                   : FloatingActionButton(
                       shape: RoundedRectangleBorder(
@@ -859,10 +859,9 @@ class _CompostableWasteState extends State<CompostableWaste>
   }
 
   Widget listOfCompostable() {
-    //TODO list
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -915,10 +914,8 @@ class _CompostableWasteState extends State<CompostableWaste>
                             .where(
                               (_trash) =>
                                   _trash['status'] == 1 ||
-                                  (_trash['status'] == 2 &&
-                                      (_userData ==
-                                              _trash['user_id'].toString() ||
-                                          _userRole == 1)),
+                                  (_trash['status'] != 1 &&
+                                      (_userData == '1' || _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -926,10 +923,8 @@ class _CompostableWasteState extends State<CompostableWaste>
                               .where(
                                 (_trash) =>
                                     _trash['status'] == 1 ||
-                                    (_trash['status'] == 2 &&
-                                        (_userData ==
-                                                _trash['user_id'].toString() ||
-                                            _userRole == 1)),
+                                    (_trash['status'] != 1 &&
+                                      (_userData == '1' || _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -949,27 +944,25 @@ class _CompostableWasteState extends State<CompostableWaste>
                                       fit: BoxFit.cover,
                                     )
                                   : const Icon(Icons.error),
-                              trailing:
-                                  _userData == trash['user_id'].toString() ||
-                                          _userRole == 1
-                                      ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                getTrashUpdateInfo(trash);
-                                              },
-                                              icon: const Icon(Icons.edit),
-                                            ),
-                                            IconButton(
-                                              onPressed: () async {
-                                                deleteTrashWindow(trash);
-                                              },
-                                              icon: const Icon(Icons.delete),
-                                            ),
-                                          ],
-                                        )
-                                      : null,
+                              trailing: _userRole == 1 && _userData == '1'
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () async {
+                                            getTrashUpdateInfo(trash);
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            deleteTrashWindow(trash);
+                                          },
+                                          icon: const Icon(Icons.delete),
+                                        ),
+                                      ],
+                                    )
+                                  : null,
                               onTap: () => showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -1092,9 +1085,6 @@ class _CompostableWasteState extends State<CompostableWaste>
                                                               : const Text(
                                                                   'Null')),
                                                 ),
-                                                // const SizedBox(
-                                                //   height: 300,
-                                                // ),
                                               ],
                                             ),
                                           ),

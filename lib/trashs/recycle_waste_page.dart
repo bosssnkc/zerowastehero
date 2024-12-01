@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:clippy_flutter/triangle.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -670,7 +669,7 @@ class _RecycleWasteState extends State<RecycleWaste>
             onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
-              ? guestToken != null
+              ? _userRole != 1
                   ? null
                   : FloatingActionButton(
                       shape: RoundedRectangleBorder(
@@ -861,7 +860,7 @@ class _RecycleWasteState extends State<RecycleWaste>
 
   Widget listOfRecycles() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -915,10 +914,8 @@ class _RecycleWasteState extends State<RecycleWaste>
                             .where(
                               (_trash) =>
                                   _trash['status'] == 1 ||
-                                  (_trash['status'] == 2 &&
-                                      (_userData ==
-                                              _trash['user_id'].toString() ||
-                                          _userRole == 1)),
+                                  (_trash['status'] != 1 &&
+                                      (_userData == '1' || _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -926,10 +923,8 @@ class _RecycleWasteState extends State<RecycleWaste>
                               .where(
                                 (_trash) =>
                                     _trash['status'] == 1 ||
-                                    (_trash['status'] == 2 &&
-                                        (_userData ==
-                                                _trash['user_id'].toString() ||
-                                            _userRole == 1)),
+                                    (_trash['status'] != 1 &&
+                                        (_userData == '1' || _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -949,209 +944,192 @@ class _RecycleWasteState extends State<RecycleWaste>
                                       fit: BoxFit.cover,
                                     )
                                   : const Icon(Icons.error),
-                              trailing:
-                                  _userData == trash['user_id'].toString() ||
-                                          _userRole == 1
-                                      ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                getTrashUpdateInfo(trash);
-                                              },
-                                              icon: const Icon(Icons.edit),
-                                            ),
-                                            IconButton(
-                                              onPressed: () async {
-                                                deleteTrashWindow(trash);
-                                              },
-                                              icon: const Icon(Icons.delete),
-                                            ),
-                                          ],
-                                        )
-                                      : null,
-                              onTap: () {
-                                print(trash);
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          insetPadding:
-                                              const EdgeInsets.all(16),
-                                          title: const Text(
-                                            'รายละเอียดขยะ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          content: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: 600,
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      const Text(
-                                                        'ชื่อขยะ ',
+                              trailing: _userRole == 1 && _userData == '1'
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () async {
+                                            getTrashUpdateInfo(trash);
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            deleteTrashWindow(trash);
+                                          },
+                                          icon: const Icon(Icons.delete),
+                                        ),
+                                      ],
+                                    )
+                                  : null,
+                              onTap: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        insetPadding: const EdgeInsets.all(16),
+                                        title: const Text(
+                                          'รายละเอียดขยะ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        content: SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 600,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                      'ชื่อขยะ ',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(
+                                                      trash['trash_name'],
+                                                      style: const TextStyle(
+                                                          fontSize: 18),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                  ],
+                                                ),
+                                                trash['trash_price'] != null
+                                                    ? Row(
+                                                        children: [
+                                                          const Text(
+                                                            'ราคา ',
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Text(
+                                                            '${trash['trash_price'].toString()} บาท/กก.',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 18,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    : const Text(
+                                                        'ไม่มีราคา',
                                                         style: TextStyle(
                                                             fontSize: 18,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold),
                                                       ),
-                                                      Text(
-                                                        trash['trash_name'],
-                                                        style: const TextStyle(
-                                                            fontSize: 18),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  trash['trash_price'] != null
-                                                      ? Row(
-                                                          children: [
-                                                            const Text(
-                                                              'ราคา ',
-                                                              style: const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                Card(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: trash['trash_pic'] !=
+                                                            null
+                                                        ? Image.memory(
+                                                            height: 300,
+                                                            width: 300,
+                                                            base64Decode(trash[
+                                                                'trash_pic']),
+                                                            fit: BoxFit.cover,
+                                                          )
+                                                        : const Center(
+                                                            child: Column(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons
+                                                                      .image_not_supported,
+                                                                  size: 120,
+                                                                ),
+                                                                Text(
+                                                                  'ไม่มีรูปภาพ',
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18),
+                                                                )
+                                                              ],
                                                             ),
-                                                            Text(
-                                                              '${trash['trash_price'].toString()} บาท/กก.',
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 18,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        )
-                                                      : const Text(
-                                                          'ไม่มีราคา',
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                  const SizedBox(
-                                                    height: 16,
+                                                          ),
                                                   ),
-                                                  Card(
-                                                    child: Padding(
+                                                ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                const Text(
+                                                  'รายละเอียดขยะ',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Card(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      trash['trash_des'],
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                const Text(
+                                                  'วิธีการกำจัด',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Card(
+                                                  child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
                                                               8.0),
                                                       child:
-                                                          trash['trash_pic'] !=
+                                                          trash['trash_how'] !=
                                                                   null
-                                                              ? Image.memory(
-                                                                  height: 300,
-                                                                  width: 300,
-                                                                  base64Decode(
-                                                                      trash[
-                                                                          'trash_pic']),
-                                                                  fit: BoxFit
-                                                                      .cover,
+                                                              ? Text(
+                                                                  trash[
+                                                                      'trash_how'],
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16),
                                                                 )
-                                                              : const Center(
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Icon(
-                                                                        Icons
-                                                                            .image_not_supported,
-                                                                        size:
-                                                                            120,
-                                                                      ),
-                                                                      Text(
-                                                                        'ไม่มีรูปภาพ',
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                18),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 16,
-                                                  ),
-                                                  const Text(
-                                                    'รายละเอียดขยะ',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Card(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                        trash['trash_des'],
-                                                        style: const TextStyle(
-                                                            fontSize: 16),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 16,
-                                                  ),
-                                                  const Text(
-                                                    'วิธีการกำจัด',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Card(
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child:
-                                                            trash['trash_how'] !=
-                                                                    null
-                                                                ? Text(
-                                                                    trash[
-                                                                        'trash_how'],
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            16),
-                                                                  )
-                                                                : const Text(
-                                                                    'Null')),
-                                                  ),
-                                                  // const SizedBox(
-                                                  //   height: 300,
-                                                  // ),
-                                                ],
-                                              ),
+                                                              : const Text(
+                                                                  'Null')),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          actions: [
-                                            ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    foregroundColor:
-                                                        Colors.white,
-                                                    backgroundColor:
-                                                        Colors.red),
-                                                onPressed:
-                                                    Navigator.of(context).pop,
-                                                child: const Text('ปิด'))
-                                          ],
-                                        ));
-                              },
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
+                                              onPressed:
+                                                  Navigator.of(context).pop,
+                                              child: const Text('ปิด'))
+                                        ],
+                                      )),
                             ),
                           );
                         })
@@ -1257,8 +1235,6 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             RichText(
-                              // textAlign: TextAlign.start,
-                              // overflow: TextOverflow.fade,
                               text: TextSpan(
                                 style: DefaultTextStyle.of(context)
                                     .style
@@ -1269,10 +1245,6 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  // TextSpan(
-                                  //   text:
-                                  //       '    คือขยะที่มีมูลค่าโดยสามารถนำมานำกลับมาใช้งานเป็นวัสดุรีไซเคิล เพื่อนำไปผลิตเป็นอุปกรณ์ใหม่ได้เช่น ขาเทียมแขนเทียมสำหรับผู้พิการ ขวดแก้วที่ใส่บรรจุภัณฑ์ ขวดน้ำพลาสติกรีไซเคิลที่ใส่บรรจุภัณฑ์ ตัวอย่างของขยะประเภทขยะรีไซเคิลเช่น ขวดน้ำพลาสติก เศษแก้ว กระป๋องอะลูมิเนียม โดยประเทศไทยจำแนกขยะประเภทขยะรีไซเคิลสามารถทิ้งได้ในถังขยะที่มีสีเหลือง\n',
-                                  // ),
                                 ],
                               ),
                             ),
@@ -1330,13 +1302,6 @@ class _DetailedRecycleWasteState extends State<DetailedRecycleWaste> {
                             ),
                             const Text(
                                 'ที่มา: กรมควบคุมมลพิษ. (2564). รายงานสถานการณ์มลพิษของประเทศไทย')
-                            // YoutubePlayer(
-                            //   controller: _playerController,
-                            //   showVideoProgressIndicator: true,
-                            //   onReady: () {
-                            //     print('Player is ready.');
-                            //   },
-                            // ),
                           ],
                         ),
                       ),

@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:zerowastehero/custom_icons_icons.dart';
 
 class GeneralWaste extends StatefulWidget {
@@ -675,7 +674,7 @@ class _GenralWasteState extends State<GeneralWaste>
             onTap: _onItemTapped,
           ),
           floatingActionButton: _tabController!.index == 1
-              ? guestToken != null
+              ? _userRole != 1
                   ? null
                   : FloatingActionButton(
                       shape: RoundedRectangleBorder(
@@ -866,7 +865,7 @@ class _GenralWasteState extends State<GeneralWaste>
 
   Widget listOfGeneral() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -919,10 +918,8 @@ class _GenralWasteState extends State<GeneralWaste>
                             .where(
                               (_trash) =>
                                   _trash['status'] == 1 ||
-                                  (_trash['status'] == 2 &&
-                                      (_userData ==
-                                              _trash['user_id'].toString() ||
-                                          _userRole == 1)),
+                                  (_trash['status'] != 1 &&
+                                      (_userData == '1' || _userRole == 1)),
                             )
                             .length,
                         itemBuilder: (context, index) {
@@ -930,10 +927,8 @@ class _GenralWasteState extends State<GeneralWaste>
                               .where(
                                 (_trash) =>
                                     _trash['status'] == 1 ||
-                                    (_trash['status'] == 2 &&
-                                        (_userData ==
-                                                _trash['user_id'].toString() ||
-                                            _userRole == 1)),
+                                    (_trash['status'] != 1 &&
+                                      (_userData == '1' || _userRole == 1)),
                               )
                               .toList()[index];
                           return Card(
@@ -953,27 +948,25 @@ class _GenralWasteState extends State<GeneralWaste>
                                       fit: BoxFit.cover,
                                     )
                                   : const Icon(Icons.error),
-                              trailing:
-                                  _userData == trash['user_id'].toString() ||
-                                          _userRole == 1
-                                      ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () async {
-                                                getTrashUpdateInfo(trash);
-                                              },
-                                              icon: const Icon(Icons.edit),
-                                            ),
-                                            IconButton(
-                                              onPressed: () async {
-                                                deleteTrashWindow(trash);
-                                              },
-                                              icon: const Icon(Icons.delete),
-                                            ),
-                                          ],
-                                        )
-                                      : null,
+                              trailing: _userRole == 1 && _userData == '1'
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () async {
+                                            getTrashUpdateInfo(trash);
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                        ),
+                                        IconButton(
+                                          onPressed: () async {
+                                            deleteTrashWindow(trash);
+                                          },
+                                          icon: const Icon(Icons.delete),
+                                        ),
+                                      ],
+                                    )
+                                  : null,
                               onTap: () => showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -1133,17 +1126,6 @@ class DetailedGeneralWaste extends StatefulWidget {
 }
 
 class DetailedGeneralWasteState extends State<DetailedGeneralWaste> {
-  final YoutubePlayerController _playerController = YoutubePlayerController(
-    initialVideoId: 'GF9COdMuJr0', //กำหนด YouTube VideoID ให้กับ ตัวเล่น
-    flags: const YoutubePlayerFlags(
-      autoPlay: false,
-      mute: false,
-      disableDragSeek: false,
-      loop: false,
-      isLive: false,
-    ),
-  );
-
   @override
   void initState() {
     super.initState();

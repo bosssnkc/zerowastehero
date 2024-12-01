@@ -117,7 +117,7 @@ class _MyWidgetState extends State<ContactUs> {
                               fontSize: 16,
                             ),
                           )),
-                      Text('หรือ'),
+                      const Text('หรือ'),
                       TextButton(
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.green,
@@ -135,40 +135,6 @@ class _MyWidgetState extends State<ContactUs> {
                               fontSize: 16,
                             ),
                           )),
-                      // TextFormField(
-                      //   validator: (value) {
-                      //     if (value == null || value.isEmpty) {
-                      //       return 'เขียนอะไรสักอย่าง';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   decoration: const InputDecoration(
-                      //     border: InputBorder.none,
-                      //     hintText: 'เขียนคำติชมหรือให้คำแนะนำเรา',
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 16,
-                      // ),
-                      // Row(
-                      //   children: [
-                      //     ElevatedButton(
-                      //         style: ElevatedButton.styleFrom(
-                      //             foregroundColor: Colors.white,
-                      //             backgroundColor: Colors.green),
-                      //         onPressed: () {},
-                      //         child: const Text('Confirm')),
-                      //     const SizedBox(
-                      //       width: 20,
-                      //     ),
-                      //     TextButton(
-                      //         style: TextButton.styleFrom(
-                      //             foregroundColor: Colors.white,
-                      //             backgroundColor: Colors.red),
-                      //         onPressed: () {},
-                      //         child: const Text('Cancel')),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),
@@ -179,7 +145,7 @@ class _MyWidgetState extends State<ContactUs> {
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  'Yaek and Ting version 1.0.1-dev',
+                  'Yaek and Ting version 1.1.0',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               )

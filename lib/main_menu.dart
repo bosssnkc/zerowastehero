@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zerowastehero/Routes/routes.dart';
 import 'package:zerowastehero/fix_icons_icons.dart';
 import 'package:zerowastehero/location/hazardous_dump_location.dart';
+import 'package:zerowastehero/quiz.dart';
 import 'package:zerowastehero/session.dart';
 import 'package:zerowastehero/setting_page.dart';
 import 'package:zerowastehero/contact_page.dart';
@@ -203,7 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'url': 'https://www.jitarsabank.com/job/detail/10134'
     },
     {
-      'title': 'กิจกรรมพายเรือเก็บขยะ อนุรักษ์คลองบางกอบัว คุ้งบางกระเจ้า รุ่น 25',
+      'title':
+          'กิจกรรมพายเรือเก็บขยะ อนุรักษ์คลองบางกอบัว คุ้งบางกระเจ้า รุ่น 25',
       'image':
           'https://upload-storage.jitarsabank.com/jbank-storage/202410/jobs-header-c9977a60d23b6854c28c5f9fb49c9ca1.jpeg',
       'url': 'https://www.jitarsabank.com/job/detail/10206'
@@ -221,8 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> news = [
     {
       'title': 'กทม. ชวนผู้ประกอบการร้านอาหารที่ ‘สมัครใจแยกขยะ’',
-      'image':
-          'assets/image/mai.jpg',
+      'image': 'assets/image/mai.jpg',
       'url':
           'https://www.facebook.com/photo/?fbid=867909575517193&set=a.249425947365562'
     },
@@ -235,7 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
     {
       'title': 'โครงการ “Green University ทิ้ง เทิร์น ให้โลกจำ upvel2”',
       'image': 'assets/image/event1.jpg',
-      'url': 'https://www.facebook.com/NatureAndEnvironmentConservationClub/posts/979532804216515'
+      'url':
+          'https://www.facebook.com/NatureAndEnvironmentConservationClub/posts/979532804216515'
     },
   ];
 
@@ -257,6 +259,142 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // GridView.count(
+            //   crossAxisCount: 2,
+            //   shrinkWrap: true,
+            //   physics: const NeverScrollableScrollPhysics(),
+            //   mainAxisSpacing: 16.0,
+            //   crossAxisSpacing: 16.0,
+            //   children: [
+            //     InkWell(
+            //       child: _buildGridItem(Icons.delete, 'ขยะ 4 ประเภท'),
+            //       onTap: () => _navigateToTrashType(
+            //           context, 0), //Navigate ไปยัง tab index 0,
+            //     ),
+            //     InkWell(
+            //       child:
+            //           _buildGridItem(FixIcons.how_to_sorting, 'วิธีคัดแยกขยะ'),
+            //       onTap: () => _navigateToTrashType(
+            //           context, 1), //Navigate ไปยัง tab index 1,
+            //     ),
+            //     InkWell(
+            //       child:
+            //           _buildGridItem(Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล'),
+            //       onTap: () => Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const RecycleLocation(),
+            //         ),
+            //       ), // ฟังก์ชันเรียกดูหน้า สถานที่รับซื้อของเก่า
+            //     ),
+            //     InkWell(
+            //       child: _buildGridItem(FixIcons.hazadous_dump_location,
+            //           'สถานที่กำจัดขยะอันตราย'),
+            //       onTap: () => Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const HazardousLocation(),
+            //         ),
+            //       ), //ฟังก์ชันเรียกดูหน้า สถานที่ทิ้งขยะอันตราย
+            //     ),
+            //   ],
+            // ),
+            _buildSectionHeader('เมนูหลัก'),
+            const SizedBox(height: 8),
+            GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
+              children: [
+                InkWell(
+                  // child: _buildGridItem(Icons.delete, 'ขยะ 4 ประเภท'),
+                  child: Card(
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.delete, size: 50),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'ขยะ 4 ประเภท',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12.0, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onTap: () => _navigateToTrashType(
+                      context, 0), //Navigate ไปยัง tab index 0,
+                ),
+                InkWell(
+                  // child:
+                  //     _buildGridItem(FixIcons.how_to_sorting, 'วิธีคัดแยกขยะ'),
+                  child: Card(
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(FixIcons.how_to_sorting, size: 50),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'วิธีคัดแยกขยะ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12.0, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onTap: () => _navigateToTrashType(
+                      context, 1), //Navigate ไปยัง tab index 1,
+                ),
+                InkWell(
+                  child: Card(
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.quiz, size: 50),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'แบบทดสอบ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 12.0, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const QuizPage(),
+                    ),
+                  ), // ฟังก์ชันเรียกดูหน้า สถานที่รับซื้อของเก่า
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildSectionHeader('ค้นหาสถานที่'),
+            const SizedBox(height: 8),
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
@@ -264,16 +402,6 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisSpacing: 16.0,
               crossAxisSpacing: 16.0,
               children: [
-                InkWell(
-                  child: _buildGridItem(Icons.delete, 'ขยะ 4 ประเภท'),
-                  onTap: () => _navigateToTrashType(
-                      context, 0), //Navigate ไปยัง tab index 0,
-                ),
-                InkWell(
-                  child: _buildGridItem(FixIcons.how_to_sorting, 'วิธีคัดแยกขยะ'),
-                  onTap: () => _navigateToTrashType(
-                      context, 1), //Navigate ไปยัง tab index 1,
-                ),
                 InkWell(
                   child:
                       _buildGridItem(Icons.store, 'สถานที่รับซื้อขยะรีไซเคิล'),
@@ -285,8 +413,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ), // ฟังก์ชันเรียกดูหน้า สถานที่รับซื้อของเก่า
                 ),
                 InkWell(
-                  child: _buildGridItem(
-                      FixIcons.hazadous_dump_location, 'สถานที่กำจัดขยะอันตราย'),
+                  child: _buildGridItem(FixIcons.hazadous_dump_location,
+                      'สถานที่กำจัดขยะอันตราย'),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -310,43 +438,44 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         final event = activities[index];
                         return SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'หัวเรื่อง: ${event['title']}',maxLines: 2,
-                                  style: const TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 16,
-                                      backgroundColor: Colors.white),
-                                ),
-                                Stack(
-                                  children: [
-                                    Image(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 200,
-                                      image: NetworkImage('${event['image']}'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
-                                      child: ElevatedButton(
-                                          onPressed: () async {
-                                            final Uri urllink =
-                                                Uri.parse(event['url'] ?? '');
-                                            if (await canLaunchUrl(urllink)) {
-                                              await launchUrl(urllink);
-                                            }
-                                          },
-                                          child:
-                                              const Text('รายละเอียดเพิ่มเติม')),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'หัวเรื่อง: ${event['title']}',
+                                maxLines: 2,
+                                style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 16,
+                                    backgroundColor: Colors.white),
+                              ),
+                              Stack(
+                                children: [
+                                  Image(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 200,
+                                    image: NetworkImage('${event['image']}'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    bottom: 0,
+                                    child: ElevatedButton(
+                                        onPressed: () async {
+                                          final Uri urllink =
+                                              Uri.parse(event['url'] ?? '');
+                                          if (await canLaunchUrl(urllink)) {
+                                            await launchUrl(urllink);
+                                          }
+                                        },
+                                        child:
+                                            const Text('รายละเอียดเพิ่มเติม')),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
                       }),
                 ),
               ),
@@ -376,18 +505,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Stack(
                                 children: [
-                                  newss['image']!.startsWith('http') ?
-                                  Image(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200,
-                                    image: NetworkImage('${newss['image']}'),
-                                    fit: BoxFit.cover,
-                                  ) : Image(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200,
-                                    image: AssetImage('${newss['image']}'),
-                                    fit: BoxFit.cover,
-                                  ),
+                                  newss['image']!.startsWith('http')
+                                      ? Image(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 200,
+                                          image:
+                                              NetworkImage('${newss['image']}'),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 200,
+                                          image:
+                                              AssetImage('${newss['image']}'),
+                                          fit: BoxFit.cover,
+                                        ),
                                   Positioned(
                                     right: 0,
                                     bottom: 0,

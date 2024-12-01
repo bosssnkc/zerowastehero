@@ -360,19 +360,21 @@ class _HowToSortingPageState extends State<HowToSortingPage> {
                                       ),
                                       TextSpan(
                                         text:
-                                            'จะเกิดอะไรขึ้นหากเราไม่คัดแยกขยะก่อนนำไปทิ้ง?\n',
+                                            'จะเกิดอะไรขึ้นหากเราไม่คัดแยกขยะก่อนนำไปทิ้ง?',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      TextSpan(
-                                        text:
-                                            '    การไม่คัดแยกขยะก่อนทำการทิ้งลงถังทำให้เกิดผลเสียในกระบวนการจัดการขยะที่ปลายทาง ทำให้เกิดปัญหาขยะที่ไม่สามารถนำไปเข้าสู่กระบวนการในการจัดการขยะอื่นได้นอกจากการฝังกลบ\n',
-                                      ),
-                                      TextSpan(
-                                          text:
-                                              '\t\t\t\tอีกทั้งยังส่งผลกระทบต่อสุขภาพกับผู้คนที่ทำงานที่เกี่ยวข้องกับการกำจัดขยะที่ปลายทางโดยตรง อันเนื่องมาจากการทิ้งขยะที่ผิดวิธีเช่นการทิ้งขยะอันตรายหรือขยะติดเชื้อรวมกับขยะประเภททั่วไป\n')
                                     ]),
                               ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              WidgetZoom(
+                                heroAnimationTag: 'htsorting',
+                                zoomWidget:
+                                    Image.asset('assets/image/affect.jpg'),
+                              ),
+                              const SizedBox(height: 16),
                               YoutubePlayer(
                                 controller: _playerController2,
                                 showVideoProgressIndicator: true,
